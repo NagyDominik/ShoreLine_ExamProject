@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="698.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="64.0" fitWidth="134.0" layoutX="564.0" layoutY="383.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <image>
+            <Image url="@Untitled-1.png" />
+         </image>
+      </ImageView>
+      <Group>
+         <children>
+            <ImageView fitHeight="64.0" fitWidth="134.0">
+               <image>
+                  <Image url="@Untitled-1.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="51.0" fitWidth="71.0" layoutX="20.0" layoutY="7.0">
+               <image>
+                  <Image url="@shorlineLogo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Group>
+      <ListView layoutX="98.0" layoutY="114.0" prefHeight="283.0" prefWidth="186.0" />
+      <ListView layoutX="428.0" layoutY="114.0" prefHeight="283.0" prefWidth="186.0" />
+      <JFXTextField focusColor="#ab3109" labelFloat="true" layoutX="115.0" layoutY="73.0" promptText="Import Attributes" unFocusColor="BLACK">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </JFXTextField>
+      <JFXTextField focusColor="#ab3109" labelFloat="true" layoutX="448.0" layoutY="73.0" promptText="Export Attributes" unFocusColor="BLACK">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </JFXTextField>
+      <ImageView layoutX="343.0" layoutY="76.0">
+         <image>
+            <Image url="@../Downloads/right-arrow.png" />
+         </image>
+      </ImageView>
+      <JFXTextField focusColor="#ab3109" labelFloat="true" layoutX="282.0" layoutY="32.0" promptText="Config name" unFocusColor="BLACK">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </JFXTextField>
+      <JFXButton buttonType="RAISED" layoutX="321.0" layoutY="368.0" style="-fx-background-color: #A1BA3C;" text="Save">
+         <font>
+            <Font size="13.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="19.0" fitWidth="19.0">
+               <image>
+                  <Image url="@../Downloads/save.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+   </children>
+</AnchorPane>
