@@ -1,4 +1,4 @@
-package shorelineexam.Utility;
+package shoreline_examproject.Utility;
 
 /**
  * Represent a logged event (for example, an error).
