@@ -14,6 +14,10 @@ public class Model {
     
     
     
+    public Model(){
+        
+    }
+    
     public static Model getInstance(){
         if(instance == null)
         {

@@ -9,7 +9,7 @@ package shoreline_examproject.DAL;
  *
  * @author sebok
  */
-public class FileWriter
+public abstract class FileWriter
 {
-    
+    public abstract void saveData(String data);
 }
