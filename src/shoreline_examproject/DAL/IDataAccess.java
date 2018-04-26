@@ -1,7 +1,7 @@
 package shoreline_examproject.DAL;
 
-import BE.AttributesCollection;
-import BE.Config;
+import shoreline_examproject.BE.AttributesCollection;
+import shoreline_examproject.BE.Config;
 import java.io.File;
 import shoreline_examproject.Utility.EventLog;
 

@@ -1,4 +1,4 @@
-package BE;
+package shoreline_examproject.BE;
 
 import java.util.HashMap;
 
