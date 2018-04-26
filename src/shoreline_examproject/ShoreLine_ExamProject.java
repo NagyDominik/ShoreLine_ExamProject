@@ -19,12 +19,12 @@ public class ShoreLine_ExamProject extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("GUI/View/MainWindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("GUI/View/LogWindow.fxml"));
         
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
-        stage.setTitle("Private Movie Collection");
+        stage.setTitle("ShoreLine Exam Project");
         stage.show();
     }
 
