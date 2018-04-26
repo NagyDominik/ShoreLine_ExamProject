@@ -7,7 +7,7 @@ package shoreline_examproject.GUI.Model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import shoreline_examproject.BE.LogEntry;
+import shoreline_examproject.Utility.EventLog;
 
 /**
  *
@@ -16,7 +16,7 @@ import shoreline_examproject.BE.LogEntry;
 public class Model {
 
     private static Model instance;
-    private ObservableList<LogEntry> logList = FXCollections.observableArrayList();
+    private ObservableList<EventLog> logList = FXCollections.observableArrayList();
 
     private Model() {
         
@@ -29,11 +29,11 @@ public class Model {
         return instance;
     }
     
-    public void addLog(LogEntry entry) {
+    public void addLog(EventLog entry) {
         logList.add(entry);
     }
     
-    private ObservableList<LogEntry> getLogList() {
+    public ObservableList<EventLog> getLogList() {
         return logList;
     }
 }
