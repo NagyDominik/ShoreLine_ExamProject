@@ -8,6 +8,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+nbproject/jfx-impl.xml
 
 
 ### Java ###
