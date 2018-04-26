@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="362.0" prefWidth="234.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.DetailWindowController">
+   <children>
+      <ImageView fitHeight="60.0" fitWidth="105.0" layoutY="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../../img/bar.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="41.0" fitWidth="59.0" layoutX="14.0" layoutY="10.0">
+         <image>
+            <Image url="@../../img/shortlogo.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="86.0" layoutY="75.0" prefHeight="24.0" prefWidth="62.0" text="Details">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="119.0" text="Task name:">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="147.0" text="Progress:">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="173.0" text="Config:">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="199.0" text="Import:">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="15.0" layoutY="225.0" text="Export:">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="16.0" layoutY="252.0" text="Start time:">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="13.0" />
+         </font>
+      </Label>
+      <ProgressBar layoutX="91.0" layoutY="147.0" prefHeight="18.0" prefWidth="115.0" progress="0.0" />
+      <Label layoutX="93.0" layoutY="119.0" prefHeight="17.0" prefWidth="115.0" />
+      <Label layoutX="91.0" layoutY="173.0" prefHeight="17.0" prefWidth="115.0" />
+      <Label layoutX="91.0" layoutY="199.0" prefHeight="17.0" prefWidth="115.0" />
+      <Label layoutX="91.0" layoutY="225.0" prefHeight="17.0" prefWidth="115.0" />
+      <Label layoutX="91.0" layoutY="252.0" prefHeight="17.0" prefWidth="115.0" />
+      <ImageView fitHeight="60.0" fitWidth="105.0" layoutY="1.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <image>
+            <Image url="@../../img/bar.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

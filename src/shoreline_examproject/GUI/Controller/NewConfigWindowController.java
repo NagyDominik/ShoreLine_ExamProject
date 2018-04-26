@@ -3,27 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_examproject;
+package shoreline_examproject.GUI.Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 
 /**
  * FXML Controller class
  *
- * @author Dominik
+ * @author Bence
  */
-public class MainWindowController implements Initializable {
-
-    @FXML
-    private Button button;
-    @FXML
-    private Label label;
+public class NewConfigWindowController implements Initializable {
 
     /**
      * Initializes the controller class.
@@ -32,9 +23,5 @@ public class MainWindowController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-    }
     
 }
