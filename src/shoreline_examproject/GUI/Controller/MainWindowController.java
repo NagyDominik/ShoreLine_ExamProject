@@ -6,6 +6,7 @@
 package shoreline_examproject.GUI.Controller;
 
 import com.jfoenix.controls.JFXComboBox;
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -14,6 +15,8 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
+import javafx.stage.FileChooser;
+import shoreline_examproject.Utility.EventPopup;
 
 /**
  * FXML Controller class
@@ -50,6 +53,14 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void importFileClicked(ActionEvent event) {
+        try {
+            FileChooser fc = new FileChooser();
+            File file = fc.showOpenDialog(this.userNameLbl.getScene().getWindow());
+            filePathLbl.setText(file.getPath());
+        }
+        catch (Exception ex) {
+            EventPopup.showAlertPopup(ex);
+        }
     }
 
     @FXML
