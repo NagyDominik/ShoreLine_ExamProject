@@ -11,8 +11,9 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="434.0" prefWidth="698.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="434.0" prefWidth="698.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
    <children>
       <ImageView fitHeight="64.0" fitWidth="134.0" layoutX="9.0" layoutY="4.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -24,11 +25,11 @@
             <Image url="@../../img/bar.png" />
          </image>
       </ImageView>
-      <JFXComboBox layoutX="61.0" layoutY="116.0" prefHeight="25.0" prefWidth="142.0" promptText="CONFIG" />
-      <JFXButton buttonType="RAISED" layoutX="61.0" layoutY="85.0" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #009FDA;" text="Import file ..." />
-      <JFXButton buttonType="RAISED" layoutX="232.0" layoutY="116.0" prefHeight="25.0" prefWidth="124.0" style="-fx-background-color: #B8B8BD;" text="Create new config" />
-      <Label layoutX="215.0" layoutY="85.0" prefHeight="25.0" prefWidth="158.0" text="filepath" />
-      <TableView layoutX="15.0" layoutY="156.0" prefHeight="219.0" prefWidth="409.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="280.0" AnchorPane.topAnchor="155.0">
+      <JFXComboBox fx:id="configComboBox" layoutX="61.0" layoutY="116.0" prefHeight="25.0" prefWidth="142.0" promptText="CONFIG" />
+      <JFXButton buttonType="RAISED" layoutX="61.0" layoutY="85.0" onAction="#importFileClicked" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #009FDA;" text="Import file ..." />
+      <JFXButton buttonType="RAISED" layoutX="232.0" layoutY="116.0" onAction="#newConfigClicked" prefHeight="25.0" prefWidth="124.0" style="-fx-background-color: #B8B8BD;" text="Create new config" />
+      <Label fx:id="filePathLbl" layoutX="215.0" layoutY="85.0" prefHeight="25.0" prefWidth="158.0" text="filepath" />
+      <TableView fx:id="previewTV" layoutX="15.0" layoutY="156.0" prefHeight="219.0" prefWidth="409.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="280.0" AnchorPane.topAnchor="155.0">
         <columns>
           <TableColumn prefWidth="88.0" text="Preview" />
         </columns>
@@ -38,7 +39,7 @@
       </TableView>
       <Group layoutX="450.0" layoutY="383.0">
          <children>
-            <JFXButton buttonType="RAISED" layoutX="15.0" layoutY="11.0" style="-fx-background-color: #00A60A; -fx-background-radius: 20;" text="Start">
+            <JFXButton buttonType="RAISED" layoutX="15.0" layoutY="11.0" onAction="#startClicked" style="-fx-background-color: #00A60A; -fx-background-radius: 20;" text="Start">
                <graphic>
                   <ImageView fitHeight="18.0" fitWidth="19.0">
                      <image>
@@ -47,7 +48,7 @@
                   </ImageView>
                </graphic>
             </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="163.0" layoutY="11.0" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: #FF2110; -fx-background-radius: 20;" text="Stop">
+            <JFXButton buttonType="RAISED" layoutX="163.0" layoutY="11.0" onAction="#stopClicked" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: #FF2110; -fx-background-radius: 20;" text="Stop">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="16.0">
                      <image>
@@ -56,7 +57,7 @@
                   </ImageView>
                </graphic>
             </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="87.0" layoutY="11.0" style="-fx-background-color: #FF8D18; -fx-background-radius: 20;" text="Pause">
+            <JFXButton buttonType="RAISED" layoutX="87.0" layoutY="11.0" onAction="#pauseClicked" style="-fx-background-color: #FF8D18; -fx-background-radius: 20;" text="Pause">
                <graphic>
                   <ImageView fitHeight="16.0" fitWidth="16.0">
                      <image>
@@ -67,7 +68,7 @@
             </JFXButton>
          </children>
       </Group>
-      <TableView layoutX="486.0" layoutY="70.0" prefHeight="227.0" prefWidth="183.0" AnchorPane.bottomAnchor="137.0" AnchorPane.leftAnchor="486.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="70.0">
+      <TableView fx:id="taskTV" layoutX="486.0" layoutY="70.0" prefHeight="227.0" prefWidth="183.0" AnchorPane.bottomAnchor="135.0" AnchorPane.leftAnchor="485.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="70.0">
         <columns>
           <TableColumn prefWidth="75.0" text="Task" />
           <TableColumn prefWidth="75.0" text="Progress" />
@@ -90,8 +91,11 @@
             <Label fx:id="configLbl" layoutY="34.0" prefHeight="17.0" prefWidth="65.0" />
          </children>
       </Group>
-      <Label layoutX="533.0" layoutY="24.0" text="Name of the user" />
-      <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" layoutX="630.0" layoutY="13.0" prefHeight="28.0" prefWidth="38.0">
+      <Label fx:id="userNameLbl" layoutX="525.0" layoutY="24.0" prefHeight="17.0" prefWidth="106.0" text="Name of the user" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="25.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" layoutX="630.0" layoutY="13.0" onAction="#optionsClicked" prefHeight="28.0" prefWidth="38.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0">
                <image>
