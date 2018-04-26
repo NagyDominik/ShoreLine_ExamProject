@@ -4,6 +4,7 @@ import shoreline_examproject.DAL.FileReaders.FileReader;
 import BE.AttributesCollection;
 import BE.Config;
 import java.io.File;
+import shoreline_examproject.DAL.FileReaders.FileReaderFactory;
 import shoreline_examproject.Utility.EventLog;
 
 /**
@@ -37,7 +38,7 @@ public class DALManager implements IDataAccess
     @Override
     public AttributesCollection loadFileData(File file)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        reader = FileReaderFactory.CreateFileReader(file.getPath());
+        return reader.getData(file);
     }
-    
 }

@@ -1,6 +1,7 @@
 package shoreline_examproject.DAL.FileReaders;
 
-import java.util.List;
+import BE.AttributesCollection;
+import java.io.File;
 
 /**
  *
@@ -8,5 +9,5 @@ import java.util.List;
  */
 public abstract class FileReader
 {
-    public abstract List<?> loadFileContents();
+    public abstract AttributesCollection getData(File file);
 }
