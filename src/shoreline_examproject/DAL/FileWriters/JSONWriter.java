@@ -1,4 +1,4 @@
-package shoreline_examproject.DAL;
+package shoreline_examproject.DAL.FileWriters;
 
 /**
  * Saves the given data to a JSON file

@@ -1,6 +1,8 @@
 package shoreline_examproject.DAL;
 
-import shoreline_examproject.BLL.Config;
+import shoreline_examproject.BE.AttributesCollection;
+import shoreline_examproject.BE.Config;
+import java.io.File;
 import shoreline_examproject.Utility.EventLog;
 
 /**
@@ -12,4 +14,8 @@ public interface IDataAccess
     public void saveLog(EventLog log);
     
     public void saveConfig(Config config);
+    
+    public AttributesCollection loadFileData(String filePath);
+    
+    public AttributesCollection loadFileData(File file);
 }
