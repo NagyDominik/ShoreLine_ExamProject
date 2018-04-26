@@ -1,7 +1,7 @@
 package shoreline_examproject.DAL.FileReaders;
 
-import BE.AttributesCollection;
 import java.io.File;
+import shoreline_examproject.BE.AttributesCollection;
 
 /**
  * Reads data from an XML file
