@@ -19,7 +19,7 @@ public class ShoreLine_ExamProject extends Application {
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
-        stage.setTitle("Private Movie Collection");
+        stage.setTitle("ShoreLine Exam Project");
         stage.show();
     }
 
