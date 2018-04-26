@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
+import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.Utility.EventPopup;
 /**
  * FXML Controller class
@@ -77,6 +78,8 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void startClicked(ActionEvent event) {
+        DALManager dal = new DALManager();
+        dal.loadFileData("asd");
     }
 
     @FXML

@@ -38,6 +38,7 @@ public class DALManager implements IDataAccess
     @Override
     public AttributesCollection loadFileData(File file)
     {
+        file = new File("D:/Users/sebok/Documents/GitHub/ShoreLine_ExamProject/src/shoreline_examproject/import_data.xlsx");
         reader = FileReaderFactory.CreateFileReader(file.getPath());
         return reader.getData(file);
     }
