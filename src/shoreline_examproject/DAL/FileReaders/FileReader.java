@@ -1,4 +1,4 @@
-package shoreline_examproject.DAL;
+package shoreline_examproject.DAL.FileReaders;
 
 import java.util.List;
 

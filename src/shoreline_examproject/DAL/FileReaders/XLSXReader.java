@@ -1,12 +1,12 @@
-package shoreline_examproject.DAL;
+package shoreline_examproject.DAL.FileReaders;
 
 import java.util.List;
 
 /**
- * Reads data from an XML file
+ * Read in data from an XLSX file.
  * @author sebok
  */
-public class XMLReader extends FileReader
+public class XLSXReader extends FileReader
 {
 
     @Override

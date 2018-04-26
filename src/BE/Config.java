@@ -1,4 +1,4 @@
-package shoreline_examproject.BLL;
+package BE;
 
 /**
  * Maps relations between input and output data.
