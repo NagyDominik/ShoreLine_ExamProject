@@ -13,7 +13,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="434.0" prefWidth="698.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="434.0" prefWidth="698.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
    <children>
       <ImageView fitHeight="64.0" fitWidth="134.0" layoutX="9.0" layoutY="4.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -109,7 +110,7 @@
             <Image url="@../../img/shortlogo.png" />
          </image>
       </ImageView>
-      <JFXButton buttonType="RAISED" layoutX="476.0" layoutY="358.0" style="-fx-background-color: #B8B8BD;" text="More detail...">
+      <JFXButton buttonType="RAISED" layoutX="476.0" layoutY="358.0" onAction="#moreDetailClicked" style="-fx-background-color: #B8B8BD;" text="More detail...">
          <effect>
             <Glow level="0.0">
                <input>
