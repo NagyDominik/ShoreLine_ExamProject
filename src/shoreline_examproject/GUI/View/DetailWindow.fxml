@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="362.0" prefWidth="234.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.DetailWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="340.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.DetailWindowController">
    <children>
       <ImageView fitHeight="60.0" fitWidth="105.0" layoutY="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
@@ -20,7 +20,7 @@
             <Image url="@../../img/shortlogo.png" />
          </image>
       </ImageView>
-      <Label layoutX="86.0" layoutY="75.0" prefHeight="24.0" prefWidth="62.0" text="Details">
+      <Label layoutX="139.0" layoutY="19.0" prefHeight="24.0" prefWidth="62.0" text="Details" AnchorPane.bottomAnchor="316.0" AnchorPane.leftAnchor="139.0" AnchorPane.rightAnchor="139.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="18.0" />
          </font>
