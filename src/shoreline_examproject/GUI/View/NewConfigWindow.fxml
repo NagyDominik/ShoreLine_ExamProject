@@ -64,5 +64,17 @@
             </ImageView>
          </graphic>
       </JFXButton>
+      <JFXButton fx:id="closeButton" buttonType="RAISED" layoutX="614.0" layoutY="406.0" onAction="#backClicked" text="Back" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+         <graphic>
+            <ImageView fitHeight="18.0" fitWidth="18.0">
+               <image>
+                  <Image url="@../../img/back.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font size="13.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

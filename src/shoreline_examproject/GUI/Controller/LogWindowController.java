@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import shoreline_examproject.BE.LogEntry;
 
 /**
  * FXML Controller class
@@ -20,20 +21,20 @@ import javafx.scene.control.TableView;
 public class LogWindowController implements Initializable {
 
     @FXML
-    private TableView<?> logTV;
+    private TableView<LogEntry> logTV;
     @FXML
-    private TableColumn<?, String> dateCol;
+    private TableColumn<LogEntry, String> dateCol;
     @FXML
-    private TableColumn<?, String> typeCol;
+    private TableColumn<LogEntry, String> typeCol;
     @FXML
-    private TableColumn<?, String> descCol;
+    private TableColumn<LogEntry, String> descCol;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
     
 }
