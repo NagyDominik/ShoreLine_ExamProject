@@ -32,9 +32,7 @@ public class XLSXReader extends FileReader
         try {
     		InputStream ExcelFileToRead = new FileInputStream(file);
 		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);
-		
-		XSSFWorkbook test = new XSSFWorkbook(); 
-		
+				
 		XSSFSheet sheet = wb.getSheetAt(0);
 		XSSFRow row; 
 		XSSFCell cell;
@@ -49,11 +47,11 @@ public class XLSXReader extends FileReader
 			{
 				cell=(XSSFCell) cells.next();
 		
-				if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING)
+				if (cell.getCellTypeEnum() == CellType.STRING)
 				{
 					System.out.print(cell.getStringCellValue()+" ");
 				}
-				else if(cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC)
+				else if(cell.getCellTypeEnum() == CellType.NUMERIC)
 				{
 					System.out.print(cell.getNumericCellValue()+" ");
 				}

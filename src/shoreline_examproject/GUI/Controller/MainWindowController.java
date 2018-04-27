@@ -78,7 +78,7 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void startClicked(ActionEvent event) {
-        DALManager dal = new DALManager();
+        DALManager dal = new DALManager();  //Just to test the XLSX reading
         dal.loadFileData("asd");
     }
 
