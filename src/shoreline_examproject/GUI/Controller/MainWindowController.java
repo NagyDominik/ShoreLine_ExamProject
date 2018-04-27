@@ -17,6 +17,7 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import shoreline_examproject.DAL.DALManager;
+import shoreline_examproject.DAL.FileWriters.JSONWriter;
 import shoreline_examproject.Utility.EventPopup;
 
 /**
