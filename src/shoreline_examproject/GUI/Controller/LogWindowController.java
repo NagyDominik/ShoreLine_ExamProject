@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import shoreline_examproject.GUI.Model.Model;
-import shoreline_examproject.Utility.EventLog;
+import shoreline_examproject.BE.EventLog;
 
 /**
  * FXML Controller class

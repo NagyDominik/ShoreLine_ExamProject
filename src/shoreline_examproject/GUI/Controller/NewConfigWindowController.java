@@ -29,12 +29,12 @@ public class NewConfigWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void backClicked(ActionEvent event) {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
-    
+
 }

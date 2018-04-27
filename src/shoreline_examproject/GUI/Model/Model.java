@@ -7,7 +7,7 @@ package shoreline_examproject.GUI.Model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import shoreline_examproject.Utility.EventLog;
+import shoreline_examproject.BE.EventLog;
 
 /**
  *

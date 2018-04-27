@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.Utility.EventPopup;
+
 /**
  * FXML Controller class
  *
@@ -65,7 +66,6 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void newConfigClicked(ActionEvent event) throws IOException {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/NewConfigWindow.fxml"));
         Parent root = (Parent) loader.load();
 

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_examproject.Utility;
+package shoreline_examproject.BE;
 
 import java.time.LocalDate;
 

@@ -9,6 +9,6 @@ package shoreline_examproject.GUI.Model;
  *
  * @author Bence
  */
-public class ModelException extends Exception{
-    
+public class ModelException extends Exception {
+
 }
