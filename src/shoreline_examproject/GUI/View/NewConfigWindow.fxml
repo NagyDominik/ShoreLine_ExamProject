@@ -54,7 +54,7 @@
       </JFXTextField>
       <JFXButton buttonType="RAISED" layoutX="321.0" layoutY="368.0" style="-fx-background-color: #A1BA3C;" text="Save">
          <font>
-            <Font size="13.0" />
+            <Font name="System Bold" size="13.0" />
          </font>
          <graphic>
             <ImageView fitHeight="19.0" fitWidth="19.0">
@@ -73,7 +73,7 @@
             </ImageView>
          </graphic>
          <font>
-            <Font size="13.0" />
+            <Font name="System Bold" size="13.0" />
          </font>
       </JFXButton>
    </children>

@@ -1,7 +1,7 @@
 package shoreline_examproject.DAL.FileReaders;
 
 import java.io.File;
-import shoreline_examproject.BE.AttributesCollection;
+import shoreline_examproject.BE.AttributeValueMap;
 
 /**
  * Reads data from an XML file
@@ -11,7 +11,7 @@ import shoreline_examproject.BE.AttributesCollection;
 public class XMLReader extends FileReader {
 
     @Override
-    public AttributesCollection getData(File file) {
+    public AttributeValueMap getData(File file) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

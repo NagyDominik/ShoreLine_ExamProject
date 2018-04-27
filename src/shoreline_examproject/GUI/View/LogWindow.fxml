@@ -36,7 +36,7 @@
             </ImageView>
          </graphic>
          <font>
-            <Font size="13.0" />
+            <Font name="System Bold" size="13.0" />
          </font>
       </JFXButton>
    </children>

@@ -10,9 +10,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import shoreline_examproject.BE.AttributesCollection;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Row;
+import shoreline_examproject.BE.AttributeValueMap;
 
 /**
  * Read in data from an XLSX file.
@@ -22,45 +25,30 @@ import shoreline_examproject.BE.AttributesCollection;
 public class XLSXReader extends FileReader {
 
     @Override
-    public AttributesCollection getData(File file) {
+    public AttributeValueMap getData(File file) {
+        
         try {
-            InputStream ExcelFileToRead = new FileInputStream(file);
-            XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);
-
-            XSSFWorkbook test = new XSSFWorkbook();
-
-            XSSFSheet sheet = wb.getSheetAt(0);
-            XSSFRow row;
-            XSSFCell cell;
-
-            Iterator rows = sheet.rowIterator();
-
-            while (rows.hasNext()) {
-                row = (XSSFRow) rows.next();
-                Iterator cells = row.cellIterator();
-                while (cells.hasNext()) {
-                    cell = (XSSFCell) cells.next();
-
-                    if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                        System.out.print(cell.getStringCellValue() + " ");
-                    } else if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-                        System.out.print(cell.getNumericCellValue() + " ");
-                    } else {
-                        //U Can Handel Boolean, Formula, Errors
-                    }
-                }
-                System.out.println();
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
+            
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            
+            Iterator<Row> rowIterator = sheet.iterator();
+            Iterator<Row> firstRow = rowIterator;   //Save a reference to the first row, to be able to retrieve the attributes;
+            
+            if (rowIterator.hasNext()) {
+                rowIterator.next(); //Skip the first line (attributes)
             }
-
-        }
-        catch (FileNotFoundException ex) {
+            
+            while (rowIterator.hasNext())
+            {
+                Row row = rowIterator.next();
+                
+            }
+            
+        } catch (IOException ex) {
             Logger.getLogger(XLSXReader.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidFormatException ex) {
         }
-        catch (IOException ex) {
-            Logger.getLogger(XLSXReader.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         return null;
     }
-
 }

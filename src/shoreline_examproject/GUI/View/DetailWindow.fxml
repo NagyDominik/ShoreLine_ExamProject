@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="340.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.DetailWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="400.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.DetailWindowController">
    <children>
       <ImageView fitHeight="60.0" fitWidth="105.0" layoutY="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
@@ -20,47 +20,47 @@
             <Image url="@../../img/shortlogo.png" />
          </image>
       </ImageView>
-      <Label layoutX="139.0" layoutY="19.0" prefHeight="24.0" prefWidth="62.0" text="Details" AnchorPane.bottomAnchor="316.0" AnchorPane.leftAnchor="139.0" AnchorPane.rightAnchor="139.0" AnchorPane.topAnchor="20.0">
+      <Label layoutX="168.0" layoutY="19.0" prefHeight="24.0" prefWidth="64.0" text="Details" AnchorPane.bottomAnchor="317.0" AnchorPane.leftAnchor="168.0" AnchorPane.rightAnchor="168.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="119.0" text="Task name:">
+      <Label layoutX="14.0" layoutY="119.0" text="Task name:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="120.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="13.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="147.0" text="Progress:">
+      <Label layoutX="14.0" layoutY="147.0" text="Progress:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="145.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="13.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="173.0" text="Config:">
+      <Label layoutX="14.0" layoutY="173.0" text="Config:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="170.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="13.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="199.0" text="Import:">
+      <Label layoutX="14.0" layoutY="199.0" text="Import:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="195.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="13.0" />
          </font>
       </Label>
-      <Label layoutX="15.0" layoutY="225.0" text="Export:">
+      <Label layoutX="15.0" layoutY="225.0" text="Export:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="220.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="13.0" />
          </font>
       </Label>
-      <Label layoutX="16.0" layoutY="252.0" text="Start time:">
+      <Label layoutX="16.0" layoutY="252.0" text="Start time:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="245.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="13.0" />
          </font>
       </Label>
-      <ProgressBar layoutX="91.0" layoutY="147.0" prefHeight="18.0" prefWidth="115.0" progress="0.0" />
-      <Label layoutX="93.0" layoutY="119.0" prefHeight="17.0" prefWidth="115.0" />
-      <Label layoutX="91.0" layoutY="173.0" prefHeight="17.0" prefWidth="115.0" />
-      <Label layoutX="91.0" layoutY="199.0" prefHeight="17.0" prefWidth="115.0" />
-      <Label layoutX="91.0" layoutY="225.0" prefHeight="17.0" prefWidth="115.0" />
-      <Label layoutX="91.0" layoutY="252.0" prefHeight="17.0" prefWidth="115.0" />
+      <ProgressBar layoutX="91.0" layoutY="147.0" prefHeight="18.0" prefWidth="277.0" progress="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="145.0" />
+      <Label layoutX="93.0" layoutY="119.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="120.0" />
+      <Label layoutX="91.0" layoutY="173.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="170.0" />
+      <Label layoutX="91.0" layoutY="199.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="195.0" />
+      <Label layoutX="91.0" layoutY="225.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="220.0" />
+      <Label layoutX="91.0" layoutY="252.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="245.0" />
       <ImageView fitHeight="60.0" fitWidth="105.0" layoutY="1.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
             <Image url="@../../img/bar.png" />
@@ -68,7 +68,7 @@
       </ImageView>
       <JFXButton fx:id="closeButton" focusTraversable="false" layoutX="156.0" layoutY="320.0" onAction="#backClicked" text="Back" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
          <font>
-            <Font size="13.0" />
+            <Font name="System Bold" size="13.0" />
          </font>
          <graphic>
             <ImageView fitHeight="17.0" fitWidth="17.0">

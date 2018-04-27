@@ -13,9 +13,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
+import shoreline_examproject.BE.Config;
 import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.DAL.FileWriters.JSONWriter;
 import shoreline_examproject.Utility.EventPopup;
@@ -43,6 +46,10 @@ public class MainWindowController implements Initializable {
     private TableView<?> taskTV;
     @FXML
     private Label userNameLbl;
+    @FXML
+    private TableColumn<?, ?> taskTable;
+    @FXML
+    private TableColumn<?, ?> progressTable;
 
     /**
      * Initializes the controller class.
@@ -79,7 +86,7 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void startClicked(ActionEvent event) {
-        DALManager dal = new DALManager();
+        DALManager dal = new DALManager();  //Just to test the XLSX reading
         dal.loadFileData("asd");
     }
 
@@ -107,4 +114,15 @@ public class MainWindowController implements Initializable {
         stage.show();
     }
 
+    @FXML
+    private void logClicked(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/LogWindow.fxml"));
+        Parent root = (Parent) loader.load();
+
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("New Config");
+        stage.setResizable(false);
+        stage.show();
+    }
 }
