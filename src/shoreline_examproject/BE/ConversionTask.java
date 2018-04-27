@@ -9,6 +9,6 @@ package shoreline_examproject.BE;
  *
  * @author Bence
  */
-public class Task {
+public class ConversionTask {
     
 }
