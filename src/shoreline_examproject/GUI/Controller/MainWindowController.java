@@ -68,7 +68,7 @@ public class MainWindowController implements Initializable {
             filePathLbl.setText(file.getPath());
         }
         catch (Exception ex) {
-            EventPopup.showAlertPopup(ex);
+            //EventPopup.showAlertPopup(ex);
         }
     }
 
