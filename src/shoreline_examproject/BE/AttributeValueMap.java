@@ -4,10 +4,11 @@ import java.util.HashMap;
 
 /**
  * Represents a key-value pair.
+ *
  * @author sebok
  */
-public class AttributeValueMap
-{
+public class AttributeValueMap {
+
     private HashMap<String, String> attributeMap;
     private HashMap<String, Integer> keyCount;
 
@@ -16,17 +17,15 @@ public class AttributeValueMap
         this.attributeMap = new HashMap(10);
         this.keyCount = new HashMap();
     }
-    
-    
-    public String getValueBasedOnAttribute(String attribute)
-    {
+
+    public String getValueBasedOnAttribute(String attribute) {
         return attributeMap.get(attribute);
     }
     
     
     public void addKeyValuePair(String key, String value)
     {
-        if (attributeMap.containsKey(key))
+        if (attributeMap.containsKey(key))      //If a key is already present, instead of overwriting it, just append a number to it (Description, Description 1, etc.).
         {
             if (this.keyCount.containsKey(key)) {
                 int count = keyCount.get(key);
@@ -40,7 +39,7 @@ public class AttributeValueMap
                 key += " 1";
             }
         }
-        
+
         attributeMap.put(key, value);
     }
 

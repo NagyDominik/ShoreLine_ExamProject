@@ -5,10 +5,11 @@ import java.util.List;
 
 /**
  * Represents a collection of kex-value pairs.
+ *
  * @author sebok
  */
-public class AttributesCollection
-{
+public class AttributesCollection {
+
     private List<AttributeValueMap> attributes;
 
     public AttributesCollection()
@@ -18,13 +19,7 @@ public class AttributesCollection
     
     public void addPair(AttributeValueMap newMap)
     {
-        try{
-            this.attributes.add(newMap);
-        }
-        catch (NullPointerException ex)
-        {
-            System.out.println("");
-        }
+         this.attributes.add(newMap);
     }
 
     @Override

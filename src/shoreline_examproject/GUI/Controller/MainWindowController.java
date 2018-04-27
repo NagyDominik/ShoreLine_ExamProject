@@ -13,11 +13,14 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.DAL.DALManager;
+import shoreline_examproject.DAL.FileWriters.JSONWriter;
 import shoreline_examproject.Utility.EventPopup;
 
 /**
@@ -43,6 +46,10 @@ public class MainWindowController implements Initializable {
     private TableView<?> taskTV;
     @FXML
     private Label userNameLbl;
+    @FXML
+    private TableColumn<?, ?> taskTable;
+    @FXML
+    private TableColumn<?, ?> progressTable;
 
     /**
      * Initializes the controller class.
@@ -119,5 +126,4 @@ public class MainWindowController implements Initializable {
         stage.setResizable(false);
         stage.show();
     }
-
 }
