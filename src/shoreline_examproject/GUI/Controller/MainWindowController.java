@@ -106,4 +106,16 @@ public class MainWindowController implements Initializable {
         stage.show();
     }
 
+    @FXML
+    private void logClicked(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/LogWindow.fxml"));
+        Parent root = (Parent) loader.load();
+
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("New Config");
+        stage.setResizable(false);
+        stage.show();
+    }
+
 }

@@ -3,7 +3,7 @@ package shoreline_examproject.BE;
 import java.util.HashMap;
 
 /**
- * Represents a collection of attributes, and their associated values.
+ * Represents a key-value pair.
  * @author sebok
  */
 public class AttributeValueMap

@@ -48,11 +48,7 @@ public class XLSXReader extends FileReader {
         } catch (IOException ex) {
             Logger.getLogger(XLSXReader.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvalidFormatException ex) {
-            Logger.getLogger(XLSXReader.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         return null;
-
     }
-
 }
