@@ -1,34 +1,21 @@
 package shoreline_examproject.BE;
 
-import java.util.HashMap;
+import java.util.List;
 
 /**
- * Represents a collection of attributes, and their associated values.
+ * Represents a collection of kex-value pairs.
  * @author sebok
  */
 public class AttributesCollection
 {
-    private HashMap<String, String> attributeMap;
+    private List<AttributeValueMap> attributes;
 
     public AttributesCollection()
     {
-        this.attributeMap = new HashMap();
     }
     
-    
-    public String getValueBasedOnAttribute(String attribute)
+    public void addPair(AttributeValueMap newMap)
     {
-        return attributeMap.get(attribute);
-    }
-    
-    
-    public void addKeyValuePair(String key, String value)
-    {
-        if (attributeMap.containsKey(key))
-        {
-            throw new IllegalArgumentException("Cannott add already existing key to the collection!");
-        }
-        
-        attributeMap.put(key, value);
+        this.attributes.add(newMap);
     }
 }
