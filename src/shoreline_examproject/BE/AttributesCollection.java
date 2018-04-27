@@ -1,5 +1,6 @@
 package shoreline_examproject.BE;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,10 +13,29 @@ public class AttributesCollection
 
     public AttributesCollection()
     {
+        attributes = new ArrayList<>();
     }
     
     public void addPair(AttributeValueMap newMap)
     {
-        this.attributes.add(newMap);
+        try{
+            this.attributes.add(newMap);
+        }
+        catch (NullPointerException ex)
+        {
+            System.out.println("");
+        }
     }
+
+    @Override
+    public String toString()
+    {
+        String s = "";
+        for (AttributeValueMap attribute : attributes) {
+            s += " " + attribute.toString() + "\n";
+        }
+        return s;
+    }
+    
+    
 }

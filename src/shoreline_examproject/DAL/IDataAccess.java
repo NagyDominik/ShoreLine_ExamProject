@@ -3,6 +3,7 @@ package shoreline_examproject.DAL;
 import shoreline_examproject.BE.AttributeValueMap;
 import shoreline_examproject.BE.Config;
 import java.io.File;
+import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.EventLog;
 
 /**
@@ -16,7 +17,7 @@ public interface IDataAccess {
 
     public void saveConfig(Config config);
 
-    public AttributeValueMap loadFileData(String filePath);
+    public AttributesCollection loadFileData(String filePath);
 
-    public AttributeValueMap loadFileData(File file);
+    public AttributesCollection loadFileData(File file);
 }

@@ -1,8 +1,7 @@
 package shoreline_examproject.DAL.FileReaders;
 
 import java.io.File;
-import java.util.List;
-import shoreline_examproject.BE.AttributeValueMap;
+import shoreline_examproject.BE.AttributesCollection;
 
 /**
  *
@@ -10,5 +9,5 @@ import shoreline_examproject.BE.AttributeValueMap;
  */
 public abstract class FileReader {
 
-    public abstract AttributeValueMap getData(File file);
+    public abstract AttributesCollection getData(File file);
 }

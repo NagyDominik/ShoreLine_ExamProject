@@ -4,6 +4,7 @@ import shoreline_examproject.DAL.FileReaders.FileReader;
 import shoreline_examproject.BE.AttributeValueMap;
 import shoreline_examproject.BE.Config;
 import java.io.File;
+import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.DAL.FileReaders.FileReaderFactory;
 import shoreline_examproject.BE.EventLog;
 
@@ -27,13 +28,13 @@ public class DALManager implements IDataAccess {
     }
 
     @Override
-    public AttributeValueMap loadFileData(String filePath) {
+    public AttributesCollection loadFileData(String filePath) {
         File file = new File(filePath);
         return loadFileData(file);
     }
 
     @Override
-    public AttributeValueMap loadFileData(File file) {
+    public AttributesCollection loadFileData(File file) {
         file = new File("import_data.xlsx");
         reader = FileReaderFactory.CreateFileReader(file.getPath());
         return reader.getData(file);
