@@ -5,19 +5,18 @@
  */
 package shoreline_examproject.GUI.Controller;
 
+import com.jfoenix.controls.JFXButton;
 import java.net.URL;
-import java.util.Collections;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Background;
-import javafx.util.Callback;
+import javafx.stage.Stage;
 import shoreline_examproject.GUI.Model.Model;
-import shoreline_examproject.Utility.EventLog;
+import shoreline_examproject.BE.EventLog;
 
 /**
  * FXML Controller class
@@ -36,6 +35,8 @@ public class LogWindowController implements Initializable {
     private TableColumn<EventLog, String> descCol;
 
     private Model model = Model.getInstance();
+    @FXML
+    private JFXButton closeButton;
 
     /**
      * Initializes the controller class.
@@ -59,4 +60,9 @@ public class LogWindowController implements Initializable {
         });*/
     }
 
+    @FXML
+    private void backClicked(ActionEvent event) {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
+    }
 }

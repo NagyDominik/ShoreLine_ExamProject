@@ -5,40 +5,36 @@ import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import java.io.File;
 import shoreline_examproject.DAL.FileReaders.FileReaderFactory;
-import shoreline_examproject.Utility.EventLog;
+import shoreline_examproject.BE.EventLog;
 
 /**
  * Provides access to file saving and loading.
+ *
  * @author sebok
  */
-public class DALManager implements IDataAccess
-{
+public class DALManager implements IDataAccess {
 
     private FileReader reader;
-    
+
     @Override
-    public void saveLog(EventLog log)
-    {
+    public void saveLog(EventLog log) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void saveConfig(Config config)
-    {
+    public void saveConfig(Config config) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AttributesCollection loadFileData(String filePath)
-    {
+    public AttributesCollection loadFileData(String filePath) {
         File file = new File(filePath);
         return loadFileData(file);
     }
 
     @Override
-    public AttributesCollection loadFileData(File file)
-    {
-        file = new File("D:/Users/sebok/Documents/GitHub/ShoreLine_ExamProject/src/shoreline_examproject/import_data.xlsx");
+    public AttributesCollection loadFileData(File file) {
+        file = new File("import_data.xlsx");
         reader = FileReaderFactory.CreateFileReader(file.getPath());
         return reader.getData(file);
     }

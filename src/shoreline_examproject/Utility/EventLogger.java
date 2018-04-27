@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_examproject.DAL;
+package shoreline_examproject.Utility;
 
 /**
  *
- * @author sebok
+ * @author Dominik
  */
-public abstract class FileWriter {
-
-    public abstract void saveData(String data);
+public class EventLogger {
+    
 }
