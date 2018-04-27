@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.poi.ss.usermodel.CellType;
 import shoreline_examproject.BE.AttributesCollection;
 
 /**
@@ -24,14 +25,6 @@ public class XLSXReader extends FileReader {
     @Override
     public AttributesCollection getData(File file) {
         try {
-<<<<<<< HEAD
-    		InputStream ExcelFileToRead = new FileInputStream(file);
-		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);
-				
-		XSSFSheet sheet = wb.getSheetAt(0);
-		XSSFRow row; 
-		XSSFCell cell;
-=======
             InputStream ExcelFileToRead = new FileInputStream(file);
             XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);
 
@@ -40,41 +33,30 @@ public class XLSXReader extends FileReader {
             XSSFSheet sheet = wb.getSheetAt(0);
             XSSFRow row;
             XSSFCell cell;
->>>>>>> b2e900ac7b1f6d5184d8d2746a2fe89f88a60bc2
 
             Iterator rows = sheet.rowIterator();
 
-<<<<<<< HEAD
-		while (rows.hasNext())
-		{
-			row=(XSSFRow) rows.next();
-			Iterator cells = row.cellIterator();
-			while (cells.hasNext())
-			{
-				cell=(XSSFCell) cells.next();
-		
-				if (cell.getCellTypeEnum() == CellType.STRING)
-				{
-					System.out.print(cell.getStringCellValue()+" ");
-				}
-				else if(cell.getCellTypeEnum() == CellType.NUMERIC)
-				{
-					System.out.print(cell.getNumericCellValue()+" ");
-				}
-				else
-				{
-					//U Can Handel Boolean, Formula, Errors
-				}
-			}
-			System.out.println();
-		}
-=======
             while (rows.hasNext()) {
                 row = (XSSFRow) rows.next();
                 Iterator cells = row.cellIterator();
                 while (cells.hasNext()) {
                     cell = (XSSFCell) cells.next();
->>>>>>> b2e900ac7b1f6d5184d8d2746a2fe89f88a60bc2
+
+                    if (cell.getCellTypeEnum() == CellType.STRING) {
+                        System.out.print(cell.getStringCellValue() + " ");
+                    } else if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+                        System.out.print(cell.getNumericCellValue() + " ");
+                    } else {
+                        //U Can Handel Boolean, Formula, Errors
+                    }
+                }
+                System.out.println();
+            }
+            while (rows.hasNext()) {
+                row = (XSSFRow) rows.next();
+                Iterator cells = row.cellIterator();
+                while (cells.hasNext()) {
+                    cell = (XSSFCell) cells.next();
 
                     if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
                         System.out.print(cell.getStringCellValue() + " ");
@@ -87,11 +69,9 @@ public class XLSXReader extends FileReader {
                 System.out.println();
             }
 
-        }
-        catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException ex) {
             Logger.getLogger(XLSXReader.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(XLSXReader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
