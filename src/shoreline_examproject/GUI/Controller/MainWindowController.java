@@ -18,7 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
-import shoreline_examproject.BE.Config;
+import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.DAL.FileWriters.JSONWriter;
 import shoreline_examproject.Utility.EventPopup;
@@ -87,7 +87,8 @@ public class MainWindowController implements Initializable {
     @FXML
     private void startClicked(ActionEvent event) {
         DALManager dal = new DALManager();  //Just to test the XLSX reading
-        dal.loadFileData("asd");
+        AttributesCollection ac = dal.loadFileData("asd");
+        System.out.println(ac.toString());
     }
 
     @FXML

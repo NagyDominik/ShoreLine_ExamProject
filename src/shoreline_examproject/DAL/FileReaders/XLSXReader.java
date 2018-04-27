@@ -14,8 +14,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import shoreline_examproject.BE.AttributeValueMap;
+import shoreline_examproject.BE.AttributesCollection;
 
 /**
  * Read in data from an XLSX file.
@@ -25,7 +28,9 @@ import shoreline_examproject.BE.AttributeValueMap;
 public class XLSXReader extends FileReader {
 
     @Override
-    public AttributeValueMap getData(File file) {
+    public AttributesCollection getData(File file) {
+        
+        AttributesCollection loadedAttributes = new AttributesCollection();
         
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(file);
@@ -33,18 +38,44 @@ public class XLSXReader extends FileReader {
             XSSFSheet sheet = workbook.getSheetAt(0);
             
             Iterator<Row> rowIterator = sheet.iterator();
-            Iterator<Row> firstRow = rowIterator;   //Save a reference to the first row, to be able to retrieve the attributes;
+            Row firstRow = null;
             
             if (rowIterator.hasNext()) {
-                rowIterator.next(); //Skip the first line (attributes)
+                firstRow = rowIterator.next(); //Store the first row, so we can access the attribute names.
             }
             
-            while (rowIterator.hasNext())
+            while (rowIterator.hasNext())   //Iterate through the rows
             {
                 Row row = rowIterator.next();
                 
+                Iterator<Cell> cellIterator = row.cellIterator();
+                AttributeValueMap current = new AttributeValueMap();
+
+                while(cellIterator.hasNext())
+                {
+                    Cell c = cellIterator.next();
+                    Cell attributeCell = firstRow.getCell(c.getColumnIndex());
+                    
+                    //System.out.print(attributeCell.getStringCellValue() + "\t");
+                    switch (c.getCellTypeEnum()) {
+                        case STRING:
+                            //System.out.print(c.getStringCellValue() + "\t");
+                            current.addKeyValuePair(attributeCell.getStringCellValue(), c.getStringCellValue());
+                            break;
+                        case NUMERIC:
+                            //System.out.print(c.getNumericCellValue() + "\t");
+                            current.addKeyValuePair(attributeCell.getStringCellValue(), Double.toString(c.getNumericCellValue()));
+                            break;
+                        default:
+                            current.addKeyValuePair(attributeCell.getStringCellValue(), "");
+
+                    }    
+                }
+                //System.out.println("");
+                loadedAttributes.addPair(current);
+
             }
-            
+            return loadedAttributes;
         } catch (IOException ex) {
             Logger.getLogger(XLSXReader.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvalidFormatException ex) {
