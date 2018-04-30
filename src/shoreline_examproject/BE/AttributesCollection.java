@@ -17,7 +17,7 @@ public class AttributesCollection {
         attributes = new ArrayList<>();
     }
     
-    public void addPair(AttributeValueMap newMap)
+    public void addAttributeMap(AttributeValueMap newMap)
     {
          this.attributes.add(newMap);
     }
@@ -32,5 +32,13 @@ public class AttributesCollection {
         return s;
     }
     
-    
+    public List<String> getAttributes()
+    {
+        if (attributes == null ||attributes.isEmpty()) {
+            throw new NullPointerException("Attributes list is null or empty!");
+        }
+        
+        AttributeValueMap avm = attributes.get(0);
+        return avm.getAttributes();
+    }
 }
