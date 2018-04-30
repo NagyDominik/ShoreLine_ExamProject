@@ -20,6 +20,7 @@ public class ShoreLine_ExamProject extends Application {
 
         stage.setScene(scene);
         stage.setTitle("ShoreLine Exam Project");
+        stage.setResizable(false);
         stage.show();
     }
 
