@@ -7,10 +7,13 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import shoreline_examproject.BE.AttributeValueMap;
@@ -33,6 +36,8 @@ public class NewConfigWindowController implements Initializable {
     private ListView<String> lstViewImportAttributes;
     @FXML
     private ListView<String> lstViewExportAttributes;
+    @FXML
+    private JFXButton btnRemove;
     
     /**
      * Initializes the controller class.
@@ -40,7 +45,8 @@ public class NewConfigWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         model = Model.getInstance();
-        setUpAttributeList();
+        setUpLists();
+        btnRemove.setDisable(true);
     }
 
     @FXML
@@ -49,12 +55,55 @@ public class NewConfigWindowController implements Initializable {
         stage.close();
     }
 
-    private void setUpAttributeList()
+    private void setUpLists()
     {
         try {
             lstViewImportAttributes.getItems().addAll(model.getCurrentAttributes().getAttributes());
+            lstViewImportAttributes.setOnMouseClicked(new EventHandler<MouseEvent>()
+            {
+                @Override
+                public void handle(MouseEvent event)
+                {
+//                    if (lstViewExportAttributes.getSelectionModel().getSelectedItem() != null) {
+//                        btnRemove.setDisable(true);
+//                    }
+                    btnRemove.setDisable(true);
+                }
+            });
+            lstViewExportAttributes.setOnMouseClicked(new EventHandler<MouseEvent>() //Only show the remove button if a value is selected
+            {
+                @Override
+                public void handle(MouseEvent event)
+                {
+                    if (lstViewExportAttributes.getSelectionModel().getSelectedItem() != null) {
+                        btnRemove.setDisable(false);
+                    }
+                }
+            });
         } catch (Exception ex) {
            EventPopup.showAlertPopup(ex);
         }
     }   
+
+    @FXML
+    private void btnAddClicked(ActionEvent event)
+    {
+        String selected = lstViewImportAttributes.getSelectionModel().getSelectedItem();
+        
+        if (selected != null && !lstViewExportAttributes.getItems().contains(selected)) {
+            lstViewExportAttributes.getItems().add(selected);
+            lstViewImportAttributes.getItems().remove(selected);
+        }
+    }
+
+    @FXML
+    private void btnRemoveClicked(ActionEvent event)
+    {
+        String selected = lstViewExportAttributes.getSelectionModel().getSelectedItem();
+        
+        if (selected != null && lstViewExportAttributes.getItems().contains(selected)) {
+             lstViewExportAttributes.getItems().remove(selected);
+             lstViewImportAttributes.getItems().add(0, selected);
+         }
+    }
 }
