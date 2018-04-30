@@ -9,11 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<<<<<<< HEAD
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="698.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.NewConfigWindowController">
-=======
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.NewConfigWindowController">
->>>>>>> 5c1ff185c40fdae80755b993111f87055cd3e16b
    <children>
       <ImageView fitHeight="64.0" fitWidth="134.0" layoutX="564.0" layoutY="383.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -34,15 +30,9 @@
             </ImageView>
          </children>
       </Group>
-<<<<<<< HEAD
-      <ListView fx:id="lstViewImportAttributes" layoutX="98.0" layoutY="114.0" prefHeight="283.0" prefWidth="186.0" />
-      <ListView fx:id="lstViewExportAttributes" layoutX="428.0" layoutY="114.0" prefHeight="283.0" prefWidth="186.0" />
-      <JFXTextField focusColor="#ab3109" labelFloat="true" layoutX="115.0" layoutY="73.0" promptText="Import Attributes" unFocusColor="BLACK">
-=======
       <ListView layoutX="98.0" layoutY="114.0" prefHeight="285.0" prefWidth="220.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="445.0" AnchorPane.topAnchor="115.0" />
       <ListView layoutX="439.0" layoutY="114.0" prefHeight="285.0" prefWidth="220.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="445.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="115.0" />
       <JFXTextField focusColor="#ab3109" labelFloat="true" layoutX="100.0" layoutY="74.0" prefHeight="29.0" prefWidth="215.0" promptText="Import Attributes" unFocusColor="BLACK" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="75.0">
->>>>>>> 5c1ff185c40fdae80755b993111f87055cd3e16b
          <font>
             <Font size="13.0" />
          </font>

@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import shoreline_examproject.BE.AttributeValueMap;
 import shoreline_examproject.GUI.Model.Model;
 
 /**
@@ -22,9 +23,9 @@ public class NewConfigWindowController implements Initializable {
 
     private Model model;
     @FXML
-    private ListView<?> lstViewImportAttributes;
+    private ListView<AttributeValueMap> lstViewImportAttributes;
     @FXML
-    private ListView<?> lstViewExportAttributes;
+    private ListView<AttributeValueMap> lstViewExportAttributes;
     
     /**
      * Initializes the controller class.
@@ -43,7 +44,7 @@ public class NewConfigWindowController implements Initializable {
 
     private void setUpAttributeList()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     
