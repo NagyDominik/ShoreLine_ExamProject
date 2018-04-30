@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.LogWindowController">
+<AnchorPane id="AnchorPane" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.LogWindowController">
    <children>
       <ImageView fitHeight="65.0" fitWidth="135.0" layoutX="322.0" layoutY="327.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -20,11 +20,11 @@
             <Image url="@../../img/bar.png" />
          </image>
       </ImageView>
-      <TableView fx:id="logTV" layoutX="87.0" layoutY="121.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+      <TableView fx:id="logTV" layoutX="23.0" layoutY="64.0" prefHeight="336.0" prefWidth="710.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="65.0">
         <columns>
-          <TableColumn fx:id="dateCol" prefWidth="118.0" text="Date" />
-          <TableColumn fx:id="typeCol" prefWidth="121.0" text="Type" />
-            <TableColumn fx:id="descCol" prefWidth="328.0" text="Description" />
+          <TableColumn fx:id="dateCol" prefWidth="136.0" text="Date" />
+          <TableColumn fx:id="typeCol" prefWidth="170.0" text="Type" />
+            <TableColumn fx:id="descCol" prefWidth="428.0" text="Description" />
         </columns>
       </TableView>
       <JFXButton fx:id="closeButton" buttonType="RAISED" layoutX="610.0" layoutY="398.0" onAction="#backClicked" text="Back" AnchorPane.bottomAnchor="9.0" AnchorPane.rightAnchor="15.0">
@@ -36,8 +36,13 @@
             </ImageView>
          </graphic>
          <font>
-            <Font name="System Bold" size="13.0" />
+            <Font name="Exo 2 Semi Bold" size="13.0" />
          </font>
       </JFXButton>
+      <ImageView fitHeight="51.0" fitWidth="70.0" layoutX="23.0" layoutY="7.0" AnchorPane.bottomAnchor="355.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="570.0" AnchorPane.topAnchor="7.0">
+         <image>
+            <Image url="@../../img/shortlogo.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

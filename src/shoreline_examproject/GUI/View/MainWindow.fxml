@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="434.0" prefWidth="736.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
    <children>
       <ImageView fitHeight="64.0" fitWidth="134.0" layoutX="9.0" layoutY="4.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -24,16 +24,19 @@
             <Image url="@../../img/bar.png" />
          </image>
       </ImageView>
-      <JFXComboBox fx:id="configComboBox" layoutX="61.0" layoutY="116.0" prefHeight="25.0" prefWidth="142.0" promptText="CONFIG" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="115.0" />
-      <JFXButton buttonType="RAISED" layoutX="61.0" layoutY="85.0" onAction="#importFileClicked" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #009FDA;" text="Import file ..." AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="85.0">
+      <JFXComboBox fx:id="configComboBox" layoutX="41.0" layoutY="113.0" prefHeight="25.0" prefWidth="149.0" promptText="CONFIG" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="113.0" />
+      <JFXButton buttonType="RAISED" layoutX="41.0" layoutY="83.0" onAction="#importFileClicked" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #44bae6;" text="Import file ..." AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="83.0">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="217.0" layoutY="115.0" onAction="#newConfigClicked" prefHeight="25.0" prefWidth="124.0" style="-fx-background-color: #B8B8BD;" text="Create new config" AnchorPane.leftAnchor="217.0" AnchorPane.topAnchor="115.0">
+      <JFXButton buttonType="RAISED" layoutX="208.0" layoutY="114.0" onAction="#newConfigClicked" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #B8B8BD;" text="Create new config" AnchorPane.leftAnchor="208.0" AnchorPane.topAnchor="114.0">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
-      <Label fx:id="filePathLbl" layoutX="215.0" layoutY="85.0" prefHeight="25.0" prefWidth="183.0" text="filepath" AnchorPane.leftAnchor="215.0" AnchorPane.topAnchor="85.0" />
+      <Label fx:id="filePathLbl" layoutX="208.0" layoutY="83.0" prefHeight="25.0" prefWidth="267.0" text="filepath" AnchorPane.leftAnchor="208.0" AnchorPane.topAnchor="83.0">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="12.0" />
+         </font></Label>
       <TableView fx:id="previewTV" layoutX="15.0" layoutY="156.0" prefHeight="219.0" prefWidth="409.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="280.0" AnchorPane.topAnchor="155.0">
         <columns>
           <TableColumn prefWidth="88.0" text="Preview" />
@@ -42,7 +45,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <JFXButton buttonType="RAISED" layoutX="503.0" layoutY="394.0" onAction="#startClicked" style="-fx-background-color: #00A60A; -fx-background-radius: 20;" text="Start">
+      <JFXButton buttonType="RAISED" layoutX="532.0" layoutY="425.0" onAction="#startClicked" style="-fx-background-color: #00A60A; -fx-background-radius: 20;" text="Start" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="160.0">
          <graphic>
             <ImageView fitHeight="18.0" fitWidth="19.0">
                <image>
@@ -51,10 +54,10 @@
             </ImageView>
          </graphic>
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="Exo 2 Semi Bold" size="12.0" />
          </font>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="651.0" layoutY="394.0" onAction="#stopClicked" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: #FF2110; -fx-background-radius: 20;" text="Stop">
+      <JFXButton buttonType="RAISED" layoutX="687.0" layoutY="426.0" onAction="#stopClicked" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: #FF2110; -fx-background-radius: 20;" text="Stop" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="10.0">
          <graphic>
             <ImageView fitHeight="16.0" fitWidth="16.0">
                <image>
@@ -63,10 +66,10 @@
             </ImageView>
          </graphic>
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="Exo 2 Semi Bold" size="12.0" />
          </font>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="575.0" layoutY="394.0" onAction="#pauseClicked" style="-fx-background-color: #FF8D18; -fx-background-radius: 20;" text="Pause">
+      <JFXButton buttonType="RAISED" layoutX="609.0" layoutY="426.0" onAction="#pauseClicked" style="-fx-background-color: #FF8D18; -fx-background-radius: 20;" text="Pause" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="85.0">
          <graphic>
             <ImageView fitHeight="16.0" fitWidth="16.0">
                <image>
@@ -75,10 +78,10 @@
             </ImageView>
          </graphic>
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="Exo 2 Semi Bold" size="12.0" />
          </font>
       </JFXButton>
-      <TableView fx:id="taskTV" layoutX="486.0" layoutY="70.0" prefHeight="227.0" prefWidth="183.0" AnchorPane.bottomAnchor="135.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="70.0">
+      <TableView fx:id="taskTV" layoutX="486.0" layoutY="70.0" prefHeight="227.0" prefWidth="183.0" AnchorPane.bottomAnchor="145.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="70.0">
         <columns>
           <TableColumn fx:id="taskTable" prefWidth="75.0" text="Task" />
           <TableColumn fx:id="progressTable" prefWidth="75.0" text="Progress" />
@@ -87,15 +90,30 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="521.0" layoutY="305.0" prefHeight="17.0" prefWidth="65.0" text="Task name:" />
-      <Label layoutX="521.0" layoutY="322.0" prefHeight="17.0" prefWidth="65.0" text="Progress:" />
-      <Label layoutX="521.0" layoutY="339.0" prefHeight="17.0" prefWidth="65.0" text="Config:" />
-      <Label fx:id="taskNameLbl" layoutX="573.0" layoutY="305.0" prefHeight="17.0" prefWidth="65.0" />
-      <Label fx:id="progressLbl" layoutX="573.0" layoutY="322.0" prefHeight="17.0" prefWidth="65.0" />
-      <Label fx:id="configLbl" layoutX="573.0" layoutY="339.0" prefHeight="17.0" prefWidth="65.0" />
-      <Label fx:id="userNameLbl" layoutX="525.0" layoutY="24.0" prefHeight="17.0" prefWidth="106.0" text="Name of the user" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="25.0">
+      <Label layoutX="521.0" layoutY="305.0" prefHeight="17.0" prefWidth="65.0" text="Task name:" textFill="WHITE" AnchorPane.bottomAnchor="125.0" AnchorPane.rightAnchor="150.0">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="Exo 2 Semi Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="521.0" layoutY="322.0" prefHeight="17.0" prefWidth="65.0" text="Progress:" textFill="WHITE" AnchorPane.bottomAnchor="105.0" AnchorPane.rightAnchor="150.0" />
+      <Label layoutX="521.0" layoutY="339.0" prefHeight="17.0" prefWidth="65.0" text="Config:" textFill="WHITE" AnchorPane.bottomAnchor="85.0" AnchorPane.rightAnchor="150.0">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="taskNameLbl" layoutX="573.0" layoutY="305.0" prefHeight="17.0" prefWidth="99.0" textFill="WHITE" AnchorPane.bottomAnchor="125.0" AnchorPane.rightAnchor="33.0">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="progressLbl" layoutX="573.0" layoutY="322.0" prefHeight="17.0" prefWidth="99.0" textFill="WHITE" AnchorPane.bottomAnchor="105.0" AnchorPane.rightAnchor="33.0">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="configLbl" layoutX="573.0" layoutY="339.0" prefHeight="17.0" prefWidth="99.0" textFill="WHITE" AnchorPane.bottomAnchor="85.0" AnchorPane.rightAnchor="33.0">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="12.0" />
+         </font></Label>
+      <Label fx:id="userNameLbl" layoutX="525.0" layoutY="24.0" prefHeight="17.0" prefWidth="106.0" text="Name of the user" textFill="WHITE" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="25.0">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></Label>
       <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" layoutX="630.0" layoutY="13.0" onAction="#optionsClicked" prefHeight="28.0" prefWidth="38.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0">
          <graphic>
@@ -106,12 +124,12 @@
             </ImageView>
          </graphic>
       </JFXButton>
-      <ImageView fitHeight="51.0" fitWidth="71.0" layoutX="15.0" layoutY="7.0" AnchorPane.bottomAnchor="355.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="570.0" AnchorPane.topAnchor="7.0">
+      <ImageView fitHeight="50.0" fitWidth="70.0" layoutX="15.0" layoutY="7.0" AnchorPane.bottomAnchor="355.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="570.0" AnchorPane.topAnchor="7.0">
          <image>
             <Image url="@../../img/shortlogo.png" />
          </image>
       </ImageView>
-      <JFXButton buttonType="RAISED" layoutX="476.0" layoutY="358.0" onAction="#moreDetailClicked" style="-fx-background-color: #B8B8BD;" text="More detail..." AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="132.0">
+      <JFXButton buttonType="RAISED" layoutX="476.0" layoutY="358.0" onAction="#moreDetailClicked" style="-fx-background-color: #B8B8BD;" text="More detail..." AnchorPane.bottomAnchor="55.0" AnchorPane.rightAnchor="132.0">
          <effect>
             <Glow level="0.0">
                <input>
@@ -123,9 +141,9 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="361.0" layoutY="115.0" onAction="#logClicked" style="-fx-background-color: #009FDA;" text="Log" AnchorPane.leftAnchor="361.0" AnchorPane.topAnchor="115.0">
+      <JFXButton buttonType="RAISED" layoutX="381.0" layoutY="115.0" onAction="#logClicked" prefHeight="23.0" prefWidth="52.0" style="-fx-background-color: #44bae6;" text="Log" AnchorPane.leftAnchor="381.0" AnchorPane.topAnchor="115.0">
          <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="Exo 2 Semi Bold" size="12.0" />
          </font>
       </JFXButton>
    </children>
