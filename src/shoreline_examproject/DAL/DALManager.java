@@ -1,7 +1,6 @@
 package shoreline_examproject.DAL;
 
 import shoreline_examproject.DAL.FileReaders.FileReader;
-import shoreline_examproject.BE.AttributeValueMap;
 import shoreline_examproject.BE.Config;
 import java.io.File;
 import shoreline_examproject.BE.AttributesCollection;
@@ -35,7 +34,6 @@ public class DALManager implements IDataAccess {
 
     @Override
     public AttributesCollection loadFileData(File file) {
-        file = new File("import_data.xlsx");
         reader = FileReaderFactory.CreateFileReader(file.getPath());
         return reader.getData(file);
     }
