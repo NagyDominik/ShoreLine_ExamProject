@@ -11,12 +11,17 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.BE.EventLog;
+import shoreline_examproject.BE.EventLog.Type;
 
 /**
  * FXML Controller class
@@ -30,7 +35,7 @@ public class LogWindowController implements Initializable {
     @FXML
     private TableColumn<EventLog, String> dateCol;
     @FXML
-    private TableColumn<EventLog, String> typeCol;
+    private TableColumn<EventLog, Type> typeCol;
     @FXML
     private TableColumn<EventLog, String> descCol;
 
@@ -58,6 +63,24 @@ public class LogWindowController implements Initializable {
                 return new TableRow<EventLog>()
             }
         });*/
+        typeCol.setCellFactory((TableColumn<EventLog, Type> param) -> {
+            return new TableCell<EventLog, Type>() {
+                @Override
+                protected void updateItem(Type item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        setText(item.toString());
+                        if (item == Type.ERROR) {
+                            setStyle("-fx-background-color: red");
+                            setFont(Font.font(getFont().getFamily(), FontWeight.BOLD, getFont().getSize()));
+                        }
+                    }
+                }
+            };
+        });
     }
 
     @FXML

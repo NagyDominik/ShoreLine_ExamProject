@@ -12,7 +12,7 @@ public class EventLog {
         ERROR,
         INFORMATION,
         ALERT,
-        SUCCESS
+        SUCCESS;
     }
 
     private LocalDate date;
