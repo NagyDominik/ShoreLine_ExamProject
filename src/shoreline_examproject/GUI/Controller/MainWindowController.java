@@ -21,6 +21,8 @@ import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BLL.IBLLManager;
 import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.GUI.Model.Model;
+import shoreline_examproject.GUI.Model.ModelException;
+import shoreline_examproject.Utility.EventPopup;
 
 /**
  * FXML Controller class
@@ -69,12 +71,10 @@ public class MainWindowController implements Initializable {
             FileChooser fc = new FileChooser();
             String path = fc.showOpenDialog(this.userNameLbl.getScene().getWindow()).getPath();
             filePathLbl.setText(path);
-            AttributesCollection ac = model.loadFileData(path);
-            System.out.println(ac.toString());
-
+            model.loadFileData(path);
         }
         catch (Exception ex) {
-            //EventPopup.showAlertPopup(ex);
+            EventPopup.showAlertPopup(ex);
         }
         
     }
@@ -93,7 +93,14 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void startClicked(ActionEvent event) {
-        
+        try
+        {
+            model.startConversion();
+        }
+        catch (ModelException ex)
+        {
+            EventPopup.showAlertPopup(ex);
+        }
     }
 
     @FXML

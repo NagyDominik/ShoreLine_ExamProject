@@ -20,7 +20,9 @@ public class Model {
 
     private static Model instance;
     private ObservableList<EventLog> logList = FXCollections.observableArrayList();
-
+    private AttributesCollection currentAttributes; //The attributes of the currently loaded file.
+    
+    
     private IBLLManager bllManager;
     
     private Model() {
@@ -42,8 +44,27 @@ public class Model {
         return logList;
     }
     
-    public AttributesCollection loadFileData(String path)
+    public void loadFileData(String path)
     {
-        return bllManager.loadFileData(path);
+        currentAttributes = bllManager.loadFileData(path);
+    }
+    
+    public void startConversion() throws ModelException
+    {
+        if (currentAttributes == null) {
+            throw new ModelException("No attributes! (It is possible that an input file has not been provided)");
+        }
+        
+        
+        //TODO: add implementation for converting between formats in the BLL.
+        System.out.println(currentAttributes); 
+    }
+
+    public AttributesCollection getCurrentAttributes() throws ModelException
+    {
+        if (currentAttributes == null) {
+            throw new ModelException("Current attributes is not set!");
+        }
+        return currentAttributes;
     }
 }

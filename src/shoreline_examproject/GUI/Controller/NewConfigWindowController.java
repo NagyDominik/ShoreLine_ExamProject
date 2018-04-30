@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shoreline_examproject.GUI.Controller;
 
 import com.jfoenix.controls.JFXButton;
@@ -11,7 +6,9 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import shoreline_examproject.GUI.Model.Model;
 
 /**
  * FXML Controller class
@@ -23,12 +20,19 @@ public class NewConfigWindowController implements Initializable {
     @FXML
     private JFXButton closeButton;
 
+    private Model model;
+    @FXML
+    private ListView<?> lstViewImportAttributes;
+    @FXML
+    private ListView<?> lstViewExportAttributes;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        model = Model.getInstance();
+        setUpAttributeList();
     }
 
     @FXML
@@ -37,4 +41,11 @@ public class NewConfigWindowController implements Initializable {
         stage.close();
     }
 
+    private void setUpAttributeList()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
+    
 }
