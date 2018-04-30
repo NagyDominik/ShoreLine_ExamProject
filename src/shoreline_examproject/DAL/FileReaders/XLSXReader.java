@@ -65,7 +65,7 @@ public class XLSXReader extends FileReader {
                     }    
                 }
                 //System.out.println("");
-                loadedAttributes.addPair(current);
+                loadedAttributes.addAttributeMap(current);
 
             }
             return loadedAttributes;

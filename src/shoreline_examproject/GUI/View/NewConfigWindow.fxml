@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.NewConfigWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.NewConfigWindowController">
    <children>
       <ImageView fitHeight="64.0" fitWidth="134.0" layoutX="564.0" layoutY="383.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -30,8 +30,8 @@
             </ImageView>
          </children>
       </Group>
-      <ListView layoutX="98.0" layoutY="114.0" prefHeight="285.0" prefWidth="220.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="445.0" AnchorPane.topAnchor="115.0" />
-      <ListView layoutX="439.0" layoutY="114.0" prefHeight="285.0" prefWidth="220.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="445.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="115.0" />
+      <ListView fx:id="lstViewImportAttributes" layoutX="98.0" layoutY="114.0" prefHeight="285.0" prefWidth="220.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="445.0" AnchorPane.topAnchor="115.0" />
+      <ListView fx:id="lstViewExportAttributes" editable="true" layoutX="439.0" layoutY="114.0" prefHeight="285.0" prefWidth="220.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="445.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="115.0" />
       <JFXTextField focusColor="#ab3109" labelFloat="true" layoutX="100.0" layoutY="74.0" prefHeight="29.0" prefWidth="215.0" promptText="Import Attributes" unFocusColor="BLACK" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="75.0">
          <font>
             <Font size="13.0" />
@@ -42,11 +42,6 @@
             <Font size="13.0" />
          </font>
       </JFXTextField>
-      <ImageView layoutX="371.0" layoutY="77.0" AnchorPane.leftAnchor="371.0" AnchorPane.rightAnchor="370.0" AnchorPane.topAnchor="85.0">
-         <image>
-            <Image url="@../../img/rightArrow.png" />
-         </image>
-      </ImageView>
       <JFXTextField focusColor="#ab3109" labelFloat="true" layoutX="310.0" layoutY="32.0" promptText="Config name" unFocusColor="BLACK" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="309.0" AnchorPane.topAnchor="32.0">
          <font>
             <Font size="13.0" />
@@ -75,6 +70,24 @@
          <font>
             <Font name="Exo 2 Semi Bold" size="13.0" />
          </font>
+      </JFXButton>
+      <JFXButton layoutX="342.0" layoutY="134.0" onAction="#btnAddClicked" text="Add">
+         <graphic>
+            <ImageView>
+               <image>
+                  <Image url="@../../img/rightArrow.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="btnRemove" layoutX="326.0" layoutY="193.0" onAction="#btnRemoveClicked" text="Remove">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0">
+               <image>
+                  <Image url="@../../img/stop.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </JFXButton>
    </children>
 </AnchorPane>
