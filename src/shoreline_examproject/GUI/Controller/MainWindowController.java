@@ -15,13 +15,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import shoreline_examproject.BE.AttributesCollection;
+import shoreline_examproject.BLL.IBLLManager;
 import shoreline_examproject.DAL.DALManager;
-import shoreline_examproject.DAL.FileWriters.JSONWriter;
-import shoreline_examproject.Utility.EventPopup;
+import shoreline_examproject.GUI.Model.Model;
 
 /**
  * FXML Controller class
@@ -50,6 +49,8 @@ public class MainWindowController implements Initializable {
     private TableColumn<?, ?> taskTable;
     @FXML
     private TableColumn<?, ?> progressTable;
+    
+    private Model model;
 
     /**
      * Initializes the controller class.
@@ -58,18 +59,24 @@ public class MainWindowController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         userNameLbl.setText(System.getProperty("user.name"));
         userNameLbl.setAlignment(Pos.CENTER_RIGHT);
+        
+        model = Model.getInstance();
     }
 
     @FXML
     private void importFileClicked(ActionEvent event) {
         try {
             FileChooser fc = new FileChooser();
-            File file = fc.showOpenDialog(this.userNameLbl.getScene().getWindow());
-            filePathLbl.setText(file.getPath());
+            String path = fc.showOpenDialog(this.userNameLbl.getScene().getWindow()).getPath();
+            filePathLbl.setText(path);
+            AttributesCollection ac = model.loadFileData(path);
+            System.out.println(ac.toString());
+
         }
         catch (Exception ex) {
             //EventPopup.showAlertPopup(ex);
         }
+        
     }
 
     @FXML
@@ -86,9 +93,7 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void startClicked(ActionEvent event) {
-        DALManager dal = new DALManager();  //Just to test the XLSX reading
-        AttributesCollection ac = dal.loadFileData("asd");
-        System.out.println(ac.toString());
+        
     }
 
     @FXML

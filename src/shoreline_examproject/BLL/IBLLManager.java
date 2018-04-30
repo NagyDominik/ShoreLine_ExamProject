@@ -9,8 +9,9 @@ import shoreline_examproject.BLL.Converters.ConvertType;
  *
  * @author sebok
  */
-public interface BLLInterface
+public interface IBLLManager
 {
+ 
     public void saveLog(EventLog log);
     
     public void saveConfig(Config config);

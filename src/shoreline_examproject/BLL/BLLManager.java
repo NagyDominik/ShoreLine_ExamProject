@@ -9,7 +9,7 @@ import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.DAL.IDataAccess;
 
 
-public class BLLManager implements BLLInterface
+public class BLLManager implements IBLLManager
 {
 
     private IDataAccess dal;
