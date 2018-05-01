@@ -16,7 +16,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -40,10 +39,10 @@ public class LogWindowController implements Initializable {
     private TableColumn<EventLog, Type> typeCol;
     @FXML
     private TableColumn<EventLog, String> descCol;
-
-    private Model model = Model.getInstance();
     @FXML
     private JFXButton closeButton;
+
+    private Model model = Model.getInstance();
 
     /**
      * Initializes the controller class.
@@ -109,4 +108,5 @@ public class LogWindowController implements Initializable {
             };
         };
     }
+    
 }
