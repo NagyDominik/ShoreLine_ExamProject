@@ -90,10 +90,10 @@
             </ImageView>
          </graphic>
       </JFXButton>
-      <TableView fx:id="lstViewExportAttributes" editable="true" layoutX="444.0" layoutY="118.0" prefHeight="278.0" prefWidth="220.0">
+      <TableView fx:id="tableViewExportAttributes" editable="true" layoutX="444.0" layoutY="118.0" prefHeight="278.0" prefWidth="220.0">
         <columns>
-          <TableColumn fx:id="tblViewOriginalName" editable="false" prefWidth="75.0" text="original" />
-            <TableColumn fx:id="tblViewEditedName" prefWidth="100.0" text="edited" />
+          <TableColumn fx:id="tblViewOriginalName" editable="false" prefWidth="75.0" text="Original" />
+            <TableColumn fx:id="tblViewEditedName" prefWidth="100.0" text="Edited" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
