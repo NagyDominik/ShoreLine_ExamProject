@@ -2,23 +2,16 @@ package shoreline_examproject.GUI.Controller;
 
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import shoreline_examproject.BE.AttributeValueMap;
+import shoreline_examproject.BE.Config;
 import shoreline_examproject.GUI.Model.Model;
-import shoreline_examproject.GUI.Model.ModelException;
 import shoreline_examproject.Utility.EventPopup;
 
 /**
@@ -38,6 +31,8 @@ public class NewConfigWindowController implements Initializable {
     private ListView<String> lstViewExportAttributes;
     @FXML
     private JFXButton btnRemove;
+    
+    private Config currentConfig;
     
     /**
      * Initializes the controller class.
@@ -64,9 +59,6 @@ public class NewConfigWindowController implements Initializable {
                 @Override
                 public void handle(MouseEvent event)
                 {
-//                    if (lstViewExportAttributes.getSelectionModel().getSelectedItem() != null) {
-//                        btnRemove.setDisable(true);
-//                    }
                     btnRemove.setDisable(true);
                 }
             });

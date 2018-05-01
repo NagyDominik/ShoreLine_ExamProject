@@ -3,8 +3,6 @@ package shoreline_examproject.BLL;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.EventLog;
-import shoreline_examproject.BLL.Converters.ConvertType;
-import shoreline_examproject.BLL.Converters.IDataConverter;
 import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.DAL.IDataAccess;
 
@@ -13,7 +11,6 @@ public class BLLManager implements IBLLManager
 {
 
     private IDataAccess dal;
-    private IDataConverter converter;
     
     //Could use dependency injection here
         
@@ -54,7 +51,7 @@ public class BLLManager implements IBLLManager
 //    }
 
     @Override
-    public AttributesCollection convertData(AttributesCollection inputData, ConvertType from, ConvertType to)
+    public AttributesCollection convertData(AttributesCollection inputData)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
