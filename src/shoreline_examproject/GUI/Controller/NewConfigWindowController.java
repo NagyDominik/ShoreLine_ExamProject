@@ -13,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -35,9 +37,13 @@ public class NewConfigWindowController implements Initializable {
     @FXML
     private ListView<String> lstViewImportAttributes;
     @FXML
-    private ListView<String> lstViewExportAttributes;
+    private TableView<String> lstViewExportAttributes;
     @FXML
     private JFXButton btnRemove;
+    @FXML
+    private TableColumn<?, ?> tblViewOriginalName;
+    @FXML
+    private TableColumn<?, ?> tblViewEditedName;
     
     /**
      * Initializes the controller class.
