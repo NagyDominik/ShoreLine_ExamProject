@@ -41,4 +41,9 @@ public class AttributesCollection {
         AttributeValueMap avm = attributes.get(0);
         return avm.getAttributes();
     }
+
+    public List<AttributeValueMap> getAttributeValueMap() {
+        return attributes;
+    }
+    
 }
