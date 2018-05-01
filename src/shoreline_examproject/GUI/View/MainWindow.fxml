@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
    <children>
       <ImageView fitHeight="64.0" fitWidth="134.0" layoutX="9.0" layoutY="4.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -113,7 +113,7 @@
          </font></Label>
       <Label fx:id="userNameLbl" layoutX="525.0" layoutY="24.0" prefHeight="17.0" prefWidth="106.0" text="Name of the user" textFill="WHITE" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="25.0">
          <font>
-            <Font name="Exo 2 Semi Bold" size="12.0" />
+            <Font name="System Bold" size="12.0" />
          </font></Label>
       <JFXButton contentDisplay="GRAPHIC_ONLY" focusTraversable="false" layoutX="630.0" layoutY="13.0" onAction="#optionsClicked" prefHeight="28.0" prefWidth="38.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0">
          <graphic>
