@@ -3,7 +3,6 @@ package shoreline_examproject.BLL;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.EventLog;
-import shoreline_examproject.BLL.Converters.ConvertType;
 
 /**
  *
@@ -18,5 +17,5 @@ public interface IBLLManager
 
     public AttributesCollection loadFileData(String filePath);
     
-    public AttributesCollection convertData(AttributesCollection inputData, ConvertType from, ConvertType to);
+    public AttributesCollection convertData(AttributesCollection inputData);
 }

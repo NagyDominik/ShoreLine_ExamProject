@@ -1,7 +1,6 @@
 package shoreline_examproject.GUI.Controller;
 
 import com.jfoenix.controls.JFXComboBox;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,9 +16,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
-import shoreline_examproject.BE.AttributesCollection;
-import shoreline_examproject.BLL.IBLLManager;
-import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
 import shoreline_examproject.Utility.EventPopup;

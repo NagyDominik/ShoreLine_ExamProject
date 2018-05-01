@@ -4,6 +4,8 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -31,7 +33,6 @@
          </children>
       </Group>
       <ListView fx:id="lstViewImportAttributes" layoutX="98.0" layoutY="114.0" prefHeight="285.0" prefWidth="220.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="445.0" AnchorPane.topAnchor="115.0" />
-      <ListView fx:id="lstViewExportAttributes" editable="true" layoutX="439.0" layoutY="114.0" prefHeight="285.0" prefWidth="220.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="445.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="115.0" />
       <JFXTextField focusColor="#ab3109" labelFloat="true" layoutX="100.0" layoutY="74.0" prefHeight="29.0" prefWidth="215.0" promptText="Import Attributes" unFocusColor="BLACK" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="75.0">
          <font>
             <Font size="13.0" />
@@ -89,5 +90,14 @@
             </ImageView>
          </graphic>
       </JFXButton>
+      <TableView fx:id="lstViewExportAttributes" editable="true" layoutX="444.0" layoutY="118.0" prefHeight="278.0" prefWidth="220.0">
+        <columns>
+          <TableColumn fx:id="tblViewOriginalName" editable="false" prefWidth="75.0" text="original" />
+            <TableColumn fx:id="tblViewEditedName" prefWidth="100.0" text="edited" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
    </children>
 </AnchorPane>
