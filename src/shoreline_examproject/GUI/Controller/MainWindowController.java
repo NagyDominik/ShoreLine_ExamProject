@@ -118,7 +118,7 @@ public class MainWindowController implements Initializable {
 
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.setTitle("New Config");
+        stage.setTitle("Details");
         stage.setResizable(false);
         stage.show();
     }
@@ -130,7 +130,7 @@ public class MainWindowController implements Initializable {
 
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.setTitle("New Config");
+        stage.setTitle("LOGS");
         stage.setResizable(false);
         stage.show();
     }
