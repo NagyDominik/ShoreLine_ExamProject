@@ -1,12 +1,12 @@
 package shoreline_examproject.GUI.Controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -42,6 +42,8 @@ public class NewConfigWindowController implements Initializable {
     private TableColumn<KeyValuePair, String> tblViewEditedName;
     
     private Config currentConfig;
+    @FXML
+    private JFXTextField txtFieldConfName;
       
     /**
      * Initializes the controller class.
@@ -84,19 +86,14 @@ public class NewConfigWindowController implements Initializable {
             
             tblViewEditedName.setCellFactory(TextFieldTableCell.forTableColumn()); // Enable the editing of the attribute name.
             
-            tblViewEditedName.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<KeyValuePair, String>>()
-            {
-                @Override
-                public void handle(TableColumn.CellEditEvent<KeyValuePair, String> event)
-                {
-                    KeyValuePair current = tableViewExportAttributes.getSelectionModel().getSelectedItem();
-                    
-                    if (current == null) {
-                        throw new NullPointerException("Selection is null!");
-                    }
-                    
-                  current.setValue(event.getNewValue());
+            tblViewEditedName.setOnEditCommit((TableColumn.CellEditEvent<KeyValuePair, String> event) -> { // Save the edit 
+                KeyValuePair current = tableViewExportAttributes.getSelectionModel().getSelectedItem();
+                
+                if (current == null) {
+                    throw new NullPointerException("Selection is null!");
                 }
+                
+                current.setValue(event.getNewValue());
             });
 
         }
@@ -121,16 +118,42 @@ public class NewConfigWindowController implements Initializable {
     @FXML
     private void btnRemoveClicked(ActionEvent event)
     {
-        String selected = tableViewExportAttributes.getSelectionModel().getSelectedItem().getKey();
+        KeyValuePair selected = tableViewExportAttributes.getSelectionModel().getSelectedItem();
         
         if (selected == null) {
             return;
         }
         
-        tableViewExportAttributes.getItems().remove(selected);
-        lstViewImportAttributes.getItems().add(0, selected);
+        if (!tableViewExportAttributes.getItems().remove(selected))
+        {
+            EventPopup.showAlertPopup("Could not remove selected item!");
+        }
+        
+        lstViewImportAttributes.getItems().add(0, selected.getKey());
     } 
+
+    @FXML
+    private void btnSaveClicked(ActionEvent event)
+    {
+        String name = txtFieldConfName.getText();
+        
+        if (name == null || name.isEmpty()) {
+            EventPopup.showAlertPopup("Please enter a name for this configuration!");
+            return;
+        }
+        
+        currentConfig = new Config(name);
+        
+        for (KeyValuePair item : tableViewExportAttributes.getItems()) { // Fill out the config with the relations.
+            currentConfig.addRelation(item.getKey(), item.getValue());
+        }
+        
+        model.saveConfig(currentConfig);
+    }
     
+    /**
+     * Nested class, used to store key-value pairs in the export attributes table view.
+     */
     class KeyValuePair {
         private String key;
         private String value;

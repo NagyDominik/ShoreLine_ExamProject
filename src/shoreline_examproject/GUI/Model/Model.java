@@ -8,6 +8,7 @@ package shoreline_examproject.GUI.Model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shoreline_examproject.BE.AttributesCollection;
+import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.BLL.BLLManager;
 import shoreline_examproject.BLL.IBLLManager;
@@ -66,5 +67,14 @@ public class Model {
             throw new ModelException("Current attributes is not set!");
         }
         return currentAttributes;
+    }
+
+    /**
+     * Save the given configuration to the database.
+     * @param currentConfig The configuration that will be saved.
+     */
+    public void saveConfig(Config currentConfig)
+    {
+        bllManager.saveConfig(currentConfig);
     }
 }
