@@ -19,12 +19,10 @@ import shoreline_examproject.BLL.IBLLManager;
 public class Model {
 
     private static Model instance;
-    private ObservableList<EventLog> logList = FXCollections.observableArrayList();
     private AttributesCollection currentAttributes; //The attributes of the currently loaded file.
-    
-    
+
     private IBLLManager bllManager;
-    
+
     private Model() {
         bllManager = new BLLManager();
     }
@@ -35,33 +33,21 @@ public class Model {
         }
         return instance;
     }
-    
-    public void addLog(EventLog entry) {
-        logList.add(entry);
-    }
-    
-    public ObservableList<EventLog> getLogList() {
-        return logList;
-    }
-    
-    public void loadFileData(String path)
-    {
+
+    public void loadFileData(String path) {
         currentAttributes = bllManager.loadFileData(path);
     }
-    
-    public void startConversion() throws ModelException
-    {
+
+    public void startConversion() throws ModelException {
         if (currentAttributes == null) {
             throw new ModelException("No attributes! (It is possible that an input file has not been provided)");
         }
-        
-        
+
         //TODO: add implementation for converting between formats in the BLL.
-        System.out.println(currentAttributes); 
+        System.out.println(currentAttributes);
     }
 
-    public AttributesCollection getCurrentAttributes() throws ModelException
-    {
+    public AttributesCollection getCurrentAttributes() throws ModelException {
         if (currentAttributes == null) {
             throw new ModelException("Current attributes is not set!");
         }
