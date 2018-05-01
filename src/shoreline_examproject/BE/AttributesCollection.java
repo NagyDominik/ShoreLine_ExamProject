@@ -46,4 +46,9 @@ public class AttributesCollection {
         return attributes;
     }
     
+    
+    public int getNumberOfDataEntries()
+    {
+        return this.attributes.size();
+    }
 }

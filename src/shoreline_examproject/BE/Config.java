@@ -74,4 +74,18 @@ public class Config {
     {
         this.name = name;
     }
+    
+    public boolean containsKey(String key)
+    {
+        return relations.containsKey(key);
+    }
+
+    public String getValue(String attribute)
+    {
+        if (!relations.containsKey(attribute)) {
+            throw new IllegalArgumentException("Provided attribute is not found!");
+        }
+        
+        return relations.get(attribute);
+    }
 }
