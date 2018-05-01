@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.LogWindowController">
+<AnchorPane id="AnchorPane" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.LogWindowController">
    <children>
       <ImageView fitHeight="65.0" fitWidth="135.0" layoutX="322.0" layoutY="327.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -22,9 +22,10 @@
       </ImageView>
       <TableView fx:id="logTV" layoutX="23.0" layoutY="64.0" prefHeight="336.0" prefWidth="710.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="65.0">
         <columns>
-          <TableColumn fx:id="dateCol" prefWidth="136.0" text="Date" />
+          <TableColumn fx:id="dateCol" prefWidth="164.0" text="Date" />
+            <TableColumn fx:id="userCol" prefWidth="75.0" text="User" />
           <TableColumn fx:id="typeCol" prefWidth="170.0" text="Type" />
-            <TableColumn fx:id="descCol" prefWidth="428.0" text="Description" />
+            <TableColumn fx:id="descCol" prefWidth="400.0" text="Description" />
         </columns>
       </TableView>
       <JFXButton fx:id="closeButton" buttonType="RAISED" layoutX="610.0" layoutY="398.0" onAction="#backClicked" text="Back" AnchorPane.bottomAnchor="9.0" AnchorPane.rightAnchor="15.0">

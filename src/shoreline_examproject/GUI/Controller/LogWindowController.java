@@ -7,7 +7,11 @@ package shoreline_examproject.GUI.Controller;
 
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,6 +27,7 @@ import javafx.util.Callback;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.BE.EventLog.Type;
+import shoreline_examproject.Utility.EventLogger;
 
 /**
  * FXML Controller class
@@ -35,6 +40,8 @@ public class LogWindowController implements Initializable {
     private TableView<EventLog> logTV;
     @FXML
     private TableColumn<EventLog, String> dateCol;
+    @FXML
+    private TableColumn<EventLog, String> userCol;
     @FXML
     private TableColumn<EventLog, Type> typeCol;
     @FXML
@@ -49,22 +56,21 @@ public class LogWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        model.addLog(new EventLog(EventLog.Type.ERROR, "description"));
-        model.addLog(new EventLog(EventLog.Type.ALERT, "description"));
-        model.addLog(new EventLog(EventLog.Type.INFORMATION, "description"));
-        model.addLog(new EventLog(EventLog.Type.SUCCESS, "description"));
+        EventLogger logger = new EventLogger();
         setupTV();
     }
 
     private void setupTV() {
-        logTV.setItems(model.getLogList());
-        dateCol.setCellValueFactory(new PropertyValueFactory("date"));
-        dateCol.prefWidthProperty().bind(logTV.widthProperty().multiply(0.2));
+        logTV.setItems(EventLogger.getLog());
+        dateCol.setCellValueFactory(getCustomDateCellFactory());
+        dateCol.prefWidthProperty().bind(logTV.widthProperty().multiply(0.17));
+        userCol.setCellValueFactory(new PropertyValueFactory("user"));
+        userCol.prefWidthProperty().bind(logTV.widthProperty().multiply(0.15));
         typeCol.setCellValueFactory(new PropertyValueFactory("type"));
         typeCol.prefWidthProperty().bind(logTV.widthProperty().multiply(0.15));
-        typeCol.setCellFactory(getCustomCellFactory());
+        typeCol.setCellFactory(getCustomRowFactory());
         descCol.setCellValueFactory(new PropertyValueFactory("description"));
-        descCol.prefWidthProperty().bind(logTV.widthProperty().multiply(0.65).add(-2));
+        descCol.prefWidthProperty().bind(logTV.widthProperty().multiply(0.53).add(-2));
     }
 
     @FXML
@@ -72,8 +78,16 @@ public class LogWindowController implements Initializable {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
+    
+    private Callback<TableColumn.CellDataFeatures<EventLog, String>, ObservableValue<String>> getCustomDateCellFactory() {
+           return (TableColumn.CellDataFeatures<EventLog, String> param) -> {
+               DateTimeFormatter formater = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+               SimpleStringProperty formated = new SimpleStringProperty(param.getValue().getDate().format(formater));
+               return formated;
+           };
+    }
 
-    private Callback<TableColumn<EventLog, Type>, TableCell<EventLog, Type>> getCustomCellFactory() {
+    private Callback<TableColumn<EventLog, Type>, TableCell<EventLog, Type>> getCustomRowFactory() {
         return (TableColumn<EventLog, Type> param) -> {
             return new TableCell<EventLog, Type>() {
                 @Override
@@ -108,5 +122,5 @@ public class LogWindowController implements Initializable {
             };
         };
     }
-    
+
 }

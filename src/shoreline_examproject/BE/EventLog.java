@@ -1,6 +1,7 @@
 package shoreline_examproject.BE;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -15,12 +16,14 @@ public class EventLog {
         SUCCESS;
     }
 
-    private LocalDate date;
+    private LocalDateTime date;
     private Type type;
     private String description;
+    private String user;
 
     public EventLog(Type type, String description) {
-        this.date = LocalDate.now();
+        this.date = LocalDateTime.now();
+        this.user = System.getProperty("user.name");
         this.type = type;
         this.description = description;
     }
@@ -41,12 +44,20 @@ public class EventLog {
         this.type = type;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
 }
