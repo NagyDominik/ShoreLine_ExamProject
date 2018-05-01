@@ -13,12 +13,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.BE.EventLog.Type;
@@ -49,43 +51,62 @@ public class LogWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         model.addLog(new EventLog(EventLog.Type.ERROR, "description"));
+        model.addLog(new EventLog(EventLog.Type.ALERT, "description"));
+        model.addLog(new EventLog(EventLog.Type.INFORMATION, "description"));
+        model.addLog(new EventLog(EventLog.Type.SUCCESS, "description"));
         setupTV();
     }
 
     private void setupTV() {
         logTV.setItems(model.getLogList());
         dateCol.setCellValueFactory(new PropertyValueFactory("date"));
+        dateCol.prefWidthProperty().bind(logTV.widthProperty().multiply(0.2));
         typeCol.setCellValueFactory(new PropertyValueFactory("type"));
+        typeCol.prefWidthProperty().bind(logTV.widthProperty().multiply(0.15));
+        typeCol.setCellFactory(getCustomCellFactory());
         descCol.setCellValueFactory(new PropertyValueFactory("description"));
-        /*logTV.setRowFactory(new Callback<TableView<EventLog>, TableRow<EventLog>>() {
-            @Override
-            public TableRow<EventLog> call(TableView<EventLog> tableview) {
-                return new TableRow<EventLog>()
-            }
-        });*/
-        typeCol.setCellFactory((TableColumn<EventLog, Type> param) -> {
-            return new TableCell<EventLog, Type>() {
-                @Override
-                protected void updateItem(Type item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (item == null || empty) {
-                        setText(null);
-                        setStyle("");
-                    } else {
-                        setText(item.toString());
-                        if (item == Type.ERROR) {
-                            setStyle("-fx-background-color: red");
-                            setFont(Font.font(getFont().getFamily(), FontWeight.BOLD, getFont().getSize()));
-                        }
-                    }
-                }
-            };
-        });
+        descCol.prefWidthProperty().bind(logTV.widthProperty().multiply(0.65).add(-2));
     }
 
     @FXML
     private void backClicked(ActionEvent event) {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
+    }
+
+    private Callback<TableColumn<EventLog, Type>, TableCell<EventLog, Type>> getCustomCellFactory() {
+        return (TableColumn<EventLog, Type> param) -> {
+            return new TableCell<EventLog, Type>() {
+                @Override
+                protected void updateItem(Type item, boolean empty) {
+                    super.updateItem(item, empty);
+                    TableRow<EventLog> row = getTableRow();
+                    if (item == null || empty) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        setText(item.toString());
+                        switch (item) {
+                            case ERROR:
+                                row.setStyle("-fx-background-color: #FF7F7F");
+                                setFont(Font.font(getFont().getFamily(), FontWeight.BOLD, getFont().getSize()));
+                                break;
+                            case ALERT:
+                                row.setStyle("-fx-background-color: yellow");
+                                setFont(Font.font(getFont().getFamily(), FontWeight.BOLD, getFont().getSize()));
+                                break;
+                            case INFORMATION:
+                                row.setStyle("-fx-background-color: lightblue");
+                                setFont(Font.font(getFont().getFamily(), FontWeight.BOLD, getFont().getSize()));
+                                break;
+                            case SUCCESS:
+                                row.setStyle("-fx-background-color: lightgreen");
+                                setFont(Font.font(getFont().getFamily(), FontWeight.BOLD, getFont().getSize()));
+                                break;
+                        }
+                    }
+                }
+            };
+        };
     }
 }
