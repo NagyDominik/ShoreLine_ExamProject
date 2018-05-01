@@ -1,5 +1,7 @@
 package shoreline_examproject.DAL.FileWriters;
 
+import shoreline_examproject.BE.AttributesCollection;
+
 /**
  * Writes data to a file.
  *
@@ -7,5 +9,5 @@ package shoreline_examproject.DAL.FileWriters;
  */
 public abstract class FileWriter {
 
-    public abstract void saveData(String data);
+    public abstract void saveData(AttributesCollection data);
 }

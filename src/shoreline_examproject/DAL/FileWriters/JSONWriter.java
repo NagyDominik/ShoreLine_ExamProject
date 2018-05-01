@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.time.Instant;
 import java.util.Date;
+import shoreline_examproject.BE.AttributesCollection;
 
 /**
  * Saves the given data to a JSON file
@@ -12,11 +13,12 @@ import java.util.Date;
  * @author sebok
  */
 public class JSONWriter extends FileWriter {
+    private Gson gson = new Gson();
 
-    public void saveData(String data) {
-        Gson gson = new Gson();
+    public void saveData(AttributesCollection data) {
+        data.getAttributeValueMap();
         
-        String siteName = "";
+        /*String siteName = "";
         String assetSerialNumber = "";
         String type = "ZCS5";
         JsonObject jsonObj = new JsonObject();
@@ -28,7 +30,9 @@ public class JSONWriter extends FileWriter {
         planning.add("Date3", gson.toJsonTree(date));
         jsonObj.add("type", gson.toJsonTree(type));
         jsonObj.add("planning", planning);
-        System.out.println(jsonObj.toString());
+        System.out.println(jsonObj.toString());*/
+        
+        
     }
 
 }
