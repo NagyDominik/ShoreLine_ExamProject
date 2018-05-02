@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXComboBox;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -60,11 +61,13 @@ public class MainWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         userNameLbl.setText(System.getProperty("user.name"));
         userNameLbl.setAlignment(Pos.CENTER_RIGHT);
         bllm.saveToJSON(new AttributesCollection());
         
         model = Model.getInstance();
+        model.setCurrentUser(userNameLbl.getText());
     }
 
     @FXML
@@ -114,7 +117,16 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void optionsClicked(ActionEvent event) {
+    private void optionsClicked(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/OptionsWindow.fxml"));
+        Parent root = (Parent) loader.load();
+
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Details");
+        stage.setResizable(false);
+        stage.show();
+        
     }
 
     @FXML
