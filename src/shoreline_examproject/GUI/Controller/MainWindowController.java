@@ -21,6 +21,7 @@ import shoreline_examproject.BLL.BLLManager;
 import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
+import shoreline_examproject.Utility.EventLogger;
 import shoreline_examproject.Utility.EventPopup;
 
 /**
@@ -50,10 +51,8 @@ public class MainWindowController implements Initializable {
     private TableColumn<?, ?> taskTable;
     @FXML
     private TableColumn<?, ?> progressTable;
-    
+
     private Model model;
-    
-    private BLLManager bllm = new BLLManager();
 
     /**
      * Initializes the controller class.
@@ -62,8 +61,6 @@ public class MainWindowController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         userNameLbl.setText(System.getProperty("user.name"));
         userNameLbl.setAlignment(Pos.CENTER_RIGHT);
-        bllm.saveToJSON(new AttributesCollection());
-        
         model = Model.getInstance();
     }
 
@@ -78,7 +75,7 @@ public class MainWindowController implements Initializable {
         catch (Exception ex) {
             EventPopup.showAlertPopup(ex);
         }
-        
+
     }
 
     @FXML
@@ -95,12 +92,10 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void startClicked(ActionEvent event) {
-        try
-        {
+        try {
             model.startConversion();
         }
-        catch (ModelException ex)
-        {
+        catch (ModelException ex) {
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -136,7 +131,7 @@ public class MainWindowController implements Initializable {
 
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.setTitle("LOGS");
+        stage.setTitle("Log");
         stage.setResizable(false);
         stage.show();
     }
