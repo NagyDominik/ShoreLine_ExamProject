@@ -38,7 +38,6 @@ public class DALManager implements IDataAccess {
     @Override
     public AttributesCollection loadFileData(File file) {
         reader = FileReaderFactory.CreateFileReader(file.getPath());
-        saveData(reader.getData(file));
         return reader.getData(file);
     }
 

@@ -7,11 +7,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import shoreline_examproject.BE.AttributeValueMap;
+import shoreline_examproject.BE.AttributeMap;
 import shoreline_examproject.BE.AttributesCollection;
+import shoreline_examproject.BE.DataRow;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
@@ -31,10 +31,10 @@ public class JSONWriter extends IFileWriter {
     public void saveData(AttributesCollection data) {
         try (JsonWriter jwriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(new File("output.json"))))) {
             jwriter.beginArray();
-            for (AttributeValueMap asd : data.getAttributeValueMap()) {
+            for (DataRow datarow : data.getAttributes()) {
                 jwriter.beginObject();
-                for (Map.Entry<String, String> selected : asd.getHashMap().entrySet()) {
-                    jwriter.name(selected.getKey()).value(selected.getValue());
+                for (AttributeMap attribute : datarow.getData()) {
+                    writeObject(jwriter, attribute);
                 }
                 jwriter.endObject();
             }
@@ -43,10 +43,24 @@ public class JSONWriter extends IFileWriter {
             EventLogger.log(EventLogger.Level.SUCCESS, "JSON writing was successful.");
             System.out.println("Writing was succesfully");
         }
-        catch (IOException ex) {
+        catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, "Error during JSON file writing");
         }
 
     }
-
+    
+    private void writeObject(JsonWriter jwriter, AttributeMap data) throws IOException, NoSuchFieldException {
+        jwriter.beginObject();
+        if (data.isIsTreeRoot()) {
+            jwriter.name(data.getKey());
+            for (AttributeMap value : data.getValues()) {
+                writeObject(jwriter, value);
+            }
+        } else {
+            jwriter.name(data.getKey()).value(data.getValue());
+        }
+        jwriter.endObject();
+    }
+    
 }
+    
