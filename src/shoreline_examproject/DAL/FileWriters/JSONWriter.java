@@ -44,22 +44,22 @@ public class JSONWriter extends IFileWriter {
             System.out.println("Writing was succesfully");
         }
         catch (Exception ex) {
-            EventLogger.log(EventLogger.Level.ERROR, "Error during JSON file writing");
+            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
         }
 
     }
     
     private void writeObject(JsonWriter jwriter, AttributeMap data) throws IOException, NoSuchFieldException {
-        jwriter.beginObject();
         if (data.isIsTreeRoot()) {
             jwriter.name(data.getKey());
+            jwriter.beginObject();
             for (AttributeMap value : data.getValues()) {
                 writeObject(jwriter, value);
             }
+            jwriter.endObject();
         } else {
             jwriter.name(data.getKey()).value(data.getValue());
         }
-        jwriter.endObject();
     }
     
 }
