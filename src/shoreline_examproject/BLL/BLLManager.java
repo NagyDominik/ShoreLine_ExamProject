@@ -1,9 +1,5 @@
 package shoreline_examproject.BLL;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import java.util.Map;
-import shoreline_examproject.BE.AttributeValueMap;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.EventLog;

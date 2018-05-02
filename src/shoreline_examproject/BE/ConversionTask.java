@@ -58,17 +58,6 @@ public class ConversionTask implements Callable<AttributesCollection>{
         convertedData = new AttributesCollection();
         count = inputData.getNumberOfDataEntries();
         double prog = 0;
-        
-        for (AttributeValueMap attributeValueMap : inputData.getAttributeValueMap()) {  // Iterate through all the attribute value maps (an AttributeValueMap equals a row of data in the .xlsx file).
-            AttributeValueMap newAttributeValueMap = new AttributeValueMap();
-            for (String attribute : attributeValueMap.getAttributes()) { // Iterate through the attribute-value pairs
-                if (usedConfig.containsKey(attribute)) {    // If an attribute is found in the config, it has a corresponding, newer name.
-                    newAttributeValueMap.addKeyValuePair(usedConfig.getValue(attribute), attributeValueMap.getValueBasedOnAttribute(attribute)); // Add the new name and the corresponding value to the new attlibute-value map.
-                }
-            }
-            prog++;
-            progress.set(count/prog);
-            convertedData.addAttributeMap(newAttributeValueMap);
-        }
     }
 }
+

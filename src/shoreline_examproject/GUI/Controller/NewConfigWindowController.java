@@ -67,6 +67,8 @@ public class NewConfigWindowController implements Initializable {
         {
             lstViewImportAttributes.getItems().addAll(model.getCurrentAttributes().getAttributes());    // Fill out the list view with the attributes
             
+            System.out.println("Number of attributes: " + lstViewImportAttributes.getItems().size());
+            
             tblViewOriginalName.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey())); 
             tblViewEditedName.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue()));
             

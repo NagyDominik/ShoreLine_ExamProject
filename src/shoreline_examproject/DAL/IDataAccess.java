@@ -1,6 +1,5 @@
 package shoreline_examproject.DAL;
 
-import shoreline_examproject.BE.AttributeValueMap;
 import shoreline_examproject.BE.Config;
 import java.io.File;
 import shoreline_examproject.BE.AttributesCollection;
