@@ -18,6 +18,7 @@ public class BLLManager implements IBLLManager {
     
     public BLLManager() {
         this.dal = new DALManager();
+        saveToJSON(dal.loadFileData("Import_data.xlsx"));
     }
 
     @Override
