@@ -1,50 +1,37 @@
 package shoreline_examproject.BLL;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import java.util.Map;
-import shoreline_examproject.BE.AttributeValueMap;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.DAL.IDataAccess;
 
-
-public class BLLManager implements IBLLManager
-{
+public class BLLManager implements IBLLManager {
 
     private IDataAccess dal;
-    
+
     //Could use dependency injection here
-        
 //    public BLLManager(IDataAccess dalm)
 //    {
 //        this.dal = dalm;
 //    }
     
-    
-    public BLLManager()
-    {
+    public BLLManager() {
         this.dal = new DALManager();
     }
-    
-    
+
     @Override
-    public void saveLog(EventLog log)
-    {
+    public void saveLog(EventLog log) {
         dal.saveLog(log);
     }
 
     @Override
-    public void saveConfig(Config config)
-    {
+    public void saveConfig(Config config) {
         dal.saveConfig(config);
     }
 
     @Override
-    public AttributesCollection loadFileData(String filePath)
-    {
+    public AttributesCollection loadFileData(String filePath) {
         return dal.loadFileData(filePath);
     }
 //
@@ -55,15 +42,12 @@ public class BLLManager implements IBLLManager
 //    }
 
     @Override
-    public AttributesCollection convertData(AttributesCollection inputData)
-    {
+    public AttributesCollection convertData(AttributesCollection inputData) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public void saveToJSON(AttributesCollection data){
+
+    public void saveToJSON(AttributesCollection data) {
         dal.saveData(data);
-        
-        
     }
-    
+
 }

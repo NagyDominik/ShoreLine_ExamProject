@@ -10,45 +10,30 @@ import java.util.List;
  */
 public class AttributesCollection {
 
-    private List<AttributeValueMap> attributes;
+    private List<DataRow> attributes;
 
-    public AttributesCollection()
-    {
+    public AttributesCollection() {
         attributes = new ArrayList<>();
     }
-    
-    public void addAttributeMap(AttributeValueMap newMap)
-    {
-         this.attributes.add(newMap);
+
+    public void addAttributeMap(DataRow newData) {
+        this.attributes.add(newData);
     }
 
-    @Override
-    public String toString()
-    {
-        String s = "";
-        for (AttributeValueMap attribute : attributes) {
-            s += " " + attribute.toString() + "\n";
-        }
-        return s;
-    }
-    
-    public List<String> getAttributes()
-    {
-        if (attributes == null ||attributes.isEmpty()) {
-            throw new NullPointerException("Attributes list is null or empty!");
-        }
-        
-        AttributeValueMap avm = attributes.get(0);
-        return avm.getAttributes();
+    public int getNumberOfDataEntries() {
+        return this.attributes.size();
     }
 
-    public List<AttributeValueMap> getAttributeValueMap() {
+    public List<String> getAttributesAsString() {
+        if (attributes == null || attributes.isEmpty()) {
+            throw new NullPointerException("Attributes list is empty or null!");
+        }
+
+        return attributes.get(0).getAttributesAsString();
+    }
+
+    public List<DataRow> getAttributes() {
         return attributes;
     }
     
-    
-    public int getNumberOfDataEntries()
-    {
-        return this.attributes.size();
-    }
 }

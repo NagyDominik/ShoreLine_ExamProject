@@ -56,21 +56,16 @@ public class LogWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        EventLogger logger = new EventLogger();
         setupTV();
     }
 
     private void setupTV() {
         logTV.setItems(EventLogger.getLog());
         dateCol.setCellValueFactory(getCustomDateCellFactory());
-        dateCol.prefWidthProperty().bind(logTV.widthProperty().multiply(0.17));
         userCol.setCellValueFactory(new PropertyValueFactory("user"));
-        userCol.prefWidthProperty().bind(logTV.widthProperty().multiply(0.15));
         typeCol.setCellValueFactory(new PropertyValueFactory("type"));
-        typeCol.prefWidthProperty().bind(logTV.widthProperty().multiply(0.15));
         typeCol.setCellFactory(getCustomRowFactory());
         descCol.setCellValueFactory(new PropertyValueFactory("description"));
-        descCol.prefWidthProperty().bind(logTV.widthProperty().multiply(0.53).add(-2));
     }
 
     @FXML

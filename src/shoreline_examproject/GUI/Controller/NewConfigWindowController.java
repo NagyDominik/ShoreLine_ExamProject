@@ -40,11 +40,11 @@ public class NewConfigWindowController implements Initializable {
     private TableColumn<KeyValuePair, String> tblViewOriginalName;
     @FXML
     private TableColumn<KeyValuePair, String> tblViewEditedName;
-    
+
     private Config currentConfig;
     @FXML
     private JFXTextField txtFieldConfName;
-      
+
     /**
      * Initializes the controller class.
      */
@@ -61,121 +61,101 @@ public class NewConfigWindowController implements Initializable {
         stage.close();
     }
 
-    private void setUpViews()
-    {
-        try 
-        {
-            lstViewImportAttributes.getItems().addAll(model.getCurrentAttributes().getAttributes());    // Fill out the list view with the attributes
-            
-            tblViewOriginalName.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey())); 
+    private void setUpViews() {
+        try {
+            lstViewImportAttributes.getItems().addAll(model.getCurrentAttributes().getAttributesAsString());    // Fill out the list view with the attributes
+            System.out.println("Number of attributes: " + lstViewImportAttributes.getItems().size());
+            tblViewOriginalName.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey()));
             tblViewEditedName.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue()));
-            
+
             lstViewImportAttributes.setOnMouseClicked((MouseEvent event) -> {
                 if (lstViewImportAttributes.getSelectionModel().getSelectedItem() != null) {   // Disable the remove button if an imported attribute is selected.
                     btnRemove.setDisable(true);
                 }
-            } 
+            }
             );
-            
+
             tableViewExportAttributes.setOnMouseClicked((MouseEvent event) -> {
                 if (tableViewExportAttributes.getSelectionModel().getSelectedItem() != null) {  // Enable the remove button if a value is selected in the export attributes table view.
                     btnRemove.setDisable(false);
                 }
-            } 
+            }
             );
-            
+
             tblViewEditedName.setCellFactory(TextFieldTableCell.forTableColumn()); // Enable the editing of the attribute name.
-            
             tblViewEditedName.setOnEditCommit((TableColumn.CellEditEvent<KeyValuePair, String> event) -> { // Save the edit 
                 KeyValuePair current = tableViewExportAttributes.getSelectionModel().getSelectedItem();
-                
                 if (current == null) {
                     throw new NullPointerException("Selection is null!");
                 }
-                
                 current.setValue(event.getNewValue());
             });
-
+            
         }
         catch (Exception ex) {
             EventPopup.showAlertPopup(ex);
         }
-    }   
+    }
 
     @FXML
-    private void btnAddClicked(ActionEvent event)
-    {
+    private void btnAddClicked(ActionEvent event) {
         String selected = lstViewImportAttributes.getSelectionModel().getSelectedItem();
-        
         if (selected == null) {
             return;
         }
-            
         tableViewExportAttributes.getItems().add(new KeyValuePair(selected, selected));
         lstViewImportAttributes.getItems().remove(selected);
     }
 
     @FXML
-    private void btnRemoveClicked(ActionEvent event)
-    {
+    private void btnRemoveClicked(ActionEvent event) {
         KeyValuePair selected = tableViewExportAttributes.getSelectionModel().getSelectedItem();
-        
         if (selected == null) {
             return;
         }
-        
-        if (!tableViewExportAttributes.getItems().remove(selected))
-        {
+        if (!tableViewExportAttributes.getItems().remove(selected)) {
             EventPopup.showAlertPopup("Could not remove selected item!");
         }
-        
         lstViewImportAttributes.getItems().add(0, selected.getKey());
-    } 
+    }
 
     @FXML
-    private void btnSaveClicked(ActionEvent event)
-    {
+    private void btnSaveClicked(ActionEvent event) {
         String name = txtFieldConfName.getText();
-        
         if (name == null || name.isEmpty()) {
             EventPopup.showAlertPopup("Please enter a name for this configuration!");
             return;
         }
-        
         currentConfig = new Config(name);
-        
         for (KeyValuePair item : tableViewExportAttributes.getItems()) { // Fill out the config with the relations.
             currentConfig.addRelation(item.getKey(), item.getValue());
         }
-        
         model.saveConfig(currentConfig);
     }
-    
+
     /**
-     * Nested class, used to store key-value pairs in the export attributes table view.
+     * Nested class, used to store key-value pairs in the export attributes
+     * table view.
      */
     class KeyValuePair {
+
         private String key;
         private String value;
 
-        public KeyValuePair(String key, String value)
-        {
+        public KeyValuePair(String key, String value) {
             this.key = key;
             this.value = value;
         }
 
-        public String getKey()
-        {
+        public String getKey() {
             return key;
         }
 
-        public String getValue()
-        {
+        public String getValue() {
             return value;
         }
 
-        public void setValue(String value)
-        {
+        public void setValue(String value) {
             this.value = value;
         }
     }

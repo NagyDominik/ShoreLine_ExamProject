@@ -10,8 +10,9 @@ import java.util.logging.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import shoreline_examproject.BE.AttributeValueMap;
 import shoreline_examproject.BE.AttributesCollection;
+import shoreline_examproject.BE.DataRow;
+import shoreline_examproject.BE.AttributeMap;
 
 /**
  * Read in data from an XLSX file.
@@ -42,8 +43,10 @@ public class XLSXReader extends FileReader {
                 Row row = rowIterator.next();
                 
                 Iterator<Cell> cellIterator = row.cellIterator();
-                AttributeValueMap current = new AttributeValueMap();
-
+                AttributeMap current = null;
+                
+                DataRow dataRow = new DataRow();
+                
                 while(cellIterator.hasNext())
                 {
                     Cell c = cellIterator.next();
@@ -53,19 +56,27 @@ public class XLSXReader extends FileReader {
                     switch (c.getCellTypeEnum()) {
                         case STRING:
                             //System.out.print(c.getStringCellValue() + "\t");
-                            current.addKeyValuePair(attributeCell.getStringCellValue(), c.getStringCellValue());
+                            //current.addKeyValuePair(attributeCell.getStringCellValue(), c.getStringCellValue());
+                            current = new AttributeMap(attributeCell.getStringCellValue(), false);
+                            current.setValue(c.getStringCellValue());
+                            dataRow.addData(current);
                             break;
                         case NUMERIC:
                             //System.out.print(c.getNumericCellValue() + "\t");
-                            current.addKeyValuePair(attributeCell.getStringCellValue(), Double.toString(c.getNumericCellValue()));
+                            //current.addKeyValuePair(attributeCell.getStringCellValue(), Double.toString(c.getNumericCellValue()));
+                             current = new AttributeMap(attributeCell.getStringCellValue(), false);
+                             current.setValue(Double.toString(c.getNumericCellValue()));
+                             dataRow.addData(current);
                             break;
                         default:
-                            current.addKeyValuePair(attributeCell.getStringCellValue(), "");
-
+                            //current.addKeyValuePair(attributeCell.getStringCellValue(), "");
+                            current = new AttributeMap(attributeCell.getStringCellValue(), false);
+                            current.setValue("");
+                            dataRow.addData(current);
                     }    
                 }
                 //System.out.println("");
-                loadedAttributes.addAttributeMap(current);
+                loadedAttributes.addAttributeMap(dataRow);
 
             }
             return loadedAttributes;
