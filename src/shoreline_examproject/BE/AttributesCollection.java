@@ -12,28 +12,28 @@ public class AttributesCollection {
 
     private List<DataRow> attributes;
 
-    public AttributesCollection()
-    {
+    public AttributesCollection() {
         attributes = new ArrayList<>();
     }
-    
-    public void addAttributeMap(DataRow newData)
-    {
-         this.attributes.add(newData);
-    }    
-    
-    public int getNumberOfDataEntries()
-    {
+
+    public void addAttributeMap(DataRow newData) {
+        this.attributes.add(newData);
+    }
+
+    public int getNumberOfDataEntries() {
         return this.attributes.size();
     }
 
-    public List<String> getAttributes()
-    {
+    public List<String> getAttributesAsString() {
         if (attributes == null || attributes.isEmpty()) {
             throw new NullPointerException("Attributes list is empty or null!");
         }
-        
-        return attributes.get(0).getAttributes();
+
+        return attributes.get(0).getAttributesAsString();
+    }
+
+    public List<DataRow> getAttributes() {
+        return attributes;
     }
 
     public List<DataRow> getData()

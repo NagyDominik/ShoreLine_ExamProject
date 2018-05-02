@@ -6,34 +6,32 @@ import java.util.List;
 
 /**
  * Represents one row of data (in the case of an .xlsx file)
+ *
  * @author sebok
  */
-public class DataRow
-{
+public class DataRow {
+
     private HashSet<AttributeMap> data;
-    
-    public DataRow()
-    {
+
+    public DataRow() {
         data = new HashSet<>();
     }
-    
-    public void addData(AttributeMap data)
-    {
+
+    public void addData(AttributeMap data) {
         this.data.add(data);
     }
-    
-    public List<String> getAttributes()
-    {
-        if (data == null ||data.isEmpty()) {
+
+    public List<String> getAttributesAsString() {
+        if (data == null || data.isEmpty()) {
             throw new NullPointerException("Attributes list is null or empty!");
         }
-        
+
         List<String> attributesString = new ArrayList<>();
-        
+
         for (AttributeMap attribute : data) {
             attributesString.addAll(attribute.getAttributes());
         }
-        
+
         return attributesString;
     }
 

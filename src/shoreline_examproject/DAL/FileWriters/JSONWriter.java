@@ -1,16 +1,18 @@
 package shoreline_examproject.DAL.FileWriters;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonWriter;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import shoreline_examproject.BE.AttributeMap;
 import shoreline_examproject.BE.AttributesCollection;
+import shoreline_examproject.BE.DataRow;
+import shoreline_examproject.Utility.EventLogger;
 
 /**
  * Saves the given data to a JSON file
@@ -19,52 +21,46 @@ import shoreline_examproject.BE.AttributesCollection;
  */
 public class JSONWriter extends IFileWriter {
 
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+    /**
+     *
+     * @param data
+     */
+    @Override
     public void saveData(AttributesCollection data) {
-//        data.getAttributeValueMap();
-        /*for each attribute valuemappon megy hozzáadja az objecthez, filewriter private function 
-                getattriubte value length lista hoszáif 
-                object 
-                belső bele és kiírja
-                buffer writer            */
+        try (JsonWriter jwriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(new File("output.json"))))) {
+            jwriter.beginArray();
+            for (DataRow datarow : data.getAttributes()) {
+                jwriter.beginObject();
+                for (AttributeMap attribute : datarow.getData()) {
+                    writeObject(jwriter, attribute);
+                }
+                jwriter.endObject();
+            }
+            jwriter.endArray();
+            
+            EventLogger.log(EventLogger.Level.SUCCESS, "JSON writing was successful.");
+            System.out.println("Writing was succesfully");
+        }
+        catch (Exception ex) {
+            EventLogger.log(EventLogger.Level.ERROR, "Error during JSON file writing");
+        }
 
- /*String siteName = "";
-        String assetSerialNumber = "";
-        String type = "ZCS5";
-        
-                
-        JsonObject jsonObj = new JsonObject();
-        
-        JsonArray jsonArr = new JsonArray();
-        JsonObject planning = new JsonObject();
-        Date date = Date.from(Instant.now());
-        planning.add("Date1", gson.toJsonTree(date));
-        planning.add("Date2", gson.toJsonTree(date));
-        planning.add("Date3", gson.toJsonTree(date));
-        jsonObj.add("type", gson.toJsonTree(type));
-        jsonObj.add("planning", planning);
-        jsonObj.add("sitename",gson.toJsonTree(siteName));
-        
-        System.out.println(jsonObj.toString());*/
-//        FileWriter writer;
-//        try {
-//            writer = new FileWriter(new File("output.json"));
-//            JsonWriter jsonWriter = new JsonWriter(new BufferedWriter(writer));
-//            jsonWriter.beginObject();
-//            for (AttributeValueMap asd : data.getAttributeValueMap()) {
-//                JsonObject output = new JsonObject();
-//                    for (Map.Entry<String, String> selected : asd.getHashMap().entrySet()) {
-//                        output.add(selected.getKey(), gson.toJsonTree(selected.getValue()));
-//                    }
-//            jsonWriter.endObject();
-//                System.out.println("write was succesfully");
-//        }
-//        } catch (IOException ex) {
-//            Logger.getLogger(JSONWriter.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-      }
-
+    }
+    
+    private void writeObject(JsonWriter jwriter, AttributeMap data) throws IOException, NoSuchFieldException {
+        jwriter.beginObject();
+        if (data.isIsTreeRoot()) {
+            jwriter.name(data.getKey());
+            for (AttributeMap value : data.getValues()) {
+                writeObject(jwriter, value);
+            }
+        } else {
+            jwriter.name(data.getKey()).value(data.getValue());
+        }
+        jwriter.endObject();
+    }
+    
 }
     

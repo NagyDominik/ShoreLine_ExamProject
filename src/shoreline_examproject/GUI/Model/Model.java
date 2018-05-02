@@ -20,13 +20,14 @@ import shoreline_examproject.BLL.IBLLManager;
 public class Model {
 
     private static Model instance;
-
-    private BLLManager bllm = new BLLManager();
-    private ObservableList<EventLog> logList = FXCollections.observableArrayList();
-
-    private AttributesCollection currentAttributes; //The attributes of the currently loaded file.
-
     private IBLLManager bllManager;
+    
+    private AttributesCollection currentAttributes; //The attributes of the currently loaded file.
+    private String currentUser;
+
+
+    private ObservableList<EventLog> logList = FXCollections.observableArrayList();
+    
 
     private Model() {
         bllManager = new BLLManager();
@@ -67,5 +68,11 @@ public class Model {
     {
         bllManager.saveConfig(currentConfig);
     }
+   public String getCurrentUser(){
+       return currentUser ;
+   }
+   public String setCurrentUser(String user){
+       return this.currentUser = user;
+   }
 
 }
