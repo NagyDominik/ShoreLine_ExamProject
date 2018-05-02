@@ -13,8 +13,8 @@ import shoreline_examproject.Utility.EventLogger;
 public class ConversionTask implements Callable<AttributesCollection> {
 
     private final ReadOnlyDoubleWrapper progress = new ReadOnlyDoubleWrapper();
-    private Config usedConfig; // The config that will be used to map the input values to the output values.
-    private AttributesCollection inputData;
+    private final Config usedConfig; // The config that will be used to map the input values to the output values.
+    private final AttributesCollection inputData;
     private AttributesCollection convertedData;
     double count;  // The total number of data rows to convert, used to calculate the progress of the task.
 
@@ -29,8 +29,7 @@ public class ConversionTask implements Callable<AttributesCollection> {
         try {
             convert();
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, String.format("Exception: %s", ex.getMessage()));
             throw ex;
         }
@@ -50,7 +49,7 @@ public class ConversionTask implements Callable<AttributesCollection> {
      * Use the data stored inside the provided configuration to convert the
      * input data row-by row.
      */
-    private void convert() {
+    private void convert() throws NoSuchFieldException {
         convertedData = new AttributesCollection();
         count = inputData.getNumberOfDataEntries();
         
@@ -59,10 +58,33 @@ public class ConversionTask implements Callable<AttributesCollection> {
         for (DataRow dataRow : inputData.getData()) {
             DataRow converted = new DataRow();
             for (AttributeMap attributeMap : dataRow.getData()) {
-                if (!attributeMap.isIsTreeRoot()) {
-                    
-                }
+                converted.addData(convertMap(attributeMap));
             }
+            prog++;
+            progress.set(prog/count); // Count progress by counting the total number of rows converted.
         }
+    }
+
+    /**
+     * Recursively convert a data row.
+     * @param attributeMap
+     * @return
+     * @throws NoSuchFieldException 
+     */
+    private AttributeMap convertMap(AttributeMap attributeMap) throws NoSuchFieldException
+    {
+        AttributeMap convertedAttributeMap = null;
+        if (!attributeMap.isIsTreeRoot()) {
+            convertedAttributeMap = new AttributeMap(usedConfig.getValue(attributeMap.getKey()), false);
+            convertedAttributeMap.setValue(attributeMap.getValue());
+        }
+        else {
+            convertedAttributeMap = new AttributeMap(usedConfig.getValue(attributeMap.getKey()), true);
+            for (AttributeMap value : attributeMap.getValues()) {
+                convertedAttributeMap.addValue(convertMap(value));
+            }
+        } 
+        
+        return convertedAttributeMap;
     }
 }

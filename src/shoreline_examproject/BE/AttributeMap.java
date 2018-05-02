@@ -101,4 +101,11 @@ public class AttributeMap {
         return attributes;
     }
 
+    void addValue(AttributeMap convertMap)
+    {
+        if(!this.values.add(convertMap)){
+            throw new IllegalArgumentException("Could not add attribute map to this instance!");
+        }
+    }
+
 }
