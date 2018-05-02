@@ -19,6 +19,7 @@ import shoreline_examproject.BLL.IBLLManager;
 public class Model {
 
     private static Model instance;
+    private BLLManager bllm = new BLLManager();
     private ObservableList<EventLog> logList = FXCollections.observableArrayList();
     private AttributesCollection currentAttributes; //The attributes of the currently loaded file.
     
@@ -67,4 +68,5 @@ public class Model {
         }
         return currentAttributes;
     }
+    
 }

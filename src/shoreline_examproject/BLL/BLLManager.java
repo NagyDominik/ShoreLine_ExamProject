@@ -1,5 +1,9 @@
 package shoreline_examproject.BLL;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import java.util.Map;
+import shoreline_examproject.BE.AttributeValueMap;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.EventLog;
@@ -54,6 +58,12 @@ public class BLLManager implements IBLLManager
     public AttributesCollection convertData(AttributesCollection inputData)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public void saveToJSON(AttributesCollection data){
+        dal.saveData(data);
+        
+        
     }
     
 }

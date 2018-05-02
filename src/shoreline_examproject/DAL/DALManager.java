@@ -6,6 +6,7 @@ import java.io.File;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.DAL.FileReaders.FileReaderFactory;
 import shoreline_examproject.BE.EventLog;
+import shoreline_examproject.DAL.FileWriters.JSONWriter;
 
 /**
  * Provides access to file saving and loading.
@@ -14,6 +15,7 @@ import shoreline_examproject.BE.EventLog;
  */
 public class DALManager implements IDataAccess {
 
+    private JSONWriter writer = new JSONWriter();
     private FileReader reader;
 
     @Override
@@ -37,4 +39,10 @@ public class DALManager implements IDataAccess {
         reader = FileReaderFactory.CreateFileReader(file.getPath());
         return reader.getData(file);
     }
+
+    @Override
+    public void saveData(AttributesCollection data) {
+        writer.saveData(data);
+    }
+    
 }

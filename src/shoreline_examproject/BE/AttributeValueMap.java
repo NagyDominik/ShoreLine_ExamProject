@@ -3,6 +3,7 @@ package shoreline_examproject.BE;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a key-value pair.
@@ -57,6 +58,10 @@ public class AttributeValueMap {
         keys.addAll(attributeMap.keySet());
         
         return keys;
+    }
+    
+    public HashMap<String,String> getHashMap(){
+        return attributeMap;
     }
     
 }

@@ -7,7 +7,7 @@ import shoreline_examproject.BE.AttributesCollection;
  *
  * @author sebok
  */
-public abstract class FileWriter {
+public abstract class IFileWriter {
 
     public abstract void saveData(AttributesCollection data);
 }

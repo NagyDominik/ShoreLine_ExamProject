@@ -16,6 +16,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
+import shoreline_examproject.BE.AttributesCollection;
+import shoreline_examproject.BLL.BLLManager;
+import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
 import shoreline_examproject.Utility.EventPopup;
@@ -49,6 +52,8 @@ public class MainWindowController implements Initializable {
     private TableColumn<?, ?> progressTable;
     
     private Model model;
+    
+    private BLLManager bllm = new BLLManager();
 
     /**
      * Initializes the controller class.
@@ -57,6 +62,7 @@ public class MainWindowController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         userNameLbl.setText(System.getProperty("user.name"));
         userNameLbl.setAlignment(Pos.CENTER_RIGHT);
+        bllm.saveToJSON(new AttributesCollection());
         
         model = Model.getInstance();
     }

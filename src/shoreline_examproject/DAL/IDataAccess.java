@@ -16,6 +16,8 @@ public interface IDataAccess {
     public void saveLog(EventLog log);
 
     public void saveConfig(Config config);
+    
+    public void saveData(AttributesCollection data);
 
     public AttributesCollection loadFileData(String filePath);
 
