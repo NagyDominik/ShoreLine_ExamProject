@@ -8,6 +8,7 @@ package shoreline_examproject.GUI.Model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shoreline_examproject.BE.AttributesCollection;
+import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.BLL.BLLManager;
 import shoreline_examproject.BLL.IBLLManager;
@@ -19,13 +20,14 @@ import shoreline_examproject.BLL.IBLLManager;
 public class Model {
 
     private static Model instance;
+
     private BLLManager bllm = new BLLManager();
     private ObservableList<EventLog> logList = FXCollections.observableArrayList();
+
     private AttributesCollection currentAttributes; //The attributes of the currently loaded file.
-    
-    
+
     private IBLLManager bllManager;
-    
+
     private Model() {
         bllManager = new BLLManager();
     }
@@ -36,37 +38,34 @@ public class Model {
         }
         return instance;
     }
-    
-    public void addLog(EventLog entry) {
-        logList.add(entry);
-    }
-    
-    public ObservableList<EventLog> getLogList() {
-        return logList;
-    }
-    
-    public void loadFileData(String path)
-    {
+
+    public void loadFileData(String path) {
         currentAttributes = bllManager.loadFileData(path);
     }
-    
-    public void startConversion() throws ModelException
-    {
+
+    public void startConversion() throws ModelException {
         if (currentAttributes == null) {
             throw new ModelException("No attributes! (It is possible that an input file has not been provided)");
         }
-        
-        
+
         //TODO: add implementation for converting between formats in the BLL.
-        System.out.println(currentAttributes); 
+        System.out.println(currentAttributes);
     }
 
-    public AttributesCollection getCurrentAttributes() throws ModelException
-    {
+    public AttributesCollection getCurrentAttributes() throws ModelException {
         if (currentAttributes == null) {
             throw new ModelException("Current attributes is not set!");
         }
         return currentAttributes;
     }
-    
+
+    /**
+     * Save the given configuration to the database.
+     * @param currentConfig The configuration that will be saved.
+     */
+    public void saveConfig(Config currentConfig)
+    {
+        bllManager.saveConfig(currentConfig);
+    }
+
 }
