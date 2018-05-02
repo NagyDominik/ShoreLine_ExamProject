@@ -35,4 +35,9 @@ public class AttributesCollection {
         
         return attributes.get(0).getAttributes();
     }
+
+    public List<DataRow> getData()
+    {
+        return this.attributes;
+    }
 }

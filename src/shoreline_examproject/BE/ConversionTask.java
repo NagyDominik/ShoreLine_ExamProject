@@ -3,6 +3,7 @@ package shoreline_examproject.BE;
 import java.util.concurrent.Callable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
+import shoreline_examproject.Utility.EventLogger;
 
 /**
  * This task represents a conversion to the given file format.
@@ -16,11 +17,10 @@ public class ConversionTask implements Callable<AttributesCollection>{
     private AttributesCollection convertedData;
     double count;  // The total number of data rows to convert, used to calculate the progress of the task.
 
-    public ConversionTask(Config usedConfig, AttributesCollection inputData, AttributesCollection convertedData)
+    public ConversionTask(Config usedConfig, AttributesCollection inputData)
     {
         this.usedConfig = usedConfig;
         this.inputData = inputData;
-        this.convertedData = convertedData;
     }
     
     @Override
@@ -32,7 +32,7 @@ public class ConversionTask implements Callable<AttributesCollection>{
         }
         catch (Exception ex)
         {
-            //TODO: log here
+            EventLogger.log(EventLogger.Level.ERROR, String.format("Exception: %s", ex.getMessage()));
             throw ex;
         }
         
@@ -57,7 +57,17 @@ public class ConversionTask implements Callable<AttributesCollection>{
     {
         convertedData = new AttributesCollection();
         count = inputData.getNumberOfDataEntries();
+        
         double prog = 0;
+
+        for (DataRow dataRow : inputData.getData()) {
+            DataRow converted = new DataRow();
+            for (AttributeMap attributeMap : dataRow.getData()) {
+                if (!attributeMap.isIsTreeRoot()) {
+                    
+                }
+            }
+        }
     }
 }
 

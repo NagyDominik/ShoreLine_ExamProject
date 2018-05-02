@@ -36,4 +36,9 @@ public class DataRow
         
         return attributesString;
     }
+
+    public List<AttributeMap> getData()
+    {
+        return new ArrayList<>(this.data);
+    }
 }
