@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
    <children>
       <ImageView fitHeight="64.0" fitWidth="134.0" layoutX="9.0" layoutY="4.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -37,14 +38,6 @@
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></Label>
-      <TableView fx:id="previewTV" layoutX="15.0" layoutY="156.0" prefHeight="219.0" prefWidth="409.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="280.0" AnchorPane.topAnchor="155.0">
-        <columns>
-          <TableColumn prefWidth="88.0" text="Preview" />
-        </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-      </TableView>
       <JFXButton buttonType="RAISED" layoutX="532.0" layoutY="425.0" onAction="#startClicked" style="-fx-background-color: #00A60A; -fx-background-radius: 20;" text="Start" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="160.0">
          <graphic>
             <ImageView fitHeight="18.0" fitWidth="19.0">
@@ -146,5 +139,6 @@
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font>
       </JFXButton>
+      <JFXTextArea fx:id="txtAreaPreview" layoutX="37.0" layoutY="165.0" prefHeight="207.0" prefWidth="447.0" style="-fx-background-color: white;" />
    </children>
 </AnchorPane>
