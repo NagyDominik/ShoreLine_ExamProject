@@ -66,10 +66,13 @@ public class NewConfigWindowController implements Initializable {
 
     private void setUpViews() {
         try {
+
             lstViewImportAttributes.getItems().addAll(model.getCurrentAttributes().getAttributesAsString());    // Fill out the list view with the attributes
             System.out.println("Number of attributes: " + lstViewImportAttributes.getItems().size());
             treeTblViewOriginal.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getKey()));
             treeTblViewEdited.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getValue()));
+
+            lstViewImportAttributes.getItems().addAll(model.getCurrentAttributes().getAttributesAsString()); // Fill out the list view with the attributes
 
             lstViewImportAttributes.setOnMouseClicked((MouseEvent event) -> {
                 if (lstViewImportAttributes.getSelectionModel().getSelectedItem() != null) {   // Disable the remove button if an imported attribute is selected.
@@ -95,7 +98,6 @@ public class NewConfigWindowController implements Initializable {
 //            });
             
             treeTblViewEdited.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<KeyValuePair, String>>() {
-                @Override
                 public void handle(TreeTableColumn.CellEditEvent<KeyValuePair, String> event) {
                     KeyValuePair current = treeTblViewExport.getSelectionModel().getSelectedItem().valueProperty().getValue();
                     if (current == null) {
@@ -130,7 +132,7 @@ public class NewConfigWindowController implements Initializable {
         if (!treeTblViewExport.getItems().remove(selected)) {
             EventPopup.showAlertPopup("Could not remove selected item!");
         }
-        lstViewImportAttributes.getItems().add(0, selected.get());
+        lstViewImportAttributes.getItems().add(0, selected.getItems());
     }
 
     @FXML

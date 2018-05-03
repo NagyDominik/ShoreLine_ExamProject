@@ -7,8 +7,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import shoreline_examproject.BE.AttributeMap;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.DataRow;
@@ -50,6 +48,7 @@ public class JSONWriter extends IFileWriter {
     }
     
     private void writeObject(JsonWriter jwriter, AttributeMap data) throws IOException, NoSuchFieldException {
+        System.out.println("writeObject method was called!");
         if (data.isIsTreeRoot()) {
             jwriter.name(data.getKey());
             jwriter.beginObject();
