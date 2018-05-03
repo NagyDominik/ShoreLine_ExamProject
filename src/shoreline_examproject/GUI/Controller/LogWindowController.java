@@ -10,7 +10,6 @@ import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -56,6 +55,10 @@ public class LogWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        EventLogger.log(EventLogger.Level.ALERT, "Alert test");
+        EventLogger.log(EventLogger.Level.ERROR, "Error test");
+        EventLogger.log(EventLogger.Level.INFORMATION, "Information test");
+        EventLogger.log(EventLogger.Level.SUCCESS, "Success test");
         setupTV();
     }
 
