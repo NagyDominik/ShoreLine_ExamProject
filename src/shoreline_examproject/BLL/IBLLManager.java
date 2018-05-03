@@ -18,5 +18,6 @@ public interface IBLLManager
 
     public AttributesCollection loadFileData(String filePath);
     
-    public AttributesCollection convertData(AttributesCollection inputData);
+    public AttributesCollection convertData(AttributesCollection inputData, Config config);
+    
 }

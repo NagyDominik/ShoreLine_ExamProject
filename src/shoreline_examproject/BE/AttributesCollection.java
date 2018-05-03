@@ -35,5 +35,9 @@ public class AttributesCollection {
     public List<DataRow> getAttributes() {
         return attributes;
     }
-    
+
+    public List<DataRow> getData()
+    {
+        return this.attributes;
+    }
 }

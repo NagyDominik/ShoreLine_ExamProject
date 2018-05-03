@@ -34,21 +34,15 @@ public class BLLManager implements IBLLManager {
     public AttributesCollection loadFileData(String filePath) {
         return dal.loadFileData(filePath);
     }
-//
-//    @Override
-//    public AttributesCollection convertData(AttributesCollection inputData, ConvertType from, ConvertType to)
-//    {
-//        return converter.convertData(inputData, from, to);
-//    }
-
-    @Override
-    public AttributesCollection convertData(AttributesCollection inputData) {
-        dal.saveData(inputData);
-        return new AttributesCollection(); //NEEDS TO BE IMPLEMENTED
-    }
 
     public void saveToJSON(AttributesCollection data) {
         dal.saveData(data);
+    }
+
+    @Override
+    public AttributesCollection convertData(AttributesCollection inputData, Config config) {
+        dal.saveData(inputData);
+        return null;
     }
 
 }

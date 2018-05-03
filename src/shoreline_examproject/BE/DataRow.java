@@ -35,8 +35,8 @@ public class DataRow {
         return attributesString;
     }
 
-    public HashSet<AttributeMap> getData() {
-        return data;
+    public List<AttributeMap> getData()
+    {
+        return new ArrayList<>(this.data);
     }
-    
 }
