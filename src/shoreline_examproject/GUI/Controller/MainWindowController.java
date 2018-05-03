@@ -4,9 +4,7 @@ import com.jfoenix.controls.JFXComboBox;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -122,7 +120,7 @@ public class MainWindowController implements Initializable {
 
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.setTitle("Details");
+        stage.setTitle("Options");
         stage.setResizable(false);
         stage.show();
         
@@ -159,15 +157,10 @@ public class MainWindowController implements Initializable {
             return new ReadOnlyStringWrapper(ct.getConfigName());
         });
         
-       progressTable.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ConversionTask, Double>, ObservableValue<Double>>()
-       {
-            @Override
-            public ObservableValue<Double> call(TableColumn.CellDataFeatures<ConversionTask, Double> param)
-            {
-                ConversionTask ct = param.getValue();
-                
-               return ct.progressProperty().asObject();
-            }
+       progressTable.setCellValueFactory((TableColumn.CellDataFeatures<ConversionTask, Double> param) -> {
+           ConversionTask ct = param.getValue();
+           
+           return ct.progressProperty().asObject();
         });
        
        progressTable.setCellFactory(ProgressBarTableCell.<ConversionTask> forTableColumn());

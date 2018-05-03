@@ -46,9 +46,8 @@ public class Model {
             EventLogger.log(EventLogger.Level.ERROR, "No attributes list provided!");
             throw new ModelException("No attributes! (It is possible that an input file has not been provided)");
         }
-
-        bllManager.convertData(currentAttributes, currentConfig);
-        System.out.println(currentAttributes);
+        //TODO: add implementation for converting between formats in the BLL.
+        bllManager.convertData(currentAttributes, new Config("asd"));
     }
 
     public AttributesCollection getCurrentAttributes() throws ModelException {

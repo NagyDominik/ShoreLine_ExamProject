@@ -15,7 +15,7 @@ import shoreline_examproject.Utility.EventLogger;
 /**
  * Saves the given data to a JSON file
  *
- * @author sebok
+ * @author Dominik
  */
 public class JSONWriter extends IFileWriter {
 
@@ -37,7 +37,7 @@ public class JSONWriter extends IFileWriter {
                 jwriter.endObject();
             }
             jwriter.endArray();
-            
+
             EventLogger.log(EventLogger.Level.SUCCESS, "JSON writing was successful.");
             System.out.println("Writing was succesfully");
         }
@@ -46,9 +46,8 @@ public class JSONWriter extends IFileWriter {
         }
 
     }
-    
-    private void writeObject(JsonWriter jwriter, AttributeMap data) throws IOException, NoSuchFieldException {
-        System.out.println("writeObject method was called!");
+
+    private void writeObject(JsonWriter jwriter, AttributeMap data) throws Exception {
         if (data.isIsTreeRoot()) {
             jwriter.name(data.getKey());
             jwriter.beginObject();
@@ -60,6 +59,5 @@ public class JSONWriter extends IFileWriter {
             jwriter.name(data.getKey()).value(data.getValue());
         }
     }
-    
+
 }
-    

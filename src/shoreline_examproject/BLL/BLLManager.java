@@ -18,7 +18,6 @@ public class BLLManager implements IBLLManager {
     
     public BLLManager() {
         this.dal = new DALManager();
-        saveToJSON(dal.loadFileData("Import_data.xlsx"));
     }
 
     @Override
@@ -36,13 +35,14 @@ public class BLLManager implements IBLLManager {
         return dal.loadFileData(filePath);
     }
 
-    @Override
-    public AttributesCollection convertData(AttributesCollection inputData, Config config) {
-        return null;
-    }
-
     public void saveToJSON(AttributesCollection data) {
         dal.saveData(data);
+    }
+
+    @Override
+    public AttributesCollection convertData(AttributesCollection inputData, Config config) {
+        dal.saveData(inputData);
+        return null;
     }
 
 }

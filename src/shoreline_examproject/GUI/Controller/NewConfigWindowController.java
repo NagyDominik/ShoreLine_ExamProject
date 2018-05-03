@@ -6,11 +6,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -26,24 +28,24 @@ import shoreline_examproject.Utility.EventPopup;
 public class NewConfigWindowController implements Initializable {
 
     @FXML
-    private JFXButton closeButton;
-
-    private Model model;
-    @FXML
     private ListView<String> lstViewImportAttributes;
     @FXML
-    private TableView<KeyValuePair> tableViewExportAttributes;
+    private JFXTextField txtFieldConfName;
+    @FXML
+    private JFXButton closeButton;
     @FXML
     private JFXButton btnRemove;
     @FXML
-    private TableColumn<KeyValuePair, String> tblViewOriginalName;
+    private TreeTableView<KeyValuePair> treeTblViewExport;
     @FXML
-    private TableColumn<KeyValuePair, String> tblViewEditedName;
-
+    private TreeTableColumn<KeyValuePair, String> treeTblViewOriginal;
+    @FXML
+    private TreeTableColumn<KeyValuePair, String> treeTblViewEdited;
+    @FXML
+    private JFXButton btnAddTreeRout;
+    
     private Config currentConfig;
-    @FXML
-    private JFXTextField txtFieldConfName;
-
+    private Model model;
     /**
      * Initializes the controller class.
      */
@@ -62,10 +64,13 @@ public class NewConfigWindowController implements Initializable {
 
     private void setUpViews() {
         try {
+
+            lstViewImportAttributes.getItems().addAll(model.getCurrentAttributes().getAttributesAsString());    // Fill out the list view with the attributes
+            System.out.println("Number of attributes: " + lstViewImportAttributes.getItems().size());
+            treeTblViewOriginal.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getKey()));
+            treeTblViewEdited.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue().getValue()));
+
             lstViewImportAttributes.getItems().addAll(model.getCurrentAttributes().getAttributesAsString()); // Fill out the list view with the attributes
-                        
-            tblViewOriginalName.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey()));
-            tblViewEditedName.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue()));
 
             lstViewImportAttributes.setOnMouseClicked((MouseEvent event) -> {
                 if (lstViewImportAttributes.getSelectionModel().getSelectedItem() != null) {   // Disable the remove button if an imported attribute is selected.
@@ -74,22 +79,31 @@ public class NewConfigWindowController implements Initializable {
             }
             );
 
-            tableViewExportAttributes.setOnMouseClicked((MouseEvent event) -> {
-                if (tableViewExportAttributes.getSelectionModel().getSelectedItem() != null) {  // Enable the remove button if a value is selected in the export attributes table view.
+            treeTblViewExport.setOnMouseClicked((MouseEvent event) -> {
+                if (treeTblViewExport.getSelectionModel().getSelectedItem() != null) {  // Enable the remove button if a value is selected in the export attributes table view.
                     btnRemove.setDisable(false);
                 }
             }
             );
 
-            tblViewEditedName.setCellFactory(TextFieldTableCell.forTableColumn()); // Enable the editing of the attribute name.
-            tblViewEditedName.setOnEditCommit((TableColumn.CellEditEvent<KeyValuePair, String> event) -> { // Save the edit 
-                KeyValuePair current = tableViewExportAttributes.getSelectionModel().getSelectedItem();
-                if (current == null) {
-                    throw new NullPointerException("Selection is null!");
-                }
-                current.setValue(event.getNewValue());
-            });
+            //treeTblViewEdited.setCellFactory(TextFieldTableCell.forTableColumn()); // Enable the editing of the attribute name.
+//            treeTblViewEdited.setOnEditCommit((TableColumn.CellEditEvent<KeyValuePair, String> event) -> { // Save the edit 
+//                KeyValuePair current = treeTblViewExport.getSelectionModel().getSelectedItem();
+//                if (current == null) {
+//                    throw new NullPointerException("Selection is null!");
+//                }
+//                current.setValue(event.getNewValue());
+//            });
             
+            treeTblViewEdited.setOnEditCommit(new EventHandler<TreeTableColumn.CellEditEvent<KeyValuePair, String>>() {
+                public void handle(TreeTableColumn.CellEditEvent<KeyValuePair, String> event) {
+                    KeyValuePair current = treeTblViewExport.getSelectionModel().getSelectedItem().valueProperty().getValue();
+                    if (current == null) {
+                    throw new NullPointerException("Selection is null!");
+                    }
+                    current.setValue(event.getNewValue());
+                }
+            });
         }
         catch (Exception ex) {
             EventPopup.showAlertPopup(ex);
@@ -102,20 +116,21 @@ public class NewConfigWindowController implements Initializable {
         if (selected == null) {
             return;
         }
-        tableViewExportAttributes.getItems().add(new KeyValuePair(selected, selected));
+        //treeTblViewExport.getItems().add(new KeyValuePair(selected, selected));
+        
         lstViewImportAttributes.getItems().remove(selected);
     }
 
     @FXML
     private void btnRemoveClicked(ActionEvent event) {
-        KeyValuePair selected = tableViewExportAttributes.getSelectionModel().getSelectedItem();
+        TreeItem<KeyValuePair> selected = treeTblViewExport.getSelectionModel().getSelectedItem();
         if (selected == null) {
             return;
         }
-        if (!tableViewExportAttributes.getItems().remove(selected)) {
+        /*if (!treeTblViewExport.getItems().remove(selected)) {
             EventPopup.showAlertPopup("Could not remove selected item!");
         }
-        lstViewImportAttributes.getItems().add(0, selected.getKey());
+        lstViewImportAttributes.getItems().add(0, selected.getItems());*/
     }
 
     @FXML
@@ -125,11 +140,15 @@ public class NewConfigWindowController implements Initializable {
             EventPopup.showAlertPopup("Please enter a name for this configuration!");
             return;
         }
-        currentConfig = new Config(name);
-        for (KeyValuePair item : tableViewExportAttributes.getItems()) { // Fill out the config with the relations.
+       /* currentConfig = new Config(name);
+        for (KeyValuePair item : treeTblViewExport.getItems()) { // Fill out the config with the relations.
             currentConfig.addRelation(item.getKey(), item.getValue());
         }
-        model.saveConfig(currentConfig);
+        model.saveConfig(currentConfig);*/
+    }
+
+    @FXML
+    private void addTreeRout(ActionEvent event) {
     }
 
     /**
@@ -138,7 +157,7 @@ public class NewConfigWindowController implements Initializable {
      */
     class KeyValuePair {
 
-        private String key;
+        private  String key;
         private String value;
 
         public KeyValuePair(String key, String value) {
