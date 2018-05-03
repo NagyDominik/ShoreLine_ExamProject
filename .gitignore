@@ -88,3 +88,7 @@ $RECYCLE.BIN/
 
 *.json
 *.json
+*.json
+*.csv
+*.json
+*.xls

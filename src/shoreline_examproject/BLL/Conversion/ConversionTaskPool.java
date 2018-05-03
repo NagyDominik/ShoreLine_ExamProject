@@ -1,5 +1,6 @@
 package shoreline_examproject.BLL.Conversion;
 
+import shoreline_examproject.Utility.ObjectPool;
 import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.Utility.EventLogger;
 
@@ -14,9 +15,7 @@ public class ConversionTaskPool extends ObjectPool<ConversionTask>
     {
         super();
     }
-    
-    
-
+ 
     @Override
     protected ConversionTask create()
     {

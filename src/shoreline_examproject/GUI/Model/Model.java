@@ -76,19 +76,6 @@ public class Model {
 
     public ObservableList<ConversionTask> getTasks()
     {
-        Config c1 = new Config("C1");
-        Config c2 = new Config("C2");
-        
-        ConversionTask t1 = new ConversionTask();
-        t1.setConfig(c1);
-    
-        
-        ConversionTask t2 = new ConversionTask();
-        t2.setConfig(c2);
-        
-        tasks.add(t1);
-        tasks.add(t2);
-        
         return tasks;
     }
 }
