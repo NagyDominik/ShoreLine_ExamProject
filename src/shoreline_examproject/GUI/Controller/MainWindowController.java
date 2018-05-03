@@ -4,7 +4,10 @@ import com.jfoenix.controls.JFXComboBox;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,14 +18,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
-import shoreline_examproject.BE.AttributesCollection;
-import shoreline_examproject.BLL.BLLManager;
-import shoreline_examproject.DAL.DALManager;
+import javafx.util.Callback;
+import shoreline_examproject.BE.Config;
+import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
-import shoreline_examproject.Utility.EventLogger;
 import shoreline_examproject.Utility.EventPopup;
 
 /**
@@ -39,19 +42,19 @@ public class MainWindowController implements Initializable {
     @FXML
     private Label configLbl;
     @FXML
-    private JFXComboBox<?> configComboBox;
+    private JFXComboBox<Config> configComboBox;
     @FXML
     private Label filePathLbl;
     @FXML
     private TableView<?> previewTV;
     @FXML
-    private TableView<?> taskTV;
+    private TableView<ConversionTask> taskTV;
     @FXML
     private Label userNameLbl;
     @FXML
-    private TableColumn<?, ?> taskTable;
+    private TableColumn<ConversionTask, String> taskTable;
     @FXML
-    private TableColumn<?, ?> progressTable;
+    private TableColumn<ConversionTask, Double> progressTable;
 
     private Model model;
 
@@ -60,11 +63,12 @@ public class MainWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
         userNameLbl.setText(System.getProperty("user.name"));
         userNameLbl.setAlignment(Pos.CENTER_RIGHT);
         model = Model.getInstance();
         model.setCurrentUser(userNameLbl.getText());
+        taskTV.getItems().addAll(model.getTasks());
+        setUpTaskTableView();
     }
 
     @FXML
@@ -96,7 +100,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private void startClicked(ActionEvent event) {
         try {
-            model.startConversion();
+            model.startConversion(configComboBox.getValue());
         }
         catch (ModelException ex) {
             EventPopup.showAlertPopup(ex);
@@ -146,5 +150,26 @@ public class MainWindowController implements Initializable {
         stage.setTitle("Log");
         stage.setResizable(false);
         stage.show();
+    }
+
+    private void setUpTaskTableView()
+    {
+        taskTable.setCellValueFactory((TableColumn.CellDataFeatures<ConversionTask, String> param) -> {
+            ConversionTask ct = param.getValue();
+            return new ReadOnlyStringWrapper(ct.getConfigName());
+        });
+        
+       progressTable.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ConversionTask, Double>, ObservableValue<Double>>()
+       {
+            @Override
+            public ObservableValue<Double> call(TableColumn.CellDataFeatures<ConversionTask, Double> param)
+            {
+                ConversionTask ct = param.getValue();
+                
+               return ct.progressProperty().asObject();
+            }
+        });
+       
+       progressTable.setCellFactory(ProgressBarTableCell.<ConversionTask> forTableColumn());
     }
 }

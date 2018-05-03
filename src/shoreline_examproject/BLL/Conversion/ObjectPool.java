@@ -35,14 +35,14 @@ public abstract class ObjectPool<T>
             while (e.hasMoreElements())
             {
                 t = e.nextElement();
-                if ((now - unlocked.get(e)) > expirationTime) {  // Object has expired
-                    unlocked.remove(e);   
+                if ((now - unlocked.get(t)) > expirationTime) {  // Object has expired
+                    unlocked.remove(t);   
                     expire(t);
                     t = null;
                 }
                 else {
                     if (validate(t)) {
-                        unlocked.remove(e);
+                        unlocked.remove(t);
                         locked.put(t, now);
                         return t;
                     }

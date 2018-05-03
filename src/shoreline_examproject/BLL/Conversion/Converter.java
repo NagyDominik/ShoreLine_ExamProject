@@ -1,5 +1,6 @@
 package shoreline_examproject.BLL.Conversion;
 
+import shoreline_examproject.BE.ConversionTask;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shoreline_examproject.BE.AttributesCollection;
@@ -21,6 +22,9 @@ public class Converter
         task.setInput(input);
         task.setConfig(config);
         
+       
+        
         pool.checkIn(task);
+        return null;
     }
 }

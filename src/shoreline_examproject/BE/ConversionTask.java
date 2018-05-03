@@ -1,12 +1,8 @@
-package shoreline_examproject.BLL.Conversion;
+package shoreline_examproject.BE;
 
 import java.util.concurrent.Callable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
-import shoreline_examproject.BE.AttributeMap;
-import shoreline_examproject.BE.AttributesCollection;
-import shoreline_examproject.BE.Config;
-import shoreline_examproject.BE.DataRow;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
@@ -16,9 +12,9 @@ import shoreline_examproject.Utility.EventLogger;
  */
 public class ConversionTask implements Callable<AttributesCollection> {
 
-    private final ReadOnlyDoubleWrapper progress = new ReadOnlyDoubleWrapper();
-    private final Config usedConfig; // The config that will be used to map the input values to the output values.
-    private final AttributesCollection inputData;
+    private final ReadOnlyDoubleWrapper progress = new ReadOnlyDoubleWrapper(0.5);
+    private Config usedConfig; // The config that will be used to map the input values to the output values.
+    private AttributesCollection inputData;
     private AttributesCollection convertedData;
     double count;  // The total number of data rows to convert, used to calculate the progress of the task.
 
@@ -28,9 +24,8 @@ public class ConversionTask implements Callable<AttributesCollection> {
         this.inputData = inputData;
     }
 
-    ConversionTask()
+    public ConversionTask()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -97,13 +92,18 @@ public class ConversionTask implements Callable<AttributesCollection> {
         return convertedAttributeMap;
     }
 
-    void setInput(AttributesCollection input)
+    public void setInput(AttributesCollection input)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.inputData = input;
     }
 
-    void setConfig(Config config)
+    public void setConfig(Config config)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.usedConfig = config;
+    }
+    
+    public String getConfigName()
+    {
+        return this.usedConfig.getName();
     }
 }

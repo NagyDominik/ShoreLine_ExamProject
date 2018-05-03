@@ -1,5 +1,6 @@
 package shoreline_examproject.BLL.Conversion;
 
+import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
