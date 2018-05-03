@@ -18,7 +18,6 @@ public class BLLManager implements IBLLManager {
     
     public BLLManager() {
         this.dal = new DALManager();
-        saveToJSON(dal.loadFileData("Import_data.xlsx"));
     }
 
     @Override
@@ -44,7 +43,8 @@ public class BLLManager implements IBLLManager {
 
     @Override
     public AttributesCollection convertData(AttributesCollection inputData) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        dal.saveData(inputData);
+        return new AttributesCollection(); //NEEDS TO BE IMPLEMENTED
     }
 
     public void saveToJSON(AttributesCollection data) {

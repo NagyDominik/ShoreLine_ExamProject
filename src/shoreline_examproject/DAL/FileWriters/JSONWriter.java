@@ -6,9 +6,6 @@ import com.google.gson.stream.JsonWriter;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import shoreline_examproject.BE.AttributeMap;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.DataRow;
@@ -17,7 +14,7 @@ import shoreline_examproject.Utility.EventLogger;
 /**
  * Saves the given data to a JSON file
  *
- * @author sebok
+ * @author Dominik
  */
 public class JSONWriter extends IFileWriter {
 
@@ -39,7 +36,7 @@ public class JSONWriter extends IFileWriter {
                 jwriter.endObject();
             }
             jwriter.endArray();
-            
+
             EventLogger.log(EventLogger.Level.SUCCESS, "JSON writing was successful.");
             System.out.println("Writing was succesfully");
         }
@@ -48,8 +45,8 @@ public class JSONWriter extends IFileWriter {
         }
 
     }
-    
-    private void writeObject(JsonWriter jwriter, AttributeMap data) throws IOException, NoSuchFieldException {
+
+    private void writeObject(JsonWriter jwriter, AttributeMap data) throws Exception {
         if (data.isIsTreeRoot()) {
             jwriter.name(data.getKey());
             jwriter.beginObject();
@@ -61,6 +58,5 @@ public class JSONWriter extends IFileWriter {
             jwriter.name(data.getKey()).value(data.getValue());
         }
     }
-    
+
 }
-    

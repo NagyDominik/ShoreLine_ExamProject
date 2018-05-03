@@ -48,8 +48,8 @@ public class Model {
         if (currentAttributes == null) {
             throw new ModelException("No attributes! (It is possible that an input file has not been provided)");
         }
-
         //TODO: add implementation for converting between formats in the BLL.
+        bllManager.convertData(currentAttributes);
         System.out.println(currentAttributes);
     }
 

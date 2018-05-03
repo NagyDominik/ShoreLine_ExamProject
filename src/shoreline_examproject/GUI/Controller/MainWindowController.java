@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXComboBox;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,12 +16,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
-import shoreline_examproject.BE.AttributesCollection;
-import shoreline_examproject.BLL.BLLManager;
-import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
-import shoreline_examproject.Utility.EventLogger;
 import shoreline_examproject.Utility.EventPopup;
 
 /**
@@ -118,7 +113,7 @@ public class MainWindowController implements Initializable {
 
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.setTitle("Details");
+        stage.setTitle("Options");
         stage.setResizable(false);
         stage.show();
         
