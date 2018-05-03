@@ -12,7 +12,7 @@ import shoreline_examproject.Utility.EventLogger;
  */
 public class ConversionTask implements Callable<AttributesCollection> {
 
-    private final ReadOnlyDoubleWrapper progress = new ReadOnlyDoubleWrapper(0.5);
+    private final ReadOnlyDoubleWrapper progress = new ReadOnlyDoubleWrapper();
     private Config usedConfig; // The config that will be used to map the input values to the output values.
     private AttributesCollection inputData;
     private AttributesCollection convertedData;

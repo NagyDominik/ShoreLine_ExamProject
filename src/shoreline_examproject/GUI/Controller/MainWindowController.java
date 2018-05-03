@@ -1,6 +1,7 @@
 package shoreline_examproject.GUI.Controller;
 
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -57,6 +58,8 @@ public class MainWindowController implements Initializable {
     private TableColumn<ConversionTask, Double> progressTable;
 
     private Model model;
+    @FXML
+    private JFXTextArea txtAreaPreview;
 
     /**
      * Initializes the controller class.
@@ -67,7 +70,8 @@ public class MainWindowController implements Initializable {
         userNameLbl.setAlignment(Pos.CENTER_RIGHT);
         model = Model.getInstance();
         model.setCurrentUser(userNameLbl.getText());
-        taskTV.getItems().addAll(model.getTasks());        
+        taskTV.setItems(model.getTasks());
+        
         setUpConfigComboBox();
         setUpTaskTableView();
         
@@ -101,12 +105,28 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void startClicked(ActionEvent event) {
+//        try {
+//            model.startConversion();
+//        }
+//        catch (ModelException ex) {
+//            EventPopup.showAlertPopup(ex);
+//        }
+    }
+    
+     @FXML
+    private void btnAddTask(ActionEvent event) {
+         if (configComboBox.getSelectionModel().getSelectedItem() == null) {
+             EventPopup.showAlertPopup("Please select a configuration!");
+             return;
+         }
+         
         try {
-            model.startConversion(configComboBox.getValue());
-        }
-        catch (ModelException ex) {
+            model.createNewConversionTask(configComboBox.getValue());
+        } catch (ModelException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
+         System.out.println(taskTV.getItems().size());
     }
 
     @FXML
@@ -204,6 +224,7 @@ public class MainWindowController implements Initializable {
             Scene s = userNameLbl.getScene();
             s.setCursor(Cursor.WAIT);
             t1.start();
+            t1.join();
             s.setCursor(Cursor.DEFAULT);
             filePathLbl.setText(path);
         }

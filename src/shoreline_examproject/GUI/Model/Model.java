@@ -41,14 +41,14 @@ public class Model {
         currentAttributes = bllManager.loadFileData(path);
     }
 
-    public void startConversion(Config currentConfig) throws ModelException {
-        if (currentAttributes == null) {
-            EventLogger.log(EventLogger.Level.ERROR, "No attributes list provided!");
-            throw new ModelException("No attributes! (It is possible that an input file has not been provided)");
-        }
-        //TODO: add implementation for converting between formats in the BLL.
-        bllManager.convertData(currentAttributes, new Config("asd"));
-    }
+//    public void startConversion(Config currentConfig) throws ModelException {
+//        if (currentAttributes == null) {
+//            EventLogger.log(EventLogger.Level.ERROR, "No attributes list provided!");
+//            throw new ModelException("No attributes! (It is possible that an input file has not been provided)");
+//        }
+//        //TODO: add implementation for converting between formats in the BLL.
+//        bllManager.convertData(currentAttributes, new Config("asd"));
+//    }
 
     public AttributesCollection getCurrentAttributes() throws ModelException {
         if (currentAttributes == null) {
@@ -77,5 +77,14 @@ public class Model {
     public ObservableList<ConversionTask> getTasks()
     {
         return tasks;
+    }
+
+    public void createNewConversionTask(Config value) throws ModelException
+    {
+        if (currentAttributes == null) {
+            throw new ModelException("currentAttribute null! It is possible that no file was selected");
+        }
+        tasks.add(bllManager.createConversionTask(value, currentAttributes));
+        System.out.println("tasks list size: " + tasks.size());
     }
 }

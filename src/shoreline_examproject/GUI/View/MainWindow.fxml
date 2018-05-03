@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
    <children>
       <ImageView fitHeight="64.0" fitWidth="134.0" layoutX="9.0" layoutY="4.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -134,11 +134,12 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="381.0" layoutY="115.0" onAction="#logClicked" prefHeight="23.0" prefWidth="52.0" style="-fx-background-color: #44bae6;" text="Log" AnchorPane.leftAnchor="381.0" AnchorPane.topAnchor="115.0">
+      <JFXButton buttonType="RAISED" layoutX="526.0" layoutY="20.0" onAction="#logClicked" prefHeight="23.0" prefWidth="52.0" style="-fx-background-color: #44bae6;" text="Log" AnchorPane.leftAnchor="526.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font>
       </JFXButton>
-      <JFXTextArea fx:id="txtAreaPreview" layoutX="37.0" layoutY="165.0" prefHeight="207.0" prefWidth="447.0" style="-fx-background-color: white;" />
+      <JFXTextArea fx:id="txtAreaPreview" layoutX="37.0" layoutY="165.0" prefHeight="250.0" prefWidth="400.0" style="-fx-background-color: white;" />
+      <JFXButton layoutX="365.0" layoutY="111.0" onAction="#btnAddTask" style="-fx-background-color: #44bae6;" text="Add task" />
    </children>
 </AnchorPane>

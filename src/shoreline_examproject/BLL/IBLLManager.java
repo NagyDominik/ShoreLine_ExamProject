@@ -2,6 +2,7 @@ package shoreline_examproject.BLL;
 
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
+import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.BE.EventLog;
 
 /**
@@ -19,5 +20,7 @@ public interface IBLLManager
     public AttributesCollection loadFileData(String filePath);
     
     public AttributesCollection convertData(AttributesCollection inputData, Config config);
+    
+    public ConversionTask createConversionTask(Config c, AttributesCollection ac);
     
 }
