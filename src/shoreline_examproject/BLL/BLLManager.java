@@ -35,16 +35,10 @@ public class BLLManager implements IBLLManager {
     public AttributesCollection loadFileData(String filePath) {
         return dal.loadFileData(filePath);
     }
-//
-//    @Override
-//    public AttributesCollection convertData(AttributesCollection inputData, ConvertType from, ConvertType to)
-//    {
-//        return converter.convertData(inputData, from, to);
-//    }
 
     @Override
-    public AttributesCollection convertData(AttributesCollection inputData) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public AttributesCollection convertData(AttributesCollection inputData, Config config) {
+        return null;
     }
 
     public void saveToJSON(AttributesCollection data) {

@@ -28,6 +28,7 @@ public class AttributeMap {
             value = null;
             values = new HashSet<>(10);
         }
+        
     }
 
     public void setValue(String value) {
@@ -76,9 +77,9 @@ public class AttributeMap {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         if (!isTreeRoot) {
-            sb.append(String.format("%s -> %s", key, value));
+            sb.append(String.format("%s -> %s\n", key, value));
         } else {
-            sb.append("\n");
+            sb.append("\t");
             values.forEach((value1) -> {
                 sb.append(value1.toString());
             });
@@ -101,7 +102,7 @@ public class AttributeMap {
         return attributes;
     }
 
-    void addValue(AttributeMap convertMap)
+    public void addValue(AttributeMap convertMap)
     {
         if(!this.values.add(convertMap)){
             throw new IllegalArgumentException("Could not add attribute map to this instance!");

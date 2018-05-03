@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -63,8 +62,8 @@ public class NewConfigWindowController implements Initializable {
 
     private void setUpViews() {
         try {
-            lstViewImportAttributes.getItems().addAll(model.getCurrentAttributes().getAttributesAsString());    // Fill out the list view with the attributes
-            System.out.println("Number of attributes: " + lstViewImportAttributes.getItems().size());
+            lstViewImportAttributes.getItems().addAll(model.getCurrentAttributes().getAttributesAsString()); // Fill out the list view with the attributes
+                        
             tblViewOriginalName.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey()));
             tblViewEditedName.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue()));
 

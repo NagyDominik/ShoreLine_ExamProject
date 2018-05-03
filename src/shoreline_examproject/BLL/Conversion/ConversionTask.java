@@ -1,8 +1,12 @@
-package shoreline_examproject.BE;
+package shoreline_examproject.BLL.Conversion;
 
 import java.util.concurrent.Callable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
+import shoreline_examproject.BE.AttributeMap;
+import shoreline_examproject.BE.AttributesCollection;
+import shoreline_examproject.BE.Config;
+import shoreline_examproject.BE.DataRow;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
@@ -22,6 +26,11 @@ public class ConversionTask implements Callable<AttributesCollection> {
     {
         this.usedConfig = usedConfig;
         this.inputData = inputData;
+    }
+
+    ConversionTask()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -86,5 +95,15 @@ public class ConversionTask implements Callable<AttributesCollection> {
         } 
         
         return convertedAttributeMap;
+    }
+
+    void setInput(AttributesCollection input)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void setConfig(Config config)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
