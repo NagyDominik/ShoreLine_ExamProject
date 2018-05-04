@@ -1,5 +1,6 @@
 package shoreline_examproject.BE;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.Callable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
@@ -16,16 +17,16 @@ public class ConversionTask implements Callable<AttributesCollection> {
     private Config usedConfig; // The config that will be used to map the input values to the output values.
     private AttributesCollection inputData;
     private AttributesCollection convertedData;
-    double count;  // The total number of data rows to convert, used to calculate the progress of the task.
+    private LocalDateTime startTime;
+    private double count;  // The total number of data rows to convert, used to calculate the progress of the task.    
 
-    public ConversionTask(Config usedConfig, AttributesCollection inputData)
-    {
+    public ConversionTask(Config usedConfig, AttributesCollection inputData) {
         this.usedConfig = usedConfig;
         this.inputData = inputData;
+        this.startTime = LocalDateTime.now();
     }
 
-    public ConversionTask()
-    {
+    public ConversionTask() {
     }
 
     @Override
@@ -56,7 +57,7 @@ public class ConversionTask implements Callable<AttributesCollection> {
     private void convert() throws NoSuchFieldException {
         convertedData = new AttributesCollection();
         count = inputData.getNumberOfDataEntries();
-        
+
         double prog = 0;
 
         for (DataRow dataRow : inputData.getData()) {
@@ -65,45 +66,50 @@ public class ConversionTask implements Callable<AttributesCollection> {
                 converted.addData(convertMap(attributeMap));
             }
             prog++;
-            progress.set(prog/count); // Count progress by counting the total number of rows converted.
+            progress.set(prog / count); // Count progress by counting the total number of rows converted.
         }
     }
 
     /**
      * Recursively convert a data row.
+     *
      * @param attributeMap
      * @return
-     * @throws NoSuchFieldException 
+     * @throws NoSuchFieldException
      */
-    private AttributeMap convertMap(AttributeMap attributeMap) throws NoSuchFieldException
-    {
+    private AttributeMap convertMap(AttributeMap attributeMap) throws NoSuchFieldException {
         AttributeMap convertedAttributeMap = null;
         if (!attributeMap.isIsTreeRoot()) {
             convertedAttributeMap = new AttributeMap(usedConfig.getValue(attributeMap.getKey()), false);
             convertedAttributeMap.setValue(attributeMap.getValue());
-        }
-        else {
+        } else {
             convertedAttributeMap = new AttributeMap(usedConfig.getValue(attributeMap.getKey()), true);
             for (AttributeMap value : attributeMap.getValues()) {
                 convertedAttributeMap.addValue(convertMap(value));
             }
-        } 
-        
+        }
+
         return convertedAttributeMap;
     }
 
-    public void setInput(AttributesCollection input)
-    {
+    public void setInput(AttributesCollection input) {
         this.inputData = input;
     }
 
-    public void setConfig(Config config)
-    {
+    public void setConfig(Config config) {
         this.usedConfig = config;
     }
-    
-    public String getConfigName()
-    {
+
+    public String getConfigName() {
         return this.usedConfig.getName();
     }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
 }
