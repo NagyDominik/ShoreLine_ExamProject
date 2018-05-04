@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
@@ -57,9 +56,8 @@ public class MainWindowController implements Initializable {
     private TableColumn<ConversionTask, Double> progressCol;
     @FXML
     private Label startTimeLbl;
-    
-    private Model model;    
-    
+
+    private Model model;
 
     /**
      * Initializes the controller class.
@@ -209,13 +207,12 @@ public class MainWindowController implements Initializable {
 
     private void loadFile(String path) {
         try {
-            Runnable r1 = () ->
-            {
-                    Scene s = userNameLbl.getScene();
-                    s.setCursor(Cursor.WAIT);
-                    model.loadFileData(path);
-                    EventLogger.log(EventLogger.Level.INFORMATION, String.format("The file %s has been loaded", path));
-                    s.setCursor(Cursor.DEFAULT);
+            Runnable r1 = () -> {
+                Scene s = userNameLbl.getScene();
+                s.setCursor(Cursor.WAIT);
+                model.loadFileData(path);
+                EventLogger.log(EventLogger.Level.INFORMATION, String.format("The file %s has been loaded", path));
+                s.setCursor(Cursor.DEFAULT);
             };
 
             Thread t1 = new Thread(r1);
@@ -229,10 +226,11 @@ public class MainWindowController implements Initializable {
     }
 
     private void setUpHandlersAndListeners() {
-         taskTV.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ConversionTask> o, ConversionTask oldV, ConversionTask newV) -> {
+        taskTV.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ConversionTask> o, ConversionTask oldV, ConversionTask newV) -> {
             taskNameLbl.setText(newV.getConfigName());
             progressLbl.textProperty().bind(newV.progressProperty().asString("%.0f %%"));
             startTimeLbl.setText(newV.getStartTimeAsString());
         });
     }
+    
 }
