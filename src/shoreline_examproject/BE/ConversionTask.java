@@ -106,4 +106,8 @@ public class ConversionTask implements Callable<AttributesCollection> {
     {
         return this.usedConfig.getName();
     }
+
+    public AttributesCollection getInputData() {
+        return inputData;
+    }
 }

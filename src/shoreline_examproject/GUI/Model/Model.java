@@ -26,6 +26,8 @@ public class Model {
     
     private ObservableList<ConversionTask> tasks = FXCollections.observableArrayList();
     
+    private ConversionTask currentConversionTask;
+    
     private Model() {
         bllManager = new BLLManager();
     }
@@ -87,4 +89,11 @@ public class Model {
         tasks.add(bllManager.createConversionTask(value, currentAttributes));
         System.out.println("tasks list size: " + tasks.size());
     }
+    
+    public ConversionTask getSelectedTaskDetails(ConversionTask task){
+         return currentConversionTask;
+        
+    }
+    
+    
 }

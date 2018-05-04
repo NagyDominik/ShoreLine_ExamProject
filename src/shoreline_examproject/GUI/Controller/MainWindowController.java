@@ -60,6 +60,7 @@ public class MainWindowController implements Initializable {
     private JFXTextArea txtAreaPreview;
     @FXML
     private Label startTimeLbl;
+  
 
     /**
      * Initializes the controller class.
@@ -160,6 +161,7 @@ public class MainWindowController implements Initializable {
         stage.setTitle("Details");
         stage.setResizable(false);
         stage.show();
+        
     }
 
     @FXML
@@ -232,5 +234,9 @@ public class MainWindowController implements Initializable {
             EventLogger.log(EventLogger.Level.ERROR, String.format("An error occured while attempting to load the given file: %s \nException message: %s", path, ex.getMessage()));
             EventPopup.showAlertPopup(ex);
         }
+    }
+    public void getSelectedTask(ConversionTask task){
+         task = taskTV.getSelectionModel().getSelectedItem();
+         model.getSelectedTaskDetails(task);
     }
 }

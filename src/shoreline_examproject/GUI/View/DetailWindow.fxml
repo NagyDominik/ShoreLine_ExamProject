@@ -55,12 +55,12 @@
             <Font name="Exo 2 Semi Bold" size="13.0" />
          </font>
       </Label>
-      <ProgressBar layoutX="91.0" layoutY="147.0" prefHeight="18.0" prefWidth="277.0" progress="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="145.0" />
-      <Label layoutX="93.0" layoutY="119.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="120.0" />
-      <Label layoutX="91.0" layoutY="173.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="170.0" />
-      <Label layoutX="91.0" layoutY="199.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="195.0" />
-      <Label layoutX="91.0" layoutY="225.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="220.0" />
-      <Label layoutX="91.0" layoutY="252.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="245.0" />
+      <ProgressBar fx:id="progressBar" layoutX="91.0" layoutY="147.0" prefHeight="18.0" prefWidth="277.0" progress="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="145.0" />
+      <Label fx:id="taskNameLbl" layoutX="93.0" layoutY="119.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="120.0" />
+      <Label fx:id="configLbl" layoutX="91.0" layoutY="173.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="170.0" />
+      <Label fx:id="importLbl" layoutX="91.0" layoutY="199.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="195.0" />
+      <Label fx:id="exportLbl" layoutX="91.0" layoutY="225.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="220.0" />
+      <Label fx:id="startTimeLbl" layoutX="91.0" layoutY="252.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="245.0" />
       <ImageView fitHeight="60.0" fitWidth="105.0" layoutY="1.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
             <Image url="@../../img/bar.png" />
