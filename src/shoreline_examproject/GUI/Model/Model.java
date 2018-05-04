@@ -80,15 +80,12 @@ public class Model {
         System.out.println("tasks list size: " + tasks.size());
     }
     
-    public ConversionTask getSelectedTaskDetails(ConversionTask task){
+    public ConversionTask getSelectedTask(){
          return currentConversionTask;
-        
     }
-    public void getSelectedTaskDetails(ConversionTask task){
-        
-    }
-    public void setCurrentConversionTask(ConversionTask task){
-        
+    
+    public void setSelectedTask(ConversionTask task){
+        this.currentConversionTask = task;
     }
     
     

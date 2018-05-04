@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="400.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.DetailWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="400.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.DetailWindowController">
    <children>
       <ImageView fitHeight="60.0" fitWidth="105.0" layoutY="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
@@ -35,11 +35,6 @@
             <Font name="Exo 2 Semi Bold" size="13.0" />
          </font>
       </Label>
-      <Label layoutX="14.0" layoutY="173.0" text="Config:" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="170.0">
-         <font>
-            <Font name="Exo 2 Semi Bold" size="13.0" />
-         </font>
-      </Label>
       <Label layoutX="14.0" layoutY="199.0" text="Import:" textFill="WHITE" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="195.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="13.0" />
@@ -57,7 +52,6 @@
       </Label>
       <ProgressBar fx:id="progressBar" layoutX="91.0" layoutY="147.0" prefHeight="18.0" prefWidth="277.0" progress="0.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="145.0" />
       <Label fx:id="taskNameLbl" layoutX="93.0" layoutY="119.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="120.0" />
-      <Label fx:id="configLbl" layoutX="91.0" layoutY="173.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="170.0" />
       <Label fx:id="importLbl" layoutX="91.0" layoutY="199.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="195.0" />
       <Label fx:id="exportLbl" layoutX="91.0" layoutY="225.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="220.0" />
       <Label fx:id="startTimeLbl" layoutX="91.0" layoutY="252.0" prefHeight="17.0" prefWidth="277.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="245.0" />

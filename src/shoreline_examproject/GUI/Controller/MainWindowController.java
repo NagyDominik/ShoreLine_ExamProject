@@ -153,15 +153,15 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void moreDetailClicked(ActionEvent event) throws IOException {
+        model.setSelectedTask(taskTV.getSelectionModel().getSelectedItem());
+        
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/DetailWindow.fxml"));
         Parent root = (Parent) loader.load();
-
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("Details");
         stage.setResizable(false);
         stage.show();
-        
     }
 
     @FXML
@@ -228,10 +228,7 @@ public class MainWindowController implements Initializable {
             EventPopup.showAlertPopup(ex);
         }
     }
-
-    public void setSelectedTask(ConversionTask task){
-         taskTV.getSelectionModel().getSelectedItem() = model.setCurrentConversionTask(task);
-    }
+    
     private void setUpHandlersAndListeners() {
         taskTV.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ConversionTask> o, ConversionTask oldV, ConversionTask newV) -> {
             taskNameLbl.setText(newV.getConfigName());

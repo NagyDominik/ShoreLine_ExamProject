@@ -26,29 +26,23 @@ public class DetailWindowController implements Initializable {
 
     @FXML
     private JFXButton closeButton;
-
     @FXML
     private Label taskNameLbl;
-    @FXML
-    private Label configLbl;
     @FXML
     private Label importLbl;
     @FXML
     private Label exportLbl;
     @FXML
     private Label startTimeLbl;
-    
     @FXML
     private ProgressBar progressBar;
 
     private Model model;
-    private ConversionTask currentTask;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         model = Model.getInstance();
-        setUpDetails(currentTask);
-
+        setUpDetails(model.getSelectedTask());
     }
 
     @FXML
@@ -58,11 +52,11 @@ public class DetailWindowController implements Initializable {
     }
 
     private void setUpDetails(ConversionTask task) {
-        currentTask = task;
-        configLbl.setText(model.getSelectedTaskDetails(currentTask).getConfigName());
-        importLbl.setText(model.getSelectedTaskDetails(currentTask).getInputData().toString());
-        progressBar.setProgress(model.getSelectedTaskDetails(currentTask).getProgress());
-        
+        taskNameLbl.setText(task.getConfigName());
+        progressBar.progressProperty().bind(task.progressProperty());
+        importLbl.setText(task.getInputData().getImportPath());
+        exportLbl.setText("TO BE IMPLEMENTED!");
+        startTimeLbl.setText(task.getStartTimeAsString());
     }
 
 }
