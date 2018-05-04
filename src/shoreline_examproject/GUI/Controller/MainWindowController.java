@@ -43,8 +43,6 @@ public class MainWindowController implements Initializable {
     @FXML
     private Label progressLbl;
     @FXML
-    private Label configLbl;
-    @FXML
     private JFXComboBox<Config> configComboBox;
     @FXML
     private Label filePathLbl;
@@ -60,6 +58,8 @@ public class MainWindowController implements Initializable {
     private Model model;
     @FXML
     private JFXTextArea txtAreaPreview;
+    @FXML
+    private Label startTimeLbl;
 
     /**
      * Initializes the controller class.
