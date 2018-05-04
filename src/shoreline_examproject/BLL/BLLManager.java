@@ -44,8 +44,8 @@ public class BLLManager implements IBLLManager {
     }
 
     @Override
-    public AttributesCollection convertData(AttributesCollection inputData, Config config) {
-        return null;
+    public void convertData() {
+        converter.convertAll();
     }
 
     @Override

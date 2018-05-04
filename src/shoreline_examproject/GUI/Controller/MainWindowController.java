@@ -5,10 +5,7 @@ import com.jfoenix.controls.JFXTextArea;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -75,7 +72,7 @@ public class MainWindowController implements Initializable {
         setUpConfigComboBox();
         setUpTaskTableView();
         
-        configComboBox.getItems().addAll(new Config("Name 1"), new Config("Config 2"), new Config("Canfig 3"));
+        configComboBox.getItems().addAll(new Config("Name 1"), new Config("Config 2"), new Config("Config 3"));
     }
 
     @FXML
@@ -105,12 +102,12 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void startClicked(ActionEvent event) {
-//        try {
-//            model.startConversion();
-//        }
-//        catch (ModelException ex) {
-//            EventPopup.showAlertPopup(ex);
-//        }
+        try {
+            model.startConversion();
+        }
+        catch (ModelException ex) {
+            EventPopup.showAlertPopup(ex);
+        }
     }
     
      @FXML
@@ -216,16 +213,15 @@ public class MainWindowController implements Initializable {
         try {
             Runnable r1 = () ->
             {
-                model.loadFileData(path);
-                EventLogger.log(EventLogger.Level.INFORMATION, String.format("The file %s has been loaded", path));
+                    Scene s = userNameLbl.getScene();
+                    s.setCursor(Cursor.WAIT);
+                    model.loadFileData(path);
+                    EventLogger.log(EventLogger.Level.INFORMATION, String.format("The file %s has been loaded", path));
+                    s.setCursor(Cursor.DEFAULT);
             };
             
             Thread t1 = new Thread(r1);
-            Scene s = userNameLbl.getScene();
-            s.setCursor(Cursor.WAIT);
             t1.start();
-            t1.join();
-            s.setCursor(Cursor.DEFAULT);
             filePathLbl.setText(path);
         }
         catch (Exception ex) {

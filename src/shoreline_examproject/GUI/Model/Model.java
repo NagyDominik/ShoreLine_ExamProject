@@ -8,7 +8,6 @@ import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.BLL.BLLManager;
 import shoreline_examproject.BLL.IBLLManager;
-import shoreline_examproject.Utility.EventLogger;
 
 /**
  *
@@ -41,14 +40,9 @@ public class Model {
         currentAttributes = bllManager.loadFileData(path);
     }
 
-//    public void startConversion(Config currentConfig) throws ModelException {
-//        if (currentAttributes == null) {
-//            EventLogger.log(EventLogger.Level.ERROR, "No attributes list provided!");
-//            throw new ModelException("No attributes! (It is possible that an input file has not been provided)");
-//        }
-//        //TODO: add implementation for converting between formats in the BLL.
-//        bllManager.convertData(currentAttributes, new Config("asd"));
-//    }
+    public void startConversion() throws ModelException {
+        bllManager.convertData();
+    }
 
     public AttributesCollection getCurrentAttributes() throws ModelException {
         if (currentAttributes == null) {
