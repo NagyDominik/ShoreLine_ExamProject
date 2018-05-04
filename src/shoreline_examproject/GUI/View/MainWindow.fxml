@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
    <children>
       <ImageView fitHeight="64.0" fitWidth="134.0" layoutX="9.0" layoutY="4.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -87,8 +87,11 @@
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></Label>
-      <Label layoutX="521.0" layoutY="322.0" prefHeight="17.0" prefWidth="65.0" text="Progress:" textFill="WHITE" AnchorPane.bottomAnchor="105.0" AnchorPane.rightAnchor="150.0" />
-      <Label layoutX="521.0" layoutY="339.0" prefHeight="17.0" prefWidth="65.0" text="Config:" textFill="WHITE" AnchorPane.bottomAnchor="85.0" AnchorPane.rightAnchor="150.0">
+      <Label layoutX="521.0" layoutY="322.0" prefHeight="17.0" prefWidth="65.0" text="Progress:" textFill="WHITE" AnchorPane.bottomAnchor="105.0" AnchorPane.rightAnchor="150.0">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="521.0" layoutY="339.0" prefHeight="17.0" prefWidth="65.0" text="Start time:" textFill="WHITE" AnchorPane.bottomAnchor="85.0" AnchorPane.rightAnchor="150.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></Label>
@@ -100,7 +103,7 @@
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></Label>
-      <Label fx:id="configLbl" layoutX="573.0" layoutY="339.0" prefHeight="17.0" prefWidth="99.0" textFill="WHITE" AnchorPane.bottomAnchor="85.0" AnchorPane.rightAnchor="33.0">
+      <Label fx:id="startTimeLbl" layoutX="573.0" layoutY="339.0" prefHeight="17.0" prefWidth="99.0" textFill="WHITE" AnchorPane.bottomAnchor="85.0" AnchorPane.rightAnchor="33.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></Label>
@@ -122,7 +125,7 @@
             <Image url="@../../img/shortlogo.png" />
          </image>
       </ImageView>
-      <JFXButton buttonType="RAISED" layoutX="476.0" layoutY="358.0" onAction="#moreDetailClicked" style="-fx-background-color: #B8B8BD;" text="More detail..." AnchorPane.bottomAnchor="55.0" AnchorPane.rightAnchor="132.0">
+      <JFXButton buttonType="RAISED" layoutX="598.0" layoutY="389.0" onAction="#moreDetailClicked" style="-fx-background-color: #B8B8BD;" text="More detail..." AnchorPane.bottomAnchor="51.0" AnchorPane.rightAnchor="75.0">
          <effect>
             <Glow level="0.0">
                <input>
@@ -134,12 +137,15 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="526.0" layoutY="20.0" onAction="#logClicked" prefHeight="23.0" prefWidth="52.0" style="-fx-background-color: #44bae6;" text="Log" AnchorPane.leftAnchor="526.0" AnchorPane.topAnchor="20.0">
+      <JFXButton buttonType="RAISED" layoutX="42.0" layoutY="427.0" onAction="#logClicked" prefHeight="23.0" prefWidth="52.0" style="-fx-background-color: #44bae6;" text="Log" AnchorPane.leftAnchor="42.0" AnchorPane.topAnchor="427.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font>
       </JFXButton>
-      <JFXTextArea fx:id="txtAreaPreview" layoutX="37.0" layoutY="165.0" prefHeight="250.0" prefWidth="400.0" style="-fx-background-color: white;" />
-      <JFXButton layoutX="365.0" layoutY="111.0" onAction="#btnAddTask" style="-fx-background-color: #44bae6;" text="Add task" />
+      <JFXTextArea fx:id="txtAreaPreview" layoutX="41.0" layoutY="164.0" prefHeight="250.0" prefWidth="400.0" style="-fx-background-color: white;" />
+      <JFXButton buttonType="RAISED" layoutX="364.0" layoutY="114.0" onAction="#btnAddTask" prefHeight="26.0" prefWidth="65.0" style="-fx-background-color: #6EE854;" text="Add task">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="12.0" />
+         </font></JFXButton>
    </children>
 </AnchorPane>

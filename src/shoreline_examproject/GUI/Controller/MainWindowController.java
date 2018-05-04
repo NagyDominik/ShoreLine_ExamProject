@@ -44,8 +44,6 @@ public class MainWindowController implements Initializable {
     @FXML
     private Label progressLbl;
     @FXML
-    private Label configLbl;
-    @FXML
     private JFXComboBox<Config> configComboBox;
     @FXML
     private Label filePathLbl;
@@ -59,8 +57,11 @@ public class MainWindowController implements Initializable {
     private TableColumn<ConversionTask, String> taskCol;
     @FXML
     private TableColumn<ConversionTask, Double> progressCol;
+    @FXML
+    private Label startTimeLbl;
     
     private Model model;    
+    
 
     /**
      * Initializes the controller class.
