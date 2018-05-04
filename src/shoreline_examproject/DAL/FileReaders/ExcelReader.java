@@ -1,6 +1,5 @@
 package shoreline_examproject.DAL.FileReaders;
 
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +30,7 @@ public class ExcelReader extends IFileReader {
     @Override
     public AttributesCollection getData(File file) {
         AttributesCollection loadedAttributes = new AttributesCollection();
+        loadedAttributes.setImportPath(file.getPath());
         try {
             String extension = file.getPath().substring(file.getPath().lastIndexOf("."));
             switch (extension) {

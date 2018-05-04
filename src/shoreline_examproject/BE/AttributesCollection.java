@@ -11,6 +11,7 @@ import java.util.List;
 public class AttributesCollection {
 
     private List<DataRow> attributes;
+    private String importPath;
 
     public AttributesCollection() {
         attributes = new ArrayList<>();
@@ -36,8 +37,16 @@ public class AttributesCollection {
         return attributes;
     }
 
-    public List<DataRow> getData()
-    {
+    public List<DataRow> getData() {
         return this.attributes;
     }
+
+    public String getImportPath() {
+        return importPath;
+    }
+
+    public void setImportPath(String importPath) {
+        this.importPath = importPath;
+    }
+    
 }

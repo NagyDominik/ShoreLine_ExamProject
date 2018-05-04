@@ -17,12 +17,8 @@ public class Model {
 
     private static Model instance;
     private final IBLLManager bllManager;
-    
     private AttributesCollection currentAttributes; //The attributes of the currently loaded file.
-    private String currentUser;
-
-    private final ObservableList<EventLog> logList = FXCollections.observableArrayList();
-    
+    private String currentUser;    
     private ObservableList<ConversionTask> tasks = FXCollections.observableArrayList();
     
     private Model() {
