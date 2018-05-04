@@ -1,6 +1,9 @@
 package shoreline_examproject.BE;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.concurrent.Callable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
@@ -27,6 +30,7 @@ public class ConversionTask implements Callable<AttributesCollection> {
     }
 
     public ConversionTask() {
+        this.startTime = LocalDateTime.now();
     }
 
     @Override
@@ -110,6 +114,11 @@ public class ConversionTask implements Callable<AttributesCollection> {
 
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
+    }
+    
+    public String getStartTimeAsString() {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss");
+        return startTime.format(format);
     }
 
 }

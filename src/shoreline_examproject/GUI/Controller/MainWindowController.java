@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -232,13 +233,10 @@ public class MainWindowController implements Initializable {
     }
 
     private void setUpHandlersAndListeners() {
-        taskTV.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ConversionTask>
-            () {
-            @Override
-            public void changed(ObservableValue<? extends ConversionTask> observable, ConversionTask oldValue, ConversionTask newValue) {
-                taskNameLbl.setText(newValue.getConfigName());
-                progressLbl.textProperty().bind(newValue.progressProperty().asString());
-            }
+        taskTV.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ConversionTask> o, ConversionTask oldV, ConversionTask newV) -> {
+            taskNameLbl.setText(newV.getConfigName());
+            progressLbl.textProperty().bind(newV.progressProperty().asString("%.0f %%"));
+            startTimeLbl.setText(newV.getStartTimeAsString());
         });
     }
 }
