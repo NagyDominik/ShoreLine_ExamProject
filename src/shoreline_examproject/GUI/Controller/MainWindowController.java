@@ -229,9 +229,8 @@ public class MainWindowController implements Initializable {
         }
     }
 
-    public void getSelectedTask(ConversionTask task){
-         task = taskTV.getSelectionModel().getSelectedItem();
-         model.getSelectedTaskDetails(task);
+    public void setSelectedTask(ConversionTask task){
+         taskTV.getSelectionModel().getSelectedItem() = model.setCurrentConversionTask(task);
     }
     private void setUpHandlersAndListeners() {
         taskTV.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ConversionTask> o, ConversionTask oldV, ConversionTask newV) -> {

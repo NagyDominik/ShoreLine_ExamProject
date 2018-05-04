@@ -84,6 +84,12 @@ public class Model {
          return currentConversionTask;
         
     }
+    public void getSelectedTaskDetails(ConversionTask task){
+        
+    }
+    public void setCurrentConversionTask(ConversionTask task){
+        
+    }
     
     
 }
