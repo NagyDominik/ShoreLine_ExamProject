@@ -19,7 +19,7 @@ public interface IBLLManager
 
     public AttributesCollection loadFileData(String filePath);
     
-    public AttributesCollection convertData(AttributesCollection inputData, Config config);
+    public void convertData();
     
     public ConversionTask createConversionTask(Config c, AttributesCollection ac);
     

@@ -4,11 +4,10 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.concurrent.Task;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -51,16 +50,15 @@ public class MainWindowController implements Initializable {
     @FXML
     private Label userNameLbl;
     @FXML
-    private TableColumn<ConversionTask, String> taskTable;
-    @FXML
-    private TableColumn<ConversionTask, Double> progressTable;
-
-    private Model model;
-    @FXML
     private JFXTextArea txtAreaPreview;
     @FXML
+    private TableColumn<ConversionTask, String> taskCol;
+    @FXML
+    private TableColumn<ConversionTask, Double> progressCol;
+    @FXML
     private Label startTimeLbl;
-  
+    
+    private Model model;    
 
     /**
      * Initializes the controller class.
@@ -72,11 +70,11 @@ public class MainWindowController implements Initializable {
         model = Model.getInstance();
         model.setCurrentUser(userNameLbl.getText());
         taskTV.setItems(model.getTasks());
-        
+
         setUpConfigComboBox();
         setUpTaskTableView();
-        
-        configComboBox.getItems().addAll(new Config("Name 1"), new Config("Config 2"), new Config("Canfig 3"));
+        setUpHandlersAndListeners();
+        configComboBox.getItems().addAll(new Config("Name 1"), new Config("Config 2"), new Config("Config 3"));
     }
 
     @FXML
@@ -106,28 +104,28 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void startClicked(ActionEvent event) {
-//        try {
-//            model.startConversion();
-//        }
-//        catch (ModelException ex) {
-//            EventPopup.showAlertPopup(ex);
-//        }
+        try {
+            model.startConversion();
+        }
+        catch (ModelException ex) {
+            EventPopup.showAlertPopup(ex);
+        }
     }
-    
-     @FXML
+
+    @FXML
     private void btnAddTask(ActionEvent event) {
-         if (configComboBox.getSelectionModel().getSelectedItem() == null) {
-             EventPopup.showAlertPopup("Please select a configuration!");
-             return;
-         }
-         
+        if (configComboBox.getSelectionModel().getSelectedItem() == null) {
+            EventPopup.showAlertPopup("Please select a configuration!");
+            return;
+        }
         try {
             model.createNewConversionTask(configComboBox.getValue());
-        } catch (ModelException ex) {
+        }
+        catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
-         System.out.println(taskTV.getItems().size());
+        System.out.println(taskTV.getItems().size());
     }
 
     @FXML
@@ -148,7 +146,7 @@ public class MainWindowController implements Initializable {
         stage.setTitle("Options");
         stage.setResizable(false);
         stage.show();
-        
+
     }
 
     @FXML
@@ -176,58 +174,52 @@ public class MainWindowController implements Initializable {
         stage.show();
     }
 
-    private void setUpTaskTableView()
-    {
-        taskTable.setCellValueFactory((TableColumn.CellDataFeatures<ConversionTask, String> param) -> {
+    private void setUpTaskTableView() {
+        taskCol.setCellValueFactory((TableColumn.CellDataFeatures<ConversionTask, String> param) -> {
             ConversionTask ct = param.getValue();
             return new ReadOnlyStringWrapper(ct.getConfigName());
         });
-        
-       progressTable.setCellValueFactory((TableColumn.CellDataFeatures<ConversionTask, Double> param) -> {
-           ConversionTask ct = param.getValue();
-           
-           return ct.progressProperty().asObject();
+
+        progressCol.setCellValueFactory((TableColumn.CellDataFeatures<ConversionTask, Double> param) -> {
+            ConversionTask ct = param.getValue();
+
+            return ct.progressProperty().asObject();
         });
-       
-       progressTable.setCellFactory(ProgressBarTableCell.<ConversionTask> forTableColumn());
+
+        progressCol.setCellFactory(ProgressBarTableCell.<ConversionTask>forTableColumn());
     }
 
     /**
-     * Set up the combo box to correctly display the names of the contained configurations.
+     * Set up the combo box to correctly display the names of the contained
+     * configurations.
      */
-    private void setUpConfigComboBox()
-    {
-        configComboBox.setConverter(new StringConverter<Config>()
-        {
+    private void setUpConfigComboBox() {
+        configComboBox.setConverter(new StringConverter<Config>() {
             @Override
-            public String toString(Config object)
-            {
+            public String toString(Config object) {
                 return object.getName();
             }
 
             @Override
-            public Config fromString(String string)
-            {
+            public Config fromString(String string) {
                 return configComboBox.getItems().stream().filter(c -> c.getName().equals(string)).findFirst().orElse(null); // Curtesy of StackOverflow
             }
         });
     }
 
-    private void loadFile(String path)
-    {
+    private void loadFile(String path) {
         try {
             Runnable r1 = () ->
             {
-                model.loadFileData(path);
-                EventLogger.log(EventLogger.Level.INFORMATION, String.format("The file %s has been loaded", path));
+                    Scene s = userNameLbl.getScene();
+                    s.setCursor(Cursor.WAIT);
+                    model.loadFileData(path);
+                    EventLogger.log(EventLogger.Level.INFORMATION, String.format("The file %s has been loaded", path));
+                    s.setCursor(Cursor.DEFAULT);
             };
-            
+
             Thread t1 = new Thread(r1);
-            Scene s = userNameLbl.getScene();
-            s.setCursor(Cursor.WAIT);
             t1.start();
-            t1.join();
-            s.setCursor(Cursor.DEFAULT);
             filePathLbl.setText(path);
         }
         catch (Exception ex) {
@@ -235,8 +227,17 @@ public class MainWindowController implements Initializable {
             EventPopup.showAlertPopup(ex);
         }
     }
+
     public void getSelectedTask(ConversionTask task){
          task = taskTV.getSelectionModel().getSelectedItem();
          model.getSelectedTaskDetails(task);
+    }
+    private void setUpHandlersAndListeners() {
+         taskTV.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ConversionTask> o, ConversionTask oldV, ConversionTask newV) -> {
+            taskNameLbl.setText(newV.getConfigName());
+            progressLbl.textProperty().bind(newV.progressProperty().asString("%.0f %%"));
+            startTimeLbl.setText(newV.getStartTimeAsString());
+        });
+
     }
 }
