@@ -90,8 +90,6 @@
             </ImageView>
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="btnAddTreeroot" buttonType="RAISED" layoutX="336.0" layoutY="133.0" onAction="#addTreeRout" prefHeight="32.0" prefWidth="94.0" style="-fx-background-color: lightblue;" text="Add treeroot" />
-      <JFXButton fx:id="btnAddToTreeroot" buttonType="RAISED" layoutX="328.0" layoutY="172.0" onAction="#addToTreeroot" prefHeight="33.0" prefWidth="110.0" style="-fx-background-color: #4f8fff;" text="Add to treeroot" />
       <TableView fx:id="exportTblView" editable="true" layoutX="450.0" layoutY="111.0" prefHeight="290.0" prefWidth="215.0">
         <columns>
           <TableColumn fx:id="originalExportTblCol" prefWidth="75.0" text="Original" />

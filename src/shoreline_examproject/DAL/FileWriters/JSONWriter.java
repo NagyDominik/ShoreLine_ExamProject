@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import shoreline_examproject.BE.AttributeMap;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.DataRow;
-import shoreline_examproject.BE.MultiLayerBase;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
@@ -51,9 +50,8 @@ public class JSONWriter extends IFileWriter {
         if (data.isIsTreeRoot()) {
             jwriter.name(data.getKey());
             jwriter.beginObject();
-            for (MultiLayerBase v : data.getValues()) {
-                AttributeMap value = (AttributeMap) v;
-                writeObject(jwriter, value);
+            for (AttributeMap v : data.getValues()) {
+                writeObject(jwriter, v);
             }
             jwriter.endObject();
         } else {

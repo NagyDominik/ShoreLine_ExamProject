@@ -4,24 +4,21 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.GUI.Model.Model;
+import shoreline_examproject.Utility.EventLogger;
 import shoreline_examproject.Utility.EventPopup;
 
 /**
@@ -93,12 +90,18 @@ public class NewConfigWindowController implements Initializable {
             
             editedExportTblCol.setCellFactory(TextFieldTableCell.forTableColumn());
             
-            editedExportTblCol.setOnEditCommit((TableColumn.CellEditEvent<KeyValuePair, String> event) -> { // Save edit
+            editedExportTblCol.setOnEditCommit((TableColumn.CellEditEvent<KeyValuePair, String> event) -> { try {
+                // Save edit
                 KeyValuePair kvp = event.getRowValue();
                 kvp.setValue(event.getNewValue());
+                currentConfig.updateValue(kvp.getKey(), event.getNewValue());
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(NewConfigWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             });
         }
         catch (Exception ex) {
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured! Exception texts: \n" + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -115,32 +118,31 @@ public class NewConfigWindowController implements Initializable {
         
         KeyValuePair kvp = new KeyValuePair(selected, selected);
         exportTblView.getItems().add(kvp);
-        lstViewImportAttributes.getItems().remove(kvp);                   
+        lstViewImportAttributes.getItems().remove(kvp.getKey());   
+        currentConfig.addRelation(selected, selected);
     }
 
     @FXML
     private void btnRemoveClicked(ActionEvent event)
     {
+        KeyValuePair selected = exportTblView.getSelectionModel().getSelectedItem();
+        
+        if (selected == null) {
+            return;
+        }
+        
+        exportTblView.getItems().remove(selected);
+        lstViewImportAttributes.getItems().add(0, selected.key);
     }
 
     @FXML
     private void btnSaveClicked(ActionEvent event)
     {
+        System.out.println(currentConfig.toString());
     }
-
-    @FXML
-    private void addTreeRout(ActionEvent event)
-    {
-    }
-
-    @FXML
-    private void addToTreeroot(ActionEvent event)
-    {
-    }
-
 
     /**
-     * Nested class, used to store key-value pairs in the export attributes
+     * Nested class, used to store key-value pairs in the export attributes, to make displaying them easier.
      * table view.
      */
     class KeyValuePair {
