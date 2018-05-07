@@ -12,7 +12,7 @@ public class Config {
     private int id;
     private String name;
 
-    private HashMap<String, String> relations;  //Holds the relation between the input and output attributes
+    private HashMap<AttributeMap, AttributeMap> relations;  //Holds the relation between the input and output attributes
 
     public Config(int id, String name) {
         this.id = id;
@@ -31,7 +31,7 @@ public class Config {
      * @param exportAttribute The attribute that will be exported (to a JSON
      * file). This will be the value.
      */
-    public void addRelation(String inputAttribute, String exportAttribute) {
+    public void addRelation(AttributeMap inputAttribute, AttributeMap exportAttribute) {
         if (relations.containsKey(inputAttribute)) {
             throw new IllegalArgumentException("Should not add one attribute more than once!");
         }
@@ -47,7 +47,7 @@ public class Config {
      * @param exportAttribute The attribute that would have been exported. This
      * is the value.
      */
-    public void removeRelation(String inputAttribute, String exportAttribute) {
+    public void removeRelation(AttributeMap inputAttribute, AttributeMap exportAttribute) {
         if (!relations.containsKey(inputAttribute)) {
             throw new IllegalArgumentException("Can not remove not existing values!");
         }
@@ -78,11 +78,11 @@ public class Config {
         return relations.containsKey(key);
     }
 
-    public String getValue(String attribute) {
+    public String getValue(String attribute) throws NoSuchFieldException {
         if (!relations.containsKey(attribute)) {
             throw new IllegalArgumentException("Provided attribute is not found!");
         }
 
-        return relations.get(attribute);
+        return relations.get(attribute).getValue();
     }
 }
