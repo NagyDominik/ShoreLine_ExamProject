@@ -2,12 +2,11 @@ package shoreline_examproject.BLL.Conversion;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.concurrent.Worker;
 import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
@@ -46,11 +45,17 @@ public class Converter
             List<ConversionTask> currentTasks;
             int procCount = Runtime.getRuntime().availableProcessors();
             
-            ExecutorService execService = Executors.newCachedThreadPool();
-            for (int i = 0; i < procCount; i++) {
-                execService.submit(tasks.get(i));
+            
+            ExecutorService execService = Executors.newFixedThreadPool(procCount, (Runnable r) -> {
+                Thread t = Executors.defaultThreadFactory().newThread(r);
+                t.setDaemon(true); // Close the applications if only converter threads are running.
+                return t;
+            });
+            
+            for (ConversionTask task : tasks) {
+                execService.<Callable<AttributesCollection>>submit(task);
             }
-          
+            
         } catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
         }

@@ -16,11 +16,13 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
@@ -77,6 +79,8 @@ public class MainWindowController implements Initializable {
         setUpTaskTableView();
         setUpHandlersAndListeners();
         configComboBox.getItems().addAll(new Config("Name 1"), new Config("Config 2"), new Config("Config 3"));
+        
+       
     }
 
     @FXML
@@ -187,9 +191,10 @@ public class MainWindowController implements Initializable {
 
             return ct.progressProperty().asObject();
         });
-
+                    
         progressCol.setCellFactory(ProgressBarTableCell.<ConversionTask>forTableColumn());
-    }
+        
+    }    
 
     /**
      * Set up the combo box to correctly display the names of the contained
@@ -235,7 +240,8 @@ public class MainWindowController implements Initializable {
             progressLbl.textProperty().bind(newV.progressProperty().asString("%.0f %%"));
             startTimeLbl.setText(newV.getStartTimeAsString());
         });
-
     }
+    
+    
     
 }
