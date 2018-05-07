@@ -15,6 +15,7 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import shoreline_examproject.BE.AttributeMap;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.Utility.EventPopup;
@@ -149,6 +150,14 @@ public class NewConfigWindowController implements Initializable {
     @FXML
     private void addTreeRout(ActionEvent event) {
     }
+    
+    private Config getDefault() {
+        Config defaultConf = new Config("Default");
+        defaultConf.addRelation(new AttributeMap("", false), new AttributeMap("siteName", false));
+        defaultConf.addRelation(new AttributeMap("", false), new AttributeMap("siteName", false));
+        
+        return null;
+    }
 
     /**
      * Nested class, used to store key-value pairs in the export attributes
@@ -156,7 +165,7 @@ public class NewConfigWindowController implements Initializable {
      */
     class KeyValuePair {
 
-        private  String key;
+        private String key;
         private String value;
 
         public KeyValuePair(String key, String value) {

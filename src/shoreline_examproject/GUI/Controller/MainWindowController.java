@@ -57,10 +57,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private Label startTimeLbl;
 
-    
-    private Model model;    
-
-
+    private Model model;
 
     /**
      * Initializes the controller class.
@@ -154,7 +151,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private void moreDetailClicked(ActionEvent event) throws IOException {
         model.setSelectedTask(taskTV.getSelectionModel().getSelectedItem());
-        
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/DetailWindow.fxml"));
         Parent root = (Parent) loader.load();
         Stage stage = new Stage();
@@ -228,7 +225,7 @@ public class MainWindowController implements Initializable {
             EventPopup.showAlertPopup(ex);
         }
     }
-    
+
     private void setUpHandlersAndListeners() {
         taskTV.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ConversionTask> o, ConversionTask oldV, ConversionTask newV) -> {
             taskNameLbl.setText(newV.getConfigName());
@@ -237,5 +234,5 @@ public class MainWindowController implements Initializable {
         });
 
     }
-    
+
 }
