@@ -75,7 +75,7 @@ public class MainWindowController implements Initializable {
         setUpConfigComboBox();
         setUpTaskTableView();
         setUpHandlersAndListeners();
-        configComboBox.getItems().addAll(new Config("Name 1"), new Config("Config 2"), new Config("Config 3"));
+        configComboBox.getItems().addAll(new Config("Name 1", "ASD", false), new Config("Config 2", "ASD", false), new Config("Config 3", "ASD", false));
         
        
     }
