@@ -98,5 +98,6 @@
          <columnResizePolicy>
          </columnResizePolicy>
       </TableView>
+      <JFXButton layoutX="336.0" layoutY="191.0" onAction="#btnToRootClicked" prefHeight="29.0" prefWidth="94.0" text="To root" />
    </children>
 </AnchorPane>

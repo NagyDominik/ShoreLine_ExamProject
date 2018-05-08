@@ -37,10 +37,6 @@ public class NewConfigWindowController implements Initializable {
     @FXML
     private JFXButton btnRemove;
     @FXML
-    private JFXButton btnAddTreeroot;
-    @FXML
-    private JFXButton btnAddToTreeroot;
-    @FXML
     private TableView<KeyValuePair> exportTblView;
     @FXML
     private TableColumn<KeyValuePair, String> originalExportTblCol;
@@ -50,6 +46,7 @@ public class NewConfigWindowController implements Initializable {
         
     private Config currentConfig;
     private Model model;
+
     /**
      * Initializes the controller class.
      */
@@ -139,6 +136,21 @@ public class NewConfigWindowController implements Initializable {
     private void btnSaveClicked(ActionEvent event)
     {
         System.out.println(currentConfig.toString());
+    }
+
+    @FXML
+    private void btnToRootClicked(ActionEvent event)
+    {
+        try {
+            KeyValuePair kvp = exportTblView.getSelectionModel().getSelectedItem();
+            if (kvp == null) {
+                return;
+            }
+            
+            currentConfig.designateAsRoot(kvp.getKey());
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(NewConfigWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
