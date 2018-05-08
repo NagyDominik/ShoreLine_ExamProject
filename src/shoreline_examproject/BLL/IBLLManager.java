@@ -16,6 +16,7 @@ public interface IBLLManager
     
     public void saveConfig(Config config);
     
+    public void saveToJSON(AttributesCollection data);
 
     public AttributesCollection loadFileData(String filePath);
     

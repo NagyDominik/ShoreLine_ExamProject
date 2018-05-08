@@ -70,7 +70,7 @@ public class AttributeMap {
     }
 
     public void addValue(String value) {
-        if (isTreeRoot) {
+        if (!isTreeRoot) {
             this.value = value;
         }
     }

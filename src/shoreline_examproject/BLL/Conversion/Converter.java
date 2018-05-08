@@ -3,12 +3,18 @@ package shoreline_examproject.BLL.Conversion;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
+import shoreline_examproject.BLL.IBLLManager;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
@@ -21,7 +27,20 @@ public class Converter {
     private List<ConversionTask> tasks = new ArrayList();
     private ConversionTaskPool pool = new ConversionTaskPool();
     private List<Future> futures = new ArrayList();
-
+    private ExecutorService execService;
+    private IBLLManager manager;
+    
+    public Converter(IBLLManager manager) {
+        this.manager = manager;
+        int procCount = Runtime.getRuntime().availableProcessors();
+        
+        execService = Executors.newFixedThreadPool(procCount, (Runnable r) -> {
+            Thread t = Executors.defaultThreadFactory().newThread(r);
+            t.setDaemon(true); // Do not allow converter threads in the background
+            return t;
+        });
+    }
+    
     /**
      * Retrieve a ConversionTask object from the object pool, and store it so it
      * can be started later.
@@ -44,17 +63,30 @@ public class Converter {
      */
     public void convertAll() {
         try {
-            int procCount = Runtime.getRuntime().availableProcessors();
-
-            ExecutorService execService = Executors.newFixedThreadPool(procCount, (Runnable r) -> {
-                Thread t = Executors.defaultThreadFactory().newThread(r);
-                t.setDaemon(true); // Close the applications if only converter threads are running.
-                return t;
-            });
-
             for (ConversionTask task : tasks) {
-                Future f = execService.<Callable<AttributesCollection>>submit(task);
-                futures.add(f);
+                CompletableFuture f =  CompletableFuture.supplyAsync(new Supplier<AttributesCollection>() {
+                    @Override
+                    public AttributesCollection get()
+                    {
+                        try {
+                            return task.call();
+                        } catch (Exception ex) {
+                            Logger.getLogger(Converter.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        return null;
+                    }
+                }, execService); //execService.<Callable<AttributesCollection>>submit(task);
+                
+                CompletableFuture<AttributesCollection> future = f.thenAccept((Object t) -> {
+                    if (t == null) {
+                        System.out.println("NULL");
+                    }
+                    else {
+                        AttributesCollection ac = (AttributesCollection) t;
+                        manager.saveToJSON(ac);
+                    }
+                });
+//                futures.add(f);
             }
         }
         catch (Exception ex) {
@@ -83,7 +115,6 @@ public class Converter {
             if (id == -1) {
                 throw new Exception("Could not find task!");
             }
-            
         }
         catch (Exception e) {
         }

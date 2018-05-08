@@ -3,12 +3,6 @@ package shoreline_examproject.BE;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Callable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import shoreline_examproject.Utility.EventLogger;
 
@@ -69,13 +63,13 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         int count = inputData.getNumberOfDataEntries();
         double progressPercentage = 0;
 
-        System.out.println(count);
         int progress = 0;
-        for (DataRow dataRow
-                : inputData.getData()) {
+        for (DataRow dataRow : inputData.getData()) {
             DataRow convertedRow = new DataRow();
             for (AttributeMap attributeMap : dataRow.getData()) {
+            if (usedConfig.containsKey(attributeMap.getKey())) {
                 convertedRow.addData(convertMap(attributeMap));
+            }
             }
             progress++;
             progressPercentage = (double)progress/count * 100;
@@ -130,8 +124,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
      * @throws NoSuchFieldException If an AttributeMap invalidly presumed to be a tree root.
      */    
     private AttributeMap convertMap(AttributeMap attributeMap) throws IllegalAccessException, NoSuchFieldException {
-        AttributeMap convertedMap = new AttributeMap();
-        if (usedConfig.containsKey(attributeMap.getKey())) {
+            AttributeMap convertedMap = new AttributeMap();
             if (!attributeMap.isIsTreeRoot()) {
                 oldKey = attributeMap.getKey();
                 value = attributeMap.getValue();
@@ -146,8 +139,15 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
                     convertedMap.addValue(nestedMap);
                 }
             }
-        }
-
         return convertedMap;
+    }
+    
+    public AttributesCollection getResult(){
+        if (this.convertedData == null) {
+            EventLogger.log(EventLogger.Level.ERROR, "Conversion failed!");
+            throw new NullPointerException("Conversion failed");
+        }
+        
+        return convertedData;
     }
 }

@@ -21,7 +21,7 @@ public class BLLManager implements IBLLManager {
     
     public BLLManager() {
         this.dal = new DALManager();
-        converter = new Converter();
+        converter = new Converter(this);
     }
 
     @Override
@@ -39,6 +39,7 @@ public class BLLManager implements IBLLManager {
         return dal.loadFileData(filePath);
     }
 
+    @Override
     public void saveToJSON(AttributesCollection data) {
         dal.saveData(data);
     }
