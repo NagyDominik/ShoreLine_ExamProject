@@ -14,7 +14,6 @@ import shoreline_examproject.Utility.EventLogger;
  */
 public class ConversionTask extends Task implements Callable<AttributesCollection> {
 
-    private final ReadOnlyDoubleWrapper progress = new ReadOnlyDoubleWrapper();
     private Config usedConfig; // The config that will be used to map the input values to the output values.
     private AttributesCollection inputData;
     private AttributesCollection convertedData;
@@ -26,10 +25,12 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         this.usedConfig = usedConfig;
         this.inputData = inputData;
         this.startTime = LocalDateTime.now();
+        this.updateProgress(0, 100);
     }
 
     public ConversionTask() {
         this.startTime = LocalDateTime.now();
+        this.updateProgress(0, 100);
     }
 
     @Override
