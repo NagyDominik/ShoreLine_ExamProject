@@ -12,11 +12,11 @@ import shoreline_examproject.Utility.EventLogger;
  */
 public class AttributeMap {
 
-    protected String key;
-    protected boolean isTreeRoot;
+    private String key;
+    private boolean isTreeRoot;
 
-    protected String value; // Used if the object represents a single key-value pair.
-    protected HashSet<AttributeMap> values; // Used if the object represent a tree-like structure of data
+    private String value; // Used if the object represents a single key-value pair.
+    private HashSet<AttributeMap> values; // Used if the object represent a tree-like structure of data
 
     public AttributeMap(String key, boolean isTreeRoot) {
         this.key = key;
@@ -40,8 +40,8 @@ public class AttributeMap {
         if (!isTreeRoot) {
             sb.append(String.format("%s -> %s\n", key, value));
         } else {
-            sb.append("\t");
             values.forEach((value1) -> {
+                sb.append("\t");
                 sb.append(value1.toString());
             });
         }

@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import javafx.concurrent.Worker;
 import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
@@ -42,9 +40,7 @@ public class Converter
     public void convertAll()
     {
         try {
-            List<ConversionTask> currentTasks;
             int procCount = Runtime.getRuntime().availableProcessors();
-            
             
             ExecutorService execService = Executors.newFixedThreadPool(procCount, (Runnable r) -> {
                 Thread t = Executors.defaultThreadFactory().newThread(r);
