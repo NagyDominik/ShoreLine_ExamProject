@@ -16,11 +16,8 @@ public class Config {
     
     private String name;
     private int id;
-    
     private boolean isTreeRoot;
-    
     private HashMap<String, ConversionData> relations; // A map of the conversion data
-    
     private List<Config> innerConfigs;  // Make nested configs possible
     
     public Config(String name) {

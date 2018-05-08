@@ -234,7 +234,7 @@ public class MainWindowController implements Initializable {
     private void setUpHandlersAndListeners() {
         taskTV.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ConversionTask> o, ConversionTask oldV, ConversionTask newV) -> {
             taskNameLbl.setText(newV.getConfigName());
-            progressLbl.textProperty().bind(newV.progressProperty().asString("%.0f %%"));
+            progressLbl.textProperty().bind(newV.progressProperty().multiply(100).asString("%.0f %%"));
             startTimeLbl.setText(newV.getStartTimeAsString());
         });
     }
