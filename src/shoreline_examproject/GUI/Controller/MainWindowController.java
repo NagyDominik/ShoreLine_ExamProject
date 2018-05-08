@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,6 +18,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
@@ -207,6 +210,21 @@ public class MainWindowController implements Initializable {
                 return configComboBox.getItems().stream().filter(c -> c.getName().equals(string)).findFirst().orElse(null); // Curtesy of StackOverflow
             }
         });
+        
+        configComboBox.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                Config selected = configComboBox.getSelectionModel().getSelectedItem();
+                
+                if (selected == null) {
+                    return;
+                }
+                
+                txtAreaPreview.setText(selected.toString());
+            }
+        });
     }
 
     private void loadFile(String path) {
@@ -215,7 +233,7 @@ public class MainWindowController implements Initializable {
                 Scene s = userNameLbl.getScene();
                 s.setCursor(Cursor.WAIT);
                 model.loadFileData(path);
-                EventLogger.log(EventLogger.Level.INFORMATION, String.format("The file %s has been loaded", path));
+                EventLogger.log(EventLogger.Level.INFORMATION, String.format("The file %s has been loaded: ", path));
                 s.setCursor(Cursor.DEFAULT);
             };
 
@@ -246,4 +264,6 @@ public class MainWindowController implements Initializable {
         taskTV.getItems().remove(selectedItem);
         model.stopConversion(selectedItem);
     }
+    
+    
 }
