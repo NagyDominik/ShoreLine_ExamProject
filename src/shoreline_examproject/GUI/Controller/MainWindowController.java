@@ -74,8 +74,7 @@ public class MainWindowController implements Initializable {
         setUpTaskTableView();
         setUpHandlersAndListeners();
         configComboBox.getItems().addAll(new Config("Name 1"), new Config("Config 2"), new Config("Config 3"));
-        
-       
+
     }
 
     @FXML
@@ -84,8 +83,7 @@ public class MainWindowController implements Initializable {
             FileChooser fc = new FileChooser();
             String path = fc.showOpenDialog(this.userNameLbl.getScene().getWindow()).getPath();
             loadFile(path);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             EventPopup.showAlertPopup(ex);
         }
 
@@ -107,8 +105,7 @@ public class MainWindowController implements Initializable {
     private void startClicked(ActionEvent event) {
         try {
             model.startConversion();
-        }
-        catch (ModelException ex) {
+        } catch (ModelException ex) {
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -121,8 +118,7 @@ public class MainWindowController implements Initializable {
         }
         try {
             model.createNewConversionTask(configComboBox.getValue());
-        }
-        catch (ModelException ex) {
+        } catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
@@ -186,10 +182,10 @@ public class MainWindowController implements Initializable {
 
             return ct.progressProperty().asObject();
         });
-                    
+
         progressCol.setCellFactory(ProgressBarTableCell.<ConversionTask>forTableColumn());
-        
-    }    
+
+    }
 
     /**
      * Set up the combo box to correctly display the names of the contained
@@ -222,18 +218,28 @@ public class MainWindowController implements Initializable {
             Thread t1 = new Thread(r1);
             t1.start();
             filePathLbl.setText(path);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, String.format("An error occured while attempting to load the given file: %s \nException message: %s", path, ex.getMessage()));
             EventPopup.showAlertPopup(ex);
         }
     }
 
     private void setUpHandlersAndListeners() {
-        taskTV.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ConversionTask> o, ConversionTask oldV, ConversionTask newV) -> {
-            taskNameLbl.setText(newV.getConfigName());
-            progressLbl.textProperty().bind(newV.progressProperty().multiply(100).asString("%.0f %%"));
-            startTimeLbl.setText(newV.getStartTimeAsString());
-        });
+        if (taskTV.getSelectionModel().getSelectedItem() == null) {
+            taskTV.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ConversionTask> o, ConversionTask oldV, ConversionTask newV) -> {
+
+                taskNameLbl.setText(newV.getConfigName());
+                progressLbl.textProperty().bind(newV.progressProperty().multiply(100).asString("%.0f %%"));
+                startTimeLbl.setText(newV.getStartTimeAsString());
+
+            });
+        }
+
+    }
+
+    @FXML
+    private void deleteTask(ActionEvent event) {
+        ConversionTask selectedItems = taskTV.getSelectionModel().getSelectedItem();
+        taskTV.getItems().remove(selectedItems);
     }
 }
