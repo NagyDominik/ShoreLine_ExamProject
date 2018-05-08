@@ -83,8 +83,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
 
             }
             progress++;
-            progressPercentage = (double) progress / count * 100;
-            System.out.println(progressPercentage);
+            progressPercentage = (double)progress/count * 100;
             updateProgress(progressPercentage, count);
             convertedData.addAttributeMap(convertedRow);
             Thread.sleep(500);
@@ -123,7 +122,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     public void pause() {
         isPaused = true;
     }
-
+    
     public void resume() {
         isPaused = false;
         synchronized (pauseLock) {
@@ -135,6 +134,14 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         return isPaused;
     }
 
+
+    /**
+     * Convert the provided attribute map using the configuration.
+     * @param attributeMap The map that will be converted.
+     * @return A converted AttributeMap.
+     * @throws IllegalAccessException If a provided key to the configuration is invalid.
+     * @throws NoSuchFieldException If an AttributeMap invalidly presumed to be a tree root.
+     */    
     private AttributeMap convertMap(AttributeMap attributeMap) throws IllegalAccessException, NoSuchFieldException {
         AttributeMap convertedMap = new AttributeMap();
         if (usedConfig.containsKey(attributeMap.getKey())) {

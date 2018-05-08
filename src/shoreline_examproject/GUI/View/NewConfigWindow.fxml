@@ -33,12 +33,12 @@
          </children>
       </Group>
       <ListView fx:id="lstViewImportAttributes" layoutX="98.0" layoutY="114.0" prefHeight="285.0" prefWidth="220.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="445.0" AnchorPane.topAnchor="115.0" />
-      <JFXTextField focusColor="#ab3109" labelFloat="true" layoutX="100.0" layoutY="74.0" prefHeight="29.0" prefWidth="215.0" promptText="Import Attributes" unFocusColor="BLACK" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="75.0">
+      <JFXTextField fx:id="txtFieldImportSearch" focusColor="#ab3109" labelFloat="true" layoutX="100.0" layoutY="74.0" prefHeight="29.0" prefWidth="215.0" promptText="Import Attributes" unFocusColor="BLACK" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="75.0">
          <font>
             <Font size="13.0" />
          </font>
       </JFXTextField>
-      <JFXTextField focusColor="#ab3109" labelFloat="true" layoutX="450.0" layoutY="74.0" prefHeight="29.0" prefWidth="215.0" promptText="Export Attributes" unFocusColor="BLACK" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="75.0">
+      <JFXTextField fx:id="txtFieldExportSearch" focusColor="#ab3109" labelFloat="true" layoutX="450.0" layoutY="74.0" prefHeight="29.0" prefWidth="215.0" promptText="Export Attributes" unFocusColor="BLACK" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="75.0">
          <font>
             <Font size="13.0" />
          </font>

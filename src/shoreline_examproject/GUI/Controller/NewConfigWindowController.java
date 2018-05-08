@@ -4,10 +4,16 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -16,8 +22,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javax.swing.event.ChangeListener;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.GUI.Model.Model;
+import shoreline_examproject.GUI.Model.ModelException;
 import shoreline_examproject.Utility.EventLogger;
 import shoreline_examproject.Utility.EventPopup;
 
@@ -42,19 +50,39 @@ public class NewConfigWindowController implements Initializable {
     private TableColumn<KeyValuePair, String> originalExportTblCol;
     @FXML
     private TableColumn<KeyValuePair, String> editedExportTblCol;
+    @FXML
+    private JFXTextField txtFieldImportSearch;
+    @FXML
+    private JFXTextField txtFieldExportSearch;
     
+        
     private Config currentConfig;
     private Model model;
-
+    private FilteredList<String> filteredAttributeList;
+    private FilteredList<KeyValuePair> filteredKeyValuePairList;
+    private ObservableList<String> attributeList;
+    private ObservableList<KeyValuePair> keyValuePairList;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        currentConfig = new Config();
-        model = Model.getInstance();
-        setUpViews();
-        btnRemove.setDisable(true);
+        try {
+            currentConfig = new Config();
+            model = Model.getInstance();
+            
+            attributeList = FXCollections.observableArrayList(model.getCurrentAttributes().getAttributesAsString());
+            keyValuePairList = FXCollections.observableArrayList();
+            
+            filteredAttributeList = new FilteredList<String>(attributeList);
+            filteredKeyValuePairList = new FilteredList<KeyValuePair>(keyValuePairList);
+            
+            setUpViews();
+            setUpSearch();
+            btnRemove.setDisable(true);
+        } catch (ModelException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+        }
     }
 
     @FXML
@@ -65,7 +93,9 @@ public class NewConfigWindowController implements Initializable {
 
     private void setUpViews() {
         try {
-            lstViewImportAttributes.getItems().addAll(model.getCurrentAttributes().getAttributesAsString());
+            lstViewImportAttributes.setItems(filteredAttributeList);
+            
+            exportTblView.setItems(filteredKeyValuePairList);
             
             originalExportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey()));
             editedExportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue()));
@@ -113,8 +143,12 @@ public class NewConfigWindowController implements Initializable {
         }
         
         KeyValuePair kvp = new KeyValuePair(selected, selected);
-        exportTblView.getItems().add(kvp);
-        lstViewImportAttributes.getItems().remove(kvp.getKey());   
+//        exportTblView.getItems().add(kvp);
+//        lstViewImportAttributes.getItems().remove(kvp.getKey());   
+
+        keyValuePairList.add(kvp);
+        attributeList.remove(selected);
+        
         currentConfig.addRelation(selected, selected);
     }
 
@@ -127,8 +161,11 @@ public class NewConfigWindowController implements Initializable {
             return;
         }
         
-        exportTblView.getItems().remove(selected);
-        lstViewImportAttributes.getItems().add(0, selected.key);
+//        exportTblView.getItems().remove(selected);
+//        lstViewImportAttributes.getItems().add(0, selected.key);
+    
+        attributeList.add(0, selected.getKey());
+        keyValuePairList.remove(selected);
     }
 
     @FXML
@@ -158,6 +195,41 @@ public class NewConfigWindowController implements Initializable {
         } catch (IllegalAccessException ex) {
             Logger.getLogger(NewConfigWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * Set up events so the table and list view can be filtered interactively.
+     */
+    private void setUpSearch()
+    {
+        txtFieldImportSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            {filteredAttributeList.setPredicate((attribute) -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                
+                return attribute.toLowerCase().contains(newValue.toLowerCase());
+            });
+        }}); 
+        
+        txtFieldExportSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            {filteredKeyValuePairList.setPredicate((kvp) -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                
+                if (kvp.getKey().toLowerCase().contains(newValue.toLowerCase())) {
+                    return true;
+                }
+                
+                if (kvp.getKey().toLowerCase().contains(newValue.toLowerCase())) {
+                    return true;
+                }
+                
+                return false;
+                
+            });
+        }});
     }
 
     /**
