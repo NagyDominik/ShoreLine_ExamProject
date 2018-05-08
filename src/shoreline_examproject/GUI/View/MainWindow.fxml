@@ -25,7 +25,7 @@
             <Image url="@../../img/bar.png" />
          </image>
       </ImageView>
-      <JFXComboBox fx:id="configComboBox" layoutX="41.0" layoutY="113.0" prefHeight="25.0" prefWidth="149.0" promptText="CONFIG" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="113.0" />
+      <JFXComboBox fx:id="configComboBox" layoutX="41.0" layoutY="113.0" prefHeight="25.0" prefWidth="149.0" AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="113.0" />
       <JFXButton buttonType="RAISED" layoutX="41.0" layoutY="83.0" onAction="#importFileClicked" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #44bae6;" text="Import file ..." AnchorPane.leftAnchor="41.0" AnchorPane.topAnchor="83.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
