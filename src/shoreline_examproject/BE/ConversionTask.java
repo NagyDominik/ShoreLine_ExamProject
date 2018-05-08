@@ -72,7 +72,6 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
                     if (isPaused) {
                         synchronized (pauseLock) {
                             try {
-                                System.out.println("PAUSED");
                                 pauseLock.wait();
                             }
                             catch (InterruptedException e) {
