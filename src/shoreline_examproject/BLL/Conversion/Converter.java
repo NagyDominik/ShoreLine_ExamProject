@@ -44,7 +44,6 @@ public class Converter {
      */
     public void convertAll() {
         try {
-            List<ConversionTask> currentTasks;
             int procCount = Runtime.getRuntime().availableProcessors();
 
             ExecutorService execService = Executors.newFixedThreadPool(procCount, (Runnable r) -> {

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
@@ -20,7 +18,6 @@ public class Config {
     private int id;
     private boolean isTreeRoot;
     private HashMap<String, ConversionData> relations; // A map of the conversion data
-    private List<Config> innerConfigs;  // Make nested configs possible    
     
     public Config(String name) {
         this.name = name;
@@ -51,6 +48,16 @@ public class Config {
         this.id = id;
     }
 
+    public String getNewKey(String oldKey) throws IllegalAccessException
+    {
+        ConversionData cd = relations.get(oldKey);
+        if (cd == null) {
+            EventLogger.log(EventLogger.Level.ERROR, "Invalid key!");
+            throw new IllegalAccessException("Invalid key");
+        }
+        
+        return cd.getValue();
+    }
     
     public void addRelation(String key, String value)
     {
@@ -79,6 +86,15 @@ public class Config {
         }
         
         cd.setValue(newValue);
+    }
+    
+    public int getNumberOfConversions() {
+        return relations.size();
+    }
+    
+    public boolean containsKey(String key)
+    {
+        return this.relations.containsKey(key);
     }
         
     @Override

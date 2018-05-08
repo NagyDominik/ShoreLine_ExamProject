@@ -36,7 +36,12 @@ public class EventPopup {
      * @param ex The supplied exception.
      */
     public static void showInformationPopup(Exception ex) {
-        Alert a = new Alert(Alert.AlertType.INFORMATION, ex.getMessage(), ButtonType.OK);
-        a.show();
+        showAlertPopup(ex.getMessage());
+    }
+
+    public static void showInformationPopup(String message)
+    {
+        Alert a = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
+        a.show();   
     }
 }
