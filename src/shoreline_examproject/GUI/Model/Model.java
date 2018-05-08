@@ -90,6 +90,14 @@ public class Model {
         this.currentConversionTask = task;
     }
 
+    public void stopConversion(ConversionTask selectedItem) {
+        bllManager.stopConversion(selectedItem);
+    }
+
+    public void pauseConverion(ConversionTask selectedItem) {
+        bllManager.pauseConversion(selectedItem);
+    }
+    
     public ObservableList<Config> getConfList() {
         return confList;
     }

@@ -82,7 +82,8 @@ public class MainWindowController implements Initializable {
             FileChooser fc = new FileChooser();
             String path = fc.showOpenDialog(this.userNameLbl.getScene().getWindow()).getPath();
             loadFile(path);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             EventPopup.showAlertPopup(ex);
         }
 
@@ -104,7 +105,8 @@ public class MainWindowController implements Initializable {
     private void startClicked(ActionEvent event) {
         try {
             model.startConversion();
-        } catch (ModelException ex) {
+        }
+        catch (ModelException ex) {
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -117,7 +119,8 @@ public class MainWindowController implements Initializable {
         }
         try {
             model.createNewConversionTask(configComboBox.getValue());
-        } catch (ModelException ex) {
+        }
+        catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
@@ -126,10 +129,12 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void stopClicked(ActionEvent event) {
+        model.stopConversion(taskTV.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     private void pauseClicked(ActionEvent event) {
+        model.pauseConverion(taskTV.getSelectionModel().getSelectedItem());
     }
 
     @FXML
@@ -217,22 +222,21 @@ public class MainWindowController implements Initializable {
             Thread t1 = new Thread(r1);
             t1.start();
             filePathLbl.setText(path);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, String.format("An error occured while attempting to load the given file: %s \nException message: %s", path, ex.getMessage()));
             EventPopup.showAlertPopup(ex);
         }
     }
 
     private void setUpHandlersAndListeners() {
-        if (taskTV.getSelectionModel().getSelectedItem() == null) {
-            taskTV.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ConversionTask> o, ConversionTask oldV, ConversionTask newV) -> {
-
+        taskTV.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends ConversionTask> o, ConversionTask oldV, ConversionTask newV) -> {
+            if (taskTV.getSelectionModel().getSelectedItem() != null) {
                 taskNameLbl.setText(newV.getConfigName());
                 progressLbl.textProperty().bind(newV.progressProperty().multiply(100).asString("%.0f %%"));
                 startTimeLbl.setText(newV.getStartTimeAsString());
-
-            });
-        }
+            }
+        });
 
     }
 

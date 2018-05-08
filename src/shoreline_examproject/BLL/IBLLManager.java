@@ -22,5 +22,9 @@ public interface IBLLManager
     public void convertData();
     
     public ConversionTask createConversionTask(Config c, AttributesCollection ac);
+
+    public void stopConversion(ConversionTask selectedItem);
+
+    public void pauseConversion(ConversionTask selectedItem);
     
 }

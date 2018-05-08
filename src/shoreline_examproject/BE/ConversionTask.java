@@ -3,6 +3,12 @@ package shoreline_examproject.BE;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import shoreline_examproject.Utility.EventLogger;
 
@@ -17,6 +23,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     private AttributesCollection inputData;
     private AttributesCollection convertedData;
     private LocalDateTime startTime;
+    private Object pauseLock = new Object();
     private String oldKey = "", newKey = "", value = "";
 
     public ConversionTask(Config usedConfig, AttributesCollection inputData) {
@@ -43,7 +50,6 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         }
     }
 
-
     /**
      * Use the data stored inside the provided configuration to convert the
      * input data row-by row.
@@ -51,16 +57,22 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     private void convert() throws NoSuchFieldException, InterruptedException, IllegalAccessException {
 //        int c = 10000000;
 //        for (int i = 0; i < c; i++) {
-//            updateProgress((double)i/c, 1.0);
+//            if (!Thread.currentThread().isInterrupted()) {
+//                synchronized (pauseLock) {
+//                    updateProgress((double) i / c, 1.0);
+//                }
+//            }
 //        }
 //        System.out.println("done");
-        
+
         convertedData = new AttributesCollection();
         int count = inputData.getNumberOfDataEntries();
         double progressPercentage = 0;
+
         System.out.println(count);
         int progress = 0;
-        for (DataRow dataRow : inputData.getData()) {
+        for (DataRow dataRow
+                : inputData.getData()) {
             DataRow convertedRow = new DataRow();
             for (AttributeMap attributeMap : dataRow.getData()) {
                 convertedRow.addData(convertMap(attributeMap));
@@ -95,12 +107,20 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
-    
+
     public String getStartTimeAsString() {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss");
         return startTime.format(format);
+    }
+
+    public void pause() {
 
     }
+    
+    public void resume() {
+
+    }
+
 
     /**
      * Convert the provided attribute map using the configuration.
@@ -108,9 +128,8 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
      * @return A converted AttributeMap.
      * @throws IllegalAccessException If a provided key to the configuration is invalid.
      * @throws NoSuchFieldException If an AttributeMap invalidly presumed to be a tree root.
-     */
-    private AttributeMap convertMap(AttributeMap attributeMap) throws IllegalAccessException, NoSuchFieldException
-    {
+     */    
+    private AttributeMap convertMap(AttributeMap attributeMap) throws IllegalAccessException, NoSuchFieldException {
         AttributeMap convertedMap = new AttributeMap();
         if (usedConfig.containsKey(attributeMap.getKey())) {
             if (!attributeMap.isIsTreeRoot()) {
@@ -121,15 +140,14 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
 
                 convertedMap.setKey(newKey);
                 convertedMap.addValue(value);
-            }
-            else {
+            } else {
                 for (AttributeMap value1 : attributeMap.getValues()) {
                     AttributeMap nestedMap = convertMap(value1);
                     convertedMap.addValue(nestedMap);
                 }
             }
         }
-        
+
         return convertedMap;
     }
 }

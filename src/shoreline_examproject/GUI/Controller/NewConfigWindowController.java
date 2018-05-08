@@ -43,7 +43,6 @@ public class NewConfigWindowController implements Initializable {
     @FXML
     private TableColumn<KeyValuePair, String> editedExportTblCol;
     
-        
     private Config currentConfig;
     private Model model;
 
