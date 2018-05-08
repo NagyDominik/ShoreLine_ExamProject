@@ -69,7 +69,7 @@ public class NewConfigWindowController implements Initializable {
             lstViewImportAttributes.getItems().addAll(model.getCurrentAttributes().getAttributesAsString());
             
             originalExportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey()));
-            editedExportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey()));
+            editedExportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue()));
             
             lstViewImportAttributes.setOnMouseClicked((MouseEvent event) -> {
                 if (lstViewImportAttributes.getSelectionModel().getSelectedItem() != null) {   // Disable the remove button if an imported attribute is selected.
@@ -135,7 +135,15 @@ public class NewConfigWindowController implements Initializable {
     @FXML
     private void btnSaveClicked(ActionEvent event)
     {
-        System.out.println(currentConfig.toString());
+        String name = txtFieldConfName.getText();
+        if (name == null || name.isEmpty()) {
+            EventPopup.showInformationPopup("Please enter a name!");
+            return;
+        }
+        currentConfig.setName(name);
+        model.addConfig(currentConfig);
+        Stage s = (Stage) btnRemove.getScene().getWindow();
+        s.close();
     }
 
     @FXML

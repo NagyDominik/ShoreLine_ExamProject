@@ -35,13 +35,12 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     public AttributesCollection call() throws Exception {
         try {
             convert();
+            return convertedData;
         }
         catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, String.format("Exception: %s", ex.getMessage()));
             throw ex;
         }
-
-        return convertedData;
     }
 
 
@@ -57,15 +56,19 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
 //        System.out.println("done");
         
         convertedData = new AttributesCollection();
-        int count = inputData.getData().size();
+        int count = inputData.getNumberOfDataEntries();
+        double progressPercentage = 0;
+        System.out.println(count);
         int progress = 0;
         for (DataRow dataRow : inputData.getData()) {
             DataRow convertedRow = new DataRow();
             for (AttributeMap attributeMap : dataRow.getData()) {
                 convertedRow.addData(convertMap(attributeMap));
-                progress++;
-                updateProgress(((double)progress/count), 100);
             }
+            progress++;
+            progressPercentage = (double)progress/count * 100;
+            System.out.println(progressPercentage);
+            updateProgress(progressPercentage, count);
             convertedData.addAttributeMap(convertedRow);
         }
     }
@@ -103,19 +106,21 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     private AttributeMap convertMap(AttributeMap attributeMap) throws IllegalAccessException, NoSuchFieldException
     {
         AttributeMap convertedMap = new AttributeMap();
-        if (!attributeMap.isIsTreeRoot()) {
-            oldKey = attributeMap.getKey();
-            value = attributeMap.getValue();
+        if (usedConfig.containsKey(attributeMap.getKey())) {
+            if (!attributeMap.isIsTreeRoot()) {
+                oldKey = attributeMap.getKey();
+                value = attributeMap.getValue();
 
-            newKey = usedConfig.getNewKey(oldKey);
+                newKey = usedConfig.getNewKey(oldKey);
 
-            convertedMap.setKey(newKey);
-            convertedMap.addValue(value);
-        }
-        else {
-            for (AttributeMap value1 : attributeMap.getValues()) {
-                AttributeMap nestedMap = convertMap(value1);
-                convertedMap.addValue(nestedMap);
+                convertedMap.setKey(newKey);
+                convertedMap.addValue(value);
+            }
+            else {
+                for (AttributeMap value1 : attributeMap.getValues()) {
+                    AttributeMap nestedMap = convertMap(value1);
+                    convertedMap.addValue(nestedMap);
+                }
             }
         }
         

@@ -87,6 +87,15 @@ public class Config {
         
         cd.setValue(newValue);
     }
+    
+    public int getNumberOfConversions() {
+        return relations.size();
+    }
+    
+    public boolean containsKey(String key)
+    {
+        return this.relations.containsKey(key);
+    }
         
     @Override
     public String toString()

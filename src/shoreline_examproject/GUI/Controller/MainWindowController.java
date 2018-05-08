@@ -69,12 +69,11 @@ public class MainWindowController implements Initializable {
         model = Model.getInstance();
         model.setCurrentUser(userNameLbl.getText());
         taskTV.setItems(model.getTasks());
-
+        configComboBox.setItems(model.getConfList());
+        
         setUpConfigComboBox();
         setUpTaskTableView();
         setUpHandlersAndListeners();
-        configComboBox.getItems().addAll(new Config("Name 1"), new Config("Config 2"), new Config("Config 3"));
-
     }
 
     @FXML

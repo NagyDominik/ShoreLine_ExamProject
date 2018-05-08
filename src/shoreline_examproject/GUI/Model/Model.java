@@ -16,10 +16,12 @@ import shoreline_examproject.BLL.IBLLManager;
 public class Model {
 
     private static Model instance;
+
     private final IBLLManager bllManager;
     private AttributesCollection currentAttributes; //The attributes of the currently loaded file.
     private String currentUser;    
     private ObservableList<ConversionTask> tasks = FXCollections.observableArrayList();
+    private ObservableList<Config> confList = FXCollections.observableArrayList();
     
     private ConversionTask currentConversionTask;
     
@@ -87,6 +89,13 @@ public class Model {
     public void setSelectedTask(ConversionTask task){
         this.currentConversionTask = task;
     }
+
+    public ObservableList<Config> getConfList() {
+        return confList;
+    }
     
-    
+    public void addConfig(Config c) {
+        this.confList.add(c);
+    }
+            
 }
