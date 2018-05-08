@@ -17,7 +17,8 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     private AttributesCollection inputData;
     private AttributesCollection convertedData;
     private LocalDateTime startTime;
-    private Object pauseLock = new Object();
+    private final Object pauseLock = new Object();
+    private Boolean isPaused = false;
     private String oldKey = "", newKey = "", value = "";
 
     public ConversionTask(Config usedConfig, AttributesCollection inputData) {
@@ -59,6 +60,18 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
 //        }
 //        System.out.println("done");
 
+//                if (isPaused) {
+//                    synchronized (pauseLock) {
+//                        try {
+//                            System.out.println("PAUSED");
+//                            pauseLock.wait();
+//                        }
+//                        catch (InterruptedException e) {
+//                        }
+//                    }
+//                    convertedRow.addData(convertMap(attributeMap));
+//                }
+
         convertedData = new AttributesCollection();
         int count = inputData.getNumberOfDataEntries();
         double progressPercentage = 0;
@@ -67,14 +80,15 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         for (DataRow dataRow : inputData.getData()) {
             DataRow convertedRow = new DataRow();
             for (AttributeMap attributeMap : dataRow.getData()) {
-            if (usedConfig.containsKey(attributeMap.getKey())) {
-                convertedRow.addData(convertMap(attributeMap));
-            }
+                if (usedConfig.containsKey(attributeMap.getKey())) {
+                    convertedRow.addData(convertMap(attributeMap));  
+                }
             }
             progress++;
             progressPercentage = (double)progress/count * 100;
             updateProgress(progressPercentage, count);
             convertedData.addAttributeMap(convertedRow);
+            Thread.sleep(500);
         }
     }
 
@@ -108,11 +122,18 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     }
 
     public void pause() {
-
+        isPaused = true;
     }
     
     public void resume() {
+        isPaused = false;
+        synchronized (pauseLock) {
+            pauseLock.notify();
+        }
+    }
 
+    public Boolean isPaused() {
+        return isPaused;
     }
 
 
@@ -140,14 +161,5 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
                 }
             }
         return convertedMap;
-    }
-    
-    public AttributesCollection getResult(){
-        if (this.convertedData == null) {
-            EventLogger.log(EventLogger.Level.ERROR, "Conversion failed!");
-            throw new NullPointerException("Conversion failed");
-        }
-        
-        return convertedData;
     }
 }

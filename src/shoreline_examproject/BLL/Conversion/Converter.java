@@ -112,8 +112,14 @@ public class Converter {
     public void pauseTask(ConversionTask task) {
         try {
             int id = findTask(task);
+            ConversionTask t = tasks.get(id);
             if (id == -1) {
                 throw new Exception("Could not find task!");
+            }
+            if (t.isPaused()) {
+                t.resume();
+            } else {
+                t.pause();
             }
         }
         catch (Exception e) {
