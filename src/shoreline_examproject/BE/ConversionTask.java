@@ -3,12 +3,6 @@ package shoreline_examproject.BE;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Callable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import shoreline_examproject.Utility.EventLogger;
 
@@ -23,7 +17,8 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     private AttributesCollection inputData;
     private AttributesCollection convertedData;
     private LocalDateTime startTime;
-    private Object pauseLock = new Object();
+    private final Object pauseLock = new Object();
+    private Boolean isPaused = false;
     private String oldKey = "", newKey = "", value = "";
 
     public ConversionTask(Config usedConfig, AttributesCollection inputData) {
@@ -71,17 +66,28 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
 
         System.out.println(count);
         int progress = 0;
-        for (DataRow dataRow
-                : inputData.getData()) {
+        for (DataRow dataRow : inputData.getData()) {
             DataRow convertedRow = new DataRow();
             for (AttributeMap attributeMap : dataRow.getData()) {
-                convertedRow.addData(convertMap(attributeMap));
+                if (isPaused) {
+                    synchronized (pauseLock) {
+                        try {
+                            System.out.println("PAUSED");
+                            pauseLock.wait();
+                        }
+                        catch (InterruptedException e) {
+                        }
+                    }
+                    convertedRow.addData(convertMap(attributeMap));
+                }
+
             }
             progress++;
             progressPercentage = (double) progress / count * 100;
             System.out.println(progressPercentage);
             updateProgress(progressPercentage, count);
             convertedData.addAttributeMap(convertedRow);
+            Thread.sleep(500);
         }
     }
 
@@ -115,11 +121,18 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     }
 
     public void pause() {
-
+        isPaused = true;
     }
 
     public void resume() {
+        isPaused = false;
+        synchronized (pauseLock) {
+            pauseLock.notify();
+        }
+    }
 
+    public Boolean isPaused() {
+        return isPaused;
     }
 
     private AttributeMap convertMap(AttributeMap attributeMap) throws IllegalAccessException, NoSuchFieldException {

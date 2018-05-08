@@ -242,7 +242,8 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void deleteTask(ActionEvent event) {
-        ConversionTask selectedItems = taskTV.getSelectionModel().getSelectedItem();
-        taskTV.getItems().remove(selectedItems);
+        ConversionTask selectedItem = taskTV.getSelectionModel().getSelectedItem();
+        taskTV.getItems().remove(selectedItem);
+        model.stopConversion(selectedItem);
     }
 }
