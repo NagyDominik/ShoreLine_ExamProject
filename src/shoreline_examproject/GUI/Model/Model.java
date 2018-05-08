@@ -87,6 +87,13 @@ public class Model {
     public void setSelectedTask(ConversionTask task){
         this.currentConversionTask = task;
     }
-    
+
+    public void stopConversion(ConversionTask selectedItem) {
+        bllManager.stopConversion(selectedItem);
+    }
+
+    public void pauseConverion(ConversionTask selectedItem) {
+        bllManager.pauseConversion(selectedItem);
+    }
     
 }

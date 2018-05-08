@@ -54,4 +54,14 @@ public class BLLManager implements IBLLManager {
         return converter.createConversionTask(c, ac);
     }
 
+    @Override
+    public void stopConversion(ConversionTask selectedItem) {
+        converter.stopTask(selectedItem);
+    }
+
+    @Override
+    public void pauseConversion(ConversionTask selectedItem) {
+        converter.pauseTask(selectedItem);
+    }
+
 }

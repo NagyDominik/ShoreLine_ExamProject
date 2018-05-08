@@ -3,7 +3,12 @@ package shoreline_examproject.BE;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Callable;
-import javafx.beans.property.ReadOnlyDoubleWrapper;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import shoreline_examproject.Utility.EventLogger;
 
@@ -19,7 +24,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     private AttributesCollection convertedData;
     double count;  // The total number of data rows to convert, used to calculate the progress of the task.
     private LocalDateTime startTime;
-
+    private Object pauseLock = new Object();
 
     public ConversionTask(Config usedConfig, AttributesCollection inputData) {
         this.usedConfig = usedConfig;
@@ -46,15 +51,18 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         return convertedData;
     }
 
-
     /**
      * Use the data stored inside the provided configuration to convert the
      * input data row-by row.
      */
     private void convert() throws NoSuchFieldException, InterruptedException {
-        int c = 10000000;
+        int c = 100000000;
         for (int i = 0; i < c; i++) {
-            updateProgress((double)i/c, 1.0);
+            if (!Thread.currentThread().isInterrupted()) {
+                synchronized (pauseLock) {
+                    updateProgress((double) i / c, 1.0);
+                }
+            }
         }
         System.out.println("done");
     }
@@ -82,10 +90,18 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
-    
+
     public String getStartTimeAsString() {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss");
         return startTime.format(format);
-
     }
+    
+    public void pause() {
+        
+    }
+    
+    public void resume() {
+        
+    }
+
 }
