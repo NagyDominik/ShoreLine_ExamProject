@@ -4,16 +4,13 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -22,7 +19,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javax.swing.event.ChangeListener;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
@@ -68,14 +64,26 @@ public class NewConfigWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            currentConfig = new Config();
             model = Model.getInstance();
-            
             attributeList = FXCollections.observableArrayList(model.getCurrentAttributes().getAttributesAsString());
-            keyValuePairList = FXCollections.observableArrayList();
-            
-            filteredAttributeList = new FilteredList<String>(attributeList);
-            filteredKeyValuePairList = new FilteredList<KeyValuePair>(keyValuePairList);
+
+            if (model.isConfigEdit()) {
+                currentConfig = model.getSelected();
+                //TODO: make it possible to edit a config.
+                keyValuePairList = FXCollections.observableArrayList();
+
+                filteredAttributeList = new FilteredList<String>(attributeList);
+                filteredKeyValuePairList = new FilteredList<KeyValuePair>(keyValuePairList);
+            }
+            else {
+                currentConfig = new Config();
+
+                keyValuePairList = FXCollections.observableArrayList();
+
+                filteredAttributeList = new FilteredList<String>(attributeList);
+                filteredKeyValuePairList = new FilteredList<KeyValuePair>(keyValuePairList);
+            }
+
             
             setUpViews();
             setUpSearch();

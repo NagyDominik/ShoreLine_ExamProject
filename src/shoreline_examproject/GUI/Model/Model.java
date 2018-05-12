@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
-import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.BLL.BLLManager;
 import shoreline_examproject.BLL.IBLLManager;
 
@@ -24,6 +23,10 @@ public class Model {
     private ObservableList<Config> confList = FXCollections.observableArrayList();
     
     private ConversionTask currentConversionTask;
+    
+    private Config selected;
+    private boolean configEdit;
+    
     
     private Model() {
         bllManager = new BLLManager();
@@ -105,5 +108,24 @@ public class Model {
     public void addConfig(Config c) {
         this.confList.add(c);
     }
-            
+
+    public void setSelectedConfig(Config selected)
+    {
+        this.selected = selected;
+    }
+
+    public Config getSelected()
+    {
+        return selected;
+    }           
+
+    public void setConfigEdit(boolean b)
+    {
+        this.configEdit = b;
+    }
+
+    public boolean isConfigEdit()
+    {
+        return configEdit;
+    }
 }

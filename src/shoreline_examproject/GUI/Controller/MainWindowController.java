@@ -94,6 +94,13 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void newConfigClicked(ActionEvent event) throws IOException {
+        
+        Config selected = configComboBox.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            model.setSelectedConfig(selected);
+            model.setConfigEdit(true);
+        }
+        
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/NewConfigWindow.fxml"));
         Parent root = (Parent) loader.load();
 
@@ -264,6 +271,4 @@ public class MainWindowController implements Initializable {
         taskTV.getItems().remove(selectedItem);
         model.stopConversion(selectedItem);
     }
-    
-    
 }

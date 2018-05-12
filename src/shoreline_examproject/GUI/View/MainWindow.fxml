@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.MainWindowController">
    <children>
       <ImageView fitHeight="64.0" fitWidth="134.0" layoutX="9.0" layoutY="4.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -30,7 +30,7 @@
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
-      <JFXButton buttonType="RAISED" layoutX="185.0" layoutY="115.0" onAction="#newConfigClicked" prefHeight="25.0" prefWidth="135.0" style="-fx-background-color: #B8B8BD;" text="Create new config" AnchorPane.leftAnchor="185.0" AnchorPane.topAnchor="115.0">
+      <JFXButton buttonType="RAISED" layoutX="185.0" layoutY="115.0" onAction="#newConfigClicked" prefHeight="31.0" prefWidth="134.0" style="-fx-background-color: #B8B8BD;" text="Create/edit config" AnchorPane.leftAnchor="185.0" AnchorPane.topAnchor="115.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
@@ -143,10 +143,10 @@
          </font>
       </JFXButton>
       <JFXTextArea fx:id="txtAreaPreview" layoutX="42.0" layoutY="164.0" prefHeight="250.0" prefWidth="449.0" style="-fx-background-color: white;" />
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="331.0" layoutY="113.0" onAction="#btnAddTask" prefHeight="26.0" prefWidth="65.0" style="-fx-background-color: #6EE854;" text="Add task">
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="331.0" layoutY="113.0" onAction="#btnAddTask" prefHeight="31.0" prefWidth="65.0" style="-fx-background-color: #6EE854;" text="Add task">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="407.0" layoutY="113.0" onAction="#deleteTask" prefHeight="26.0" prefWidth="79.0" style="-fx-background-color: RED;" text="Delete task" />
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="407.0" layoutY="113.0" onAction="#deleteTask" prefHeight="31.0" prefWidth="79.0" style="-fx-background-color: RED;" text="Delete task" />
    </children>
 </AnchorPane>
