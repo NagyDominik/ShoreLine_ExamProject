@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.LogWindowController">
+<AnchorPane id="AnchorPane" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" stylesheets="@StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.LogWindowController">
    <children>
       <ImageView fitHeight="65.0" fitWidth="135.0" layoutX="322.0" layoutY="327.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -20,7 +20,7 @@
             <Image url="@../../img/bar.png" />
          </image>
       </ImageView>
-      <TableView fx:id="logTV" layoutX="23.0" layoutY="64.0" prefHeight="336.0" prefWidth="710.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="65.0">
+      <TableView fx:id="logTV" layoutX="23.0" layoutY="64.0" prefHeight="336.0" prefWidth="710.0" styleClass="table-row-cell" stylesheets="@StyleSheet.css" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="65.0">
         <columns>
           <TableColumn fx:id="dateCol" maxWidth="-1.0" minWidth="130.0" prefWidth="130.0" text="Date" />
             <TableColumn fx:id="userCol" maxWidth="-1.0" minWidth="80.0" text="User" />
