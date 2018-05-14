@@ -100,7 +100,7 @@ public class Converter {
             if (id == -1) {
                 throw new Exception("Could not find task!");
             }
-            futures.get(id).cancel(true);
+            tasks.get(id).pause();
             tasks.remove(id);
             System.out.println("Task Stopped");
         }

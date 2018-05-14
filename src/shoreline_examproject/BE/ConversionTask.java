@@ -50,15 +50,6 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
      * input data row-by row.
      */
     private void convert() throws NoSuchFieldException, InterruptedException, IllegalAccessException {
-//        int c = 10000000;
-//        for (int i = 0; i < c; i++) {
-//            if (!Thread.currentThread().isInterrupted()) {
-//                synchronized (pauseLock) {
-//                    updateProgress((double) i / c, 1.0);
-//                }
-//            }
-//        }
-//        System.out.println("done");
 
         convertedData = new AttributesCollection();
         int count = inputData.getNumberOfDataEntries();
@@ -68,24 +59,25 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         for (DataRow dataRow : inputData.getData()) {
             DataRow convertedRow = new DataRow();
             for (AttributeMap attributeMap : dataRow.getData()) {
-                if (usedConfig.containsKey(attributeMap.getKey())) {
-                    if (isPaused) {
-                        synchronized (pauseLock) {
-                            try {
-                                pauseLock.wait();
-                            }
-                            catch (InterruptedException e) {
-                            }
+                if (isPaused) {
+                    synchronized (pauseLock) {
+                        try {
+                            System.out.println("PAUSED");
+                            pauseLock.wait();
                         }
-                        convertedRow.addData(convertMap(attributeMap));
+                        catch (InterruptedException e) {
+                        }
                     }
                 }
-                progress++;
-                progressPercentage = (double) progress / count * 100;
-                updateProgress(progressPercentage, count);
-                convertedData.addAttributeMap(convertedRow);
-                Thread.sleep(500);
+                if (usedConfig.containsKey(attributeMap.getKey())) {
+                        convertedRow.addData(convertMap(attributeMap));
+                }
             }
+            progress++;
+            progressPercentage = (double) progress / count * 100;
+            updateProgress(progressPercentage, count);
+            convertedData.addAttributeMap(convertedRow);
+            //Thread.sleep(500);
         }
     }
 
