@@ -2,6 +2,7 @@ package shoreline_examproject.GUI.Controller;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -83,8 +84,11 @@ public class MainWindowController implements Initializable {
     private void importFileClicked(ActionEvent event) {
         try {
             FileChooser fc = new FileChooser();
-            String path = fc.showOpenDialog(this.userNameLbl.getScene().getWindow()).getPath();
-            loadFile(path);
+            File f = fc.showOpenDialog(this.userNameLbl.getScene().getWindow());
+            if (f == null) {
+                return;
+            }
+            loadFile(f.getPath());
         }
         catch (Exception ex) {
             EventPopup.showAlertPopup(ex);

@@ -1,10 +1,7 @@
 package shoreline_examproject.BE;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import shoreline_examproject.Utility.EventLogger;
 
 /**
  * Maps relations between input and output data.
@@ -12,24 +9,49 @@ import shoreline_examproject.Utility.EventLogger;
  * @author sebok
  */
 public class Config {
-    protected static enum DataType {NUMBER, STRING, DATE}
-    
+
+    private enum Type {STRING, INT, DATE}
     private String name;
-    private int id;
-    private boolean isTreeRoot;
-    private HashMap<String, ConversionData> relations; // A map of the conversion data
     
-    public Config(String name) {
-        this.name = name;
-        this.relations = new HashMap<>(40);
-    }
+    List<DataPair> data = new ArrayList<>(15);
     
-    public Config() {
-        this.relations = new HashMap<>(40);
+    public boolean containsKey(String key) {
+        for (DataPair dataPair : data) {
+            if (dataPair.containsKey(key)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public String getName()
+    public String getNewKey(String oldKey) {
+        for (DataPair dataPair : data) {
+            if (dataPair.containsKey(oldKey)) {
+                return dataPair.getNewValue();
+            }
+        }
+        
+        throw new IllegalArgumentException("This object does not contain the data associated with the provided key!");
+    }
+
+    public void addRelation(String key, String value)
     {
+        // TODO: dummy method, finish this (optimize?).
+        this.data.add(new DataPair(false, Type.STRING, key, value));
+    }
+    
+    public void updateValue(String key, String newValue)
+    {
+        for (DataPair dataPair : data) {
+            if (dataPair.containsKey(key)) {
+                dataPair.updateValue(newValue);
+            }
+        }
+        
+        throw new IllegalArgumentException("This object does not contain the data associated with the provided key!");
+    }
+        
+    public String getName() {
         return name;
     }
 
@@ -38,159 +60,58 @@ public class Config {
         this.name = name;
     }
 
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId(int id)
-    {
-        this.id = id;
-    }
-
-    public String getNewKey(String oldKey) throws IllegalAccessException
-    {
-        ConversionData cd = relations.get(oldKey);
-        if (cd == null) {
-            EventLogger.log(EventLogger.Level.ERROR, "Invalid key!");
-            throw new IllegalAccessException("Invalid key");
-        }
-        
-        return cd.getValue();
-    }
-    
-    public void addRelation(String key, String value)
-    {
-        ConversionData cd = new ConversionData(value, DataType.STRING);
-        
-        relations.put(key, cd);
-    }
-    
-    public void addRelation(String key, String value, DataType outputType)
-    {
-        ConversionData cd = new ConversionData(value, outputType);
-        
-        relations.put(key, cd);
-    }
-    
-    public void removeRelation(String key)
-    {
-        relations.remove(key);
-    }
-
-    public void updateValue(String key, String newValue) throws IllegalAccessException {
-        ConversionData cd  = relations.get(key);
-        if (cd == null) {
-            EventLogger.log(EventLogger.Level.ERROR, "Invalid key!");
-            throw new IllegalAccessException("Invalid key");
-        }
-        
-        cd.setValue(newValue);
-    }
-    
-    public int getNumberOfConversions() {
-        return relations.size();
-    }
-    
-    public boolean containsKey(String key)
-    {
-        return this.relations.containsKey(key);
-    }
-        
     @Override
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, ConversionData> entry : relations.entrySet()) {
-            if (!entry.getValue().isTreeRoot()) {
-                sb.append(String.format("%s ->> %s\n", entry.getKey(), entry.getValue().getValue()));
-            }
-            else {
-                sb.append(entry.getKey());
-                sb.append("\n");
-                for (Config innerConfig : entry.getValue().getInnerConfigs()) {
-                    sb.append("\t");    // Only indents the first entry.
-                    sb.append(innerConfig.toString());
-                }
-            }
+        for (DataPair dataPair : data) {
+            sb.append(dataPair.inputName).append("->> ").append(dataPair.outputName).append("\n");
         }
+        
         return sb.toString();
     }
     
-    /**
-     * Designate the ConversionData with the provided key as a tree root.
-     * @param key The provided key.
-     */
-    public void designateAsRoot(String key) throws IllegalAccessException
-    {
-        ConversionData cd  = relations.get(key);
-        if (cd == null) {
-            EventLogger.log(EventLogger.Level.ERROR, "Invalid key!");
-            throw new IllegalAccessException("Invalid key");
-        }   
-        
-        cd.designateAsRoot();
-        
-    }
     
-    /**
-     * Contains data about the desired format of the output data after conversion;
-     */
-    class ConversionData {
+    
+    class DataPair
+    {
+        boolean isPlanning;
         
-        private String value; // The value of the output field
+        private Type outputType;
         
-        private boolean isTreeRoot;
-        
-        private List<Config> innerConfigs; 
-        
-        private final DataType outputType;
+        private String inputName;
+        private String outputName;
 
-        public ConversionData(String value, DataType outputType)
+        public DataPair(boolean isPlanning, Type outputType, String inputName, String outputName)
         {
-            this.value = value;
+            this.isPlanning = isPlanning;
             this.outputType = outputType;
-        }
-
-        public String getValue()
-        {
-            return value;
-        }
-
-        public void setValue(String value)
-        {
-            this.value = value;
-        }
-
-        public boolean isTreeRoot()
-        {
-            return isTreeRoot;
-        }        
-
-        public List<Config> getInnerConfigs()
-        {
-            return innerConfigs;
+            this.inputName = inputName;
+            this.outputName = outputName;
         }
         
-        /**
-         * Designate this instance as a tree root.
-         */
-        public void designateAsRoot()
-        {
-            this.isTreeRoot = true;
-            this.innerConfigs = new ArrayList<>(5);
-            this.value = null;
+        public boolean containsKey(String key) {
+           return this.inputName.equals(key);
+        }
+        
+        
+        public String getNewValue() {
+            return this.outputName;
         }
 
-        /**
-         * If this instance is a tree rot, make it a non-tree root.
-         */
-        public void disableTreeRoot()
+        private void updateValue(String newValue)
         {
-            if (isTreeRoot) {
-                this.isTreeRoot = false;
-                this.innerConfigs = null;
-            }
+            this.outputName = newValue;
+        }
+
+        public String getInputName()
+        {
+            return inputName;
+        }
+
+        public String getOutputName()
+        {
+            return outputName;
         }
     }
 }
