@@ -9,14 +9,19 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
@@ -61,7 +66,7 @@ public class NewConfigWindowController implements Initializable {
     private FilteredList<KeyValuePair> filteredKeyValuePairList;
     private ObservableList<String> attributeList;
     private ObservableList<KeyValuePair> keyValuePairList;
-    private ArrayList<String> comboBoxFields;
+    private ObservableList<String> comboBoxFields;
     
     /**
      * Initializes the controller class.
@@ -71,7 +76,9 @@ public class NewConfigWindowController implements Initializable {
         try {
             model = Model.getInstance();
             attributeList = FXCollections.observableArrayList(model.getCurrentAttributes().getAttributesAsString());
-
+            comboBoxFields = FXCollections.observableArrayList();
+            fillUpExport();
+            
             if (model.isConfigEdit()) {
                 currentConfig = model.getSelected();
                 //TODO: make it possible to edit a config.
@@ -108,12 +115,16 @@ public class NewConfigWindowController implements Initializable {
 
     private void setUpViews() {
         try {
-            lstViewImportAttributes.setItems(filteredAttributeList);
             
+            lstViewImportAttributes.setItems(filteredAttributeList);
+            exportTblView.setEditable(true);
             exportTblView.setItems(filteredKeyValuePairList);
             
             originalExportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey()));
+            
             exportTblCol.setCellFactory(ComboBoxTableCell.forTableColumn(comboBoxFields));
+            
+            exportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue()));
             
             lstViewImportAttributes.setOnMouseClicked((MouseEvent event) -> {
                 if (lstViewImportAttributes.getSelectionModel().getSelectedItem() != null) {   // Disable the remove button if an imported attribute is selected.
@@ -128,10 +139,7 @@ public class NewConfigWindowController implements Initializable {
                 }
             }
             );
-            
-            exportTblCol.setCellFactory(TextFieldTableCell.forTableColumn());
-            
-
+                        
             exportTblCol.setOnEditCommit((TableColumn.CellEditEvent<KeyValuePair, String> event) -> { // Save edit
                 KeyValuePair kvp = event.getRowValue();
                 kvp.setValue(event.getNewValue());
@@ -229,7 +237,7 @@ public class NewConfigWindowController implements Initializable {
         }});
     }
 
-    private ArrayList<String> fillUpExport(){
+    private ObservableList<String> fillUpExport(){
         
         String[] exportFields = new String[]{"siteName", "assetSerialNumber", "type", "externalWorkOrderId", "systemStatus", "userStatus", 
             "createdOn", "createdBy", "name", "priority", "status", "planning"};
