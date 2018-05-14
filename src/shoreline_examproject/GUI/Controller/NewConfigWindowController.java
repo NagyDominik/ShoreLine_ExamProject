@@ -3,6 +3,9 @@ package shoreline_examproject.GUI.Controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -45,12 +49,11 @@ public class NewConfigWindowController implements Initializable {
     @FXML
     private TableColumn<KeyValuePair, String> originalExportTblCol;
     @FXML
-    private TableColumn<KeyValuePair, String> editedExportTblCol;
-    @FXML
     private JFXTextField txtFieldImportSearch;
     @FXML
     private JFXTextField txtFieldExportSearch;
-    
+    @FXML
+    private TableColumn<KeyValuePair, String> exportTblCol;
         
     private Config currentConfig;
     private Model model;
@@ -58,6 +61,8 @@ public class NewConfigWindowController implements Initializable {
     private FilteredList<KeyValuePair> filteredKeyValuePairList;
     private ObservableList<String> attributeList;
     private ObservableList<KeyValuePair> keyValuePairList;
+    private ArrayList<String> comboBoxFields;
+    
     /**
      * Initializes the controller class.
      */
@@ -87,7 +92,9 @@ public class NewConfigWindowController implements Initializable {
             
             setUpViews();
             setUpSearch();
+            fillUpExport();
             btnRemove.setDisable(true);
+            
         } catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
         }
@@ -106,7 +113,7 @@ public class NewConfigWindowController implements Initializable {
             exportTblView.setItems(filteredKeyValuePairList);
             
             originalExportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey()));
-            editedExportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue()));
+            exportTblCol.setCellFactory(ComboBoxTableCell.forTableColumn(comboBoxFields));
             
             lstViewImportAttributes.setOnMouseClicked((MouseEvent event) -> {
                 if (lstViewImportAttributes.getSelectionModel().getSelectedItem() != null) {   // Disable the remove button if an imported attribute is selected.
@@ -122,9 +129,9 @@ public class NewConfigWindowController implements Initializable {
             }
             );
             
-            editedExportTblCol.setCellFactory(TextFieldTableCell.forTableColumn());
+            exportTblCol.setCellFactory(TextFieldTableCell.forTableColumn());
             
-            editedExportTblCol.setOnEditCommit((TableColumn.CellEditEvent<KeyValuePair, String> event) -> { try {
+            exportTblCol.setOnEditCommit((TableColumn.CellEditEvent<KeyValuePair, String> event) -> { try {
                 // Save edit
                 KeyValuePair kvp = event.getRowValue();
                 kvp.setValue(event.getNewValue());
@@ -240,10 +247,25 @@ public class NewConfigWindowController implements Initializable {
         }});
     }
 
+    private ArrayList<String> fillUpExport(){
+        
+        String[] exportFields = new String[]{"siteName", "assetSerialNumber", "type", "externalWorkOrderId", "systemStatus", "userStatus", 
+            "createdOn", "createdBy", "name", "priority", "status", "planning"};
+        comboBoxFields.addAll(Arrays.asList(exportFields));
+        
+        return comboBoxFields;
+        
+        
+        
+        
+    }
+    
+    
     /**
      * Nested class, used to store key-value pairs in the export attributes, to make displaying them easier.
      * table view.
      */
+    
     class KeyValuePair {
 
         private String key;
