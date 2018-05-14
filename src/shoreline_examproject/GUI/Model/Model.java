@@ -95,6 +95,7 @@ public class Model {
 
     public void stopConversion(ConversionTask selectedItem) {
         bllManager.stopConversion(selectedItem);
+        tasks.remove(selectedItem);
     }
 
     public void pauseConverion(ConversionTask selectedItem) {
