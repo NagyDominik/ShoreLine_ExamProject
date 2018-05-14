@@ -18,7 +18,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     private AttributesCollection convertedData;
     private LocalDateTime startTime;
     private final Object pauseLock = new Object();
-    private Boolean isPaused = false;
+    private Boolean isPaused = false, isCanceled = false;
     private String oldKey = "", newKey = "", value = "";
 
     public ConversionTask(Config usedConfig, AttributesCollection inputData) {
@@ -50,7 +50,6 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
      * input data row-by row.
      */
     private void convert() throws NoSuchFieldException, InterruptedException, IllegalAccessException {
-
         convertedData = new AttributesCollection();
         int count = inputData.getNumberOfDataEntries();
         double progressPercentage = 0;
@@ -59,6 +58,10 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         for (DataRow dataRow : inputData.getData()) {
             DataRow convertedRow = new DataRow();
             for (AttributeMap attributeMap : dataRow.getData()) {
+                if (isCanceled) {
+                    stop();
+                    break;
+                }
                 if (isPaused) {
                     synchronized (pauseLock) {
                         try {
@@ -109,6 +112,12 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss");
         return startTime.format(format);
     }
+    
+    public void stop() {
+        Thread.currentThread().interrupt();
+        this.cancel(true);
+        this.failed();
+    }
 
     public void pause() {
         isPaused = true;
@@ -153,4 +162,5 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         }
         return convertedMap;
     }
+
 }

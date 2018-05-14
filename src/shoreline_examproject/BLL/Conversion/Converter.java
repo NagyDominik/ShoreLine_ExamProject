@@ -29,18 +29,18 @@ public class Converter {
     private List<Future> futures = new ArrayList();
     private ExecutorService execService;
     private IBLLManager manager;
-    
+
     public Converter(IBLLManager manager) {
         this.manager = manager;
         int procCount = Runtime.getRuntime().availableProcessors();
-        
+
         execService = Executors.newFixedThreadPool(procCount, (Runnable r) -> {
             Thread t = Executors.defaultThreadFactory().newThread(r);
             t.setDaemon(true); // Do not allow converter threads in the background
             return t;
         });
     }
-    
+
     /**
      * Retrieve a ConversionTask object from the object pool, and store it so it
      * can be started later.
@@ -64,28 +64,28 @@ public class Converter {
     public void convertAll() {
         try {
             for (ConversionTask task : tasks) {
-                CompletableFuture f =  CompletableFuture.supplyAsync(new Supplier<AttributesCollection>() {
+                CompletableFuture f = CompletableFuture.supplyAsync(new Supplier<AttributesCollection>() {
                     @Override
-                    public AttributesCollection get()
-                    {
+                    public AttributesCollection get() {
                         try {
                             return task.call();
-                        } catch (Exception ex) {
+                        }
+                        catch (Exception ex) {
                             Logger.getLogger(Converter.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         return null;
                     }
                 }, execService); //execService.<Callable<AttributesCollection>>submit(task);
-                
-                CompletableFuture<AttributesCollection> future = f.thenAccept((Object t) -> {
-                    if (t == null) {
-                        System.out.println("NULL");
-                    }
-                    else {
-                        AttributesCollection ac = (AttributesCollection) t;
-                        manager.saveToJSON(ac);
-                    }
-                });
+                if (!f.isCancelled()) {
+                    CompletableFuture<AttributesCollection> future = f.thenAccept((Object t) -> {
+                        if (t == null) {
+                            System.out.println("NULL");
+                        } else {
+                            AttributesCollection ac = (AttributesCollection) t;
+                            manager.saveToJSON(ac);
+                        }
+                    });
+                }
 //                futures.add(f);
             }
         }
@@ -100,7 +100,7 @@ public class Converter {
             if (id == -1) {
                 throw new Exception("Could not find task!");
             }
-            tasks.get(id).pause();
+            tasks.get(id).stop();
             tasks.remove(id);
             System.out.println("Task Stopped");
         }
