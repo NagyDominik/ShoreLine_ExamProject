@@ -131,14 +131,11 @@ public class NewConfigWindowController implements Initializable {
             
             exportTblCol.setCellFactory(TextFieldTableCell.forTableColumn());
             
-            exportTblCol.setOnEditCommit((TableColumn.CellEditEvent<KeyValuePair, String> event) -> { try {
-                // Save edit
+
+            exportTblCol.setOnEditCommit((TableColumn.CellEditEvent<KeyValuePair, String> event) -> { // Save edit
                 KeyValuePair kvp = event.getRowValue();
                 kvp.setValue(event.getNewValue());
                 currentConfig.updateValue(kvp.getKey(), event.getNewValue());
-                } catch (IllegalAccessException ex) {
-                    Logger.getLogger(NewConfigWindowController.class.getName()).log(Level.SEVERE, null, ex);
-                }
             });
         }
         catch (Exception ex) {
@@ -197,21 +194,6 @@ public class NewConfigWindowController implements Initializable {
         s.close();
     }
 
-    @FXML
-    private void btnToRootClicked(ActionEvent event)
-    {
-        try {
-            KeyValuePair kvp = exportTblView.getSelectionModel().getSelectedItem();
-            if (kvp == null) {
-                return;
-            }
-            
-            currentConfig.designateAsRoot(kvp.getKey());
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(NewConfigWindowController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     /**
      * Set up events so the table and list view can be filtered interactively.
      */
@@ -254,9 +236,6 @@ public class NewConfigWindowController implements Initializable {
         comboBoxFields.addAll(Arrays.asList(exportFields));
         
         return comboBoxFields;
-        
-        
-        
         
     }
     
