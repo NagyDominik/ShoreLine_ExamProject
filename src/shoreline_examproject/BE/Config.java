@@ -45,6 +45,7 @@ public class Config {
         for (DataPair dataPair : data) {
             if (dataPair.containsKey(key)) {
                 dataPair.updateValue(newValue);
+                return;
             }
         }
         
