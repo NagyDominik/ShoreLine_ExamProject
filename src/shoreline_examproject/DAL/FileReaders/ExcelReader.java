@@ -98,4 +98,12 @@ public class ExcelReader extends FileReader {
         }
         return null;
     }
+    
+    public AttributesCollection getDataOptimized(File file) {
+        AttributesCollection loadedAttributes = new AttributesCollection();
+        loadedAttributes.setImportPath(file.getPath());
+        
+        
+        return null;
+    }
 }
