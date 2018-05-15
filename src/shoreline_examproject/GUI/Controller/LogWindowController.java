@@ -50,10 +50,6 @@ public class LogWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        EventLogger.log(EventLogger.Level.ALERT, "Alert test");
-        EventLogger.log(EventLogger.Level.ERROR, "Error test");
-        EventLogger.log(EventLogger.Level.INFORMATION, "Information test");
-        EventLogger.log(EventLogger.Level.SUCCESS, "Success test");
         setupTV();
     }
 
