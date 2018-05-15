@@ -38,7 +38,7 @@ public class JSONWriter extends IFileWriter {
             jwriter.endArray();
 
             EventLogger.log(EventLogger.Level.SUCCESS, "JSON writing was successful.");
-            System.out.println("Writing was succesfully");
+            System.out.println("Writing was succesful.");
         }
         catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());

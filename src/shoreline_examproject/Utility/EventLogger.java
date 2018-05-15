@@ -20,10 +20,6 @@ public class EventLogger {
     private static ObservableList<EventLog> logList = FXCollections.observableArrayList();
 
     public EventLogger() {
-        log(Level.ALERT, "Alert type test");
-        log(Level.ERROR, "Error type test");
-        log(Level.INFORMATION, "Information type test");
-        log(Level.SUCCESS, "Success type test");
     }
 
     public static void log(Level level, String desc) {

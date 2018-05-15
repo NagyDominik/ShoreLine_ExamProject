@@ -264,6 +264,11 @@ public class MainWindowController implements Initializable {
                 taskNameLbl.setText(newV.getConfigName());
                 progressLbl.textProperty().bind(newV.progressProperty().multiply(100).asString("%.0f %%"));
                 startTimeLbl.setText(newV.getStartTimeAsString());
+            } else {
+                taskNameLbl.setText("");
+                progressLbl.textProperty().unbind();
+                progressLbl.setText("");
+                startTimeLbl.setText("");
             }
         });
 
@@ -272,7 +277,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private void deleteTask(ActionEvent event) {
         ConversionTask selectedItem = taskTV.getSelectionModel().getSelectedItem();
-        taskTV.getItems().remove(selectedItem);
+        //taskTV.getItems().remove(selectedItem);
         model.stopConversion(selectedItem);
     }
 }

@@ -76,16 +76,20 @@ public class Converter {
                         return null;
                     }
                 }, execService); //execService.<Callable<AttributesCollection>>submit(task);
-                if (!f.isCancelled()) {
-                    CompletableFuture<AttributesCollection> future = f.thenAccept((Object t) -> {
-                        if (t == null) {
-                            System.out.println("NULL");
+                CompletableFuture<AttributesCollection> future = f.thenAccept((Object t) -> {
+                    if (t == null) {
+                        if (task.getIsCanceled()) {
+                            EventLogger.log(EventLogger.Level.ALERT, "Task " + task.getConfigName() + " has been canceled by " + "INSERT USERNAME HERE");
+                            System.out.println("CANCELED");
                         } else {
-                            AttributesCollection ac = (AttributesCollection) t;
-                            manager.saveToJSON(ac);
+                            System.out.println("NULL");
                         }
-                    });
-                }
+                    } else {
+                        AttributesCollection ac = (AttributesCollection) t;
+                        manager.saveToJSON(ac);
+                    }
+                });
+
 //                futures.add(f);
             }
         }

@@ -18,7 +18,8 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     private AttributesCollection convertedData;
     private LocalDateTime startTime;
     private final Object pauseLock = new Object();
-    private Boolean isPaused = false, isCanceled = false;
+    private Boolean isPaused = false;
+    private Boolean isCanceled = false;
     private String oldKey = "", newKey = "", value = "";
 
     public ConversionTask(Config usedConfig, AttributesCollection inputData) {
@@ -59,8 +60,9 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
             DataRow convertedRow = new DataRow();
             for (AttributeMap attributeMap : dataRow.getData()) {
                 if (isCanceled) {
-                    stop();
-                    break;
+                    this.cancelled();
+                    convertedData = null;
+                    return;
                 }
                 if (isPaused) {
                     synchronized (pauseLock) {
@@ -80,7 +82,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
             progressPercentage = (double) progress / count * 100;
             updateProgress(progressPercentage, count);
             convertedData.addAttributeMap(convertedRow);
-            //Thread.sleep(500);
+            Thread.sleep(500);
         }
     }
 
@@ -114,9 +116,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     }
     
     public void stop() {
-        Thread.currentThread().interrupt();
-        this.cancel(true);
-        this.failed();
+        isCanceled = true;
     }
 
     public void pause() {
@@ -134,6 +134,10 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         return isPaused;
     }
 
+    public Boolean getIsCanceled() {
+        return isCanceled;
+    }
+    
     /**
      * Convert the provided attribute map using the configuration.
      *
