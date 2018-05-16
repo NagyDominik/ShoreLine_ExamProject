@@ -3,31 +3,32 @@ package shoreline_examproject.GUI.Controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.Background;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
@@ -62,11 +63,16 @@ public class NewConfigWindowController implements Initializable {
         
     private Config currentConfig;
     private Model model;
+    
+    
     private FilteredList<String> filteredAttributeList;
     private FilteredList<KeyValuePair> filteredKeyValuePairList;
     private ObservableList<String> attributeList;
     private ObservableList<KeyValuePair> keyValuePairList;
-    private ObservableList<String> comboBoxFields;
+
+    
+    private final String[] normalAttributes = new String[]{"siteName", "assetSerialNumber", "type", "externalWorkOrderId", "systemStatus", "userStatus", "createdOn", "createdBy", "name", "priority", "status"};
+    private final String[] planningAttributes = new String[]{"latestFinishDate", "earliestStartDate", "latestStartDate", "estimatedTime"};
     
     /**
      * Initializes the controller class.
@@ -76,30 +82,27 @@ public class NewConfigWindowController implements Initializable {
         try {
             model = Model.getInstance();
             attributeList = FXCollections.observableArrayList(model.getCurrentAttributes().getAttributesAsString());
-            comboBoxFields = FXCollections.observableArrayList();
-            fillUpExport();
+            
             
             if (model.isConfigEdit()) {
                 currentConfig = model.getSelected();
                 //TODO: make it possible to edit a config.
                 keyValuePairList = FXCollections.observableArrayList();
 
-                filteredAttributeList = new FilteredList<String>(attributeList);
-                filteredKeyValuePairList = new FilteredList<KeyValuePair>(keyValuePairList);
+                filteredAttributeList = new FilteredList<>(attributeList);
+                filteredKeyValuePairList = new FilteredList<>(keyValuePairList);
             }
             else {
                 currentConfig = new Config();
 
                 keyValuePairList = FXCollections.observableArrayList();
 
-                filteredAttributeList = new FilteredList<String>(attributeList);
-                filteredKeyValuePairList = new FilteredList<KeyValuePair>(keyValuePairList);
+                filteredAttributeList = new FilteredList<>(attributeList);
+                filteredKeyValuePairList = new FilteredList<>(keyValuePairList);
             }
-
             
             setUpViews();
             setUpSearch();
-            fillUpExport();
             btnRemove.setDisable(true);
             
         } catch (ModelException ex) {
@@ -114,18 +117,60 @@ public class NewConfigWindowController implements Initializable {
     }
 
     private void setUpViews() {
-        try {
+        try {           
+            setUpDragAndDrop();
+            addAttributes();
             
             lstViewImportAttributes.setItems(filteredAttributeList);
+            
+            exportTblView.setRowFactory(new Callback<TableView<KeyValuePair>, TableRow<KeyValuePair>>()
+            {
+                @Override
+                public TableRow<KeyValuePair> call(TableView<KeyValuePair> param)
+                {
+                    TableRow<KeyValuePair> tr = new TableRow();
+                    final Background bg = tr.getBackground();
+                    tr.setOnDragEntered((DragEvent event) -> {
+                        tr.setStyle("-fx-background-color: green");
+                    });
+                    
+                    tr.setOnDragExited((DragEvent event) -> {
+                        tr.setStyle("");
+                    });
+                    
+                    tr.setOnDragDropped((DragEvent event) -> {
+                        Dragboard db = event.getDragboard();
+                        boolean success = false;
+                        
+                        if (db.hasString()) {
+                            KeyValuePair kvp = tr.getItem();
+                            kvp.setValue(db.getString());
+                            currentConfig.updateValue(kvp.getKey().trim(), kvp.getValue());
+                            
+                            attributeList.remove(kvp.getValue());
+                            
+                            exportTblView.refresh();
+                            success = true;                        
+                        }
+                        
+                        event.setDropCompleted(success);
+                        
+                        event.consume();
+                    });
+                    return tr;
+                }
+            });
+            
             exportTblView.setEditable(true);
             exportTblView.setItems(filteredKeyValuePairList);
             
-            originalExportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey()));
             
-            exportTblCol.setCellFactory(ComboBoxTableCell.forTableColumn(comboBoxFields));
             
-            exportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getValue()));
+            originalExportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey()));            
+            exportTblCol.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getValue()));
             
+            
+
             lstViewImportAttributes.setOnMouseClicked((MouseEvent event) -> {
                 if (lstViewImportAttributes.getSelectionModel().getSelectedItem() != null) {   // Disable the remove button if an imported attribute is selected.
                     btnRemove.setDisable(true);
@@ -139,12 +184,6 @@ public class NewConfigWindowController implements Initializable {
                 }
             }
             );
-                        
-            exportTblCol.setOnEditCommit((TableColumn.CellEditEvent<KeyValuePair, String> event) -> { // Save edit
-                KeyValuePair kvp = event.getRowValue();
-                kvp.setValue(event.getNewValue());
-                currentConfig.updateValue(kvp.getKey(), event.getNewValue());
-            });
         }
         catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, "An exception has occured! Exception texts: \n" + ex.getMessage());
@@ -152,41 +191,6 @@ public class NewConfigWindowController implements Initializable {
         }
     }
 
-
-    @FXML
-    private void btnAddClicked(ActionEvent event)
-    {
-        String selected = lstViewImportAttributes.getSelectionModel().getSelectedItem();
-               
-        if (selected == null) {
-            return;
-        }
-        
-        KeyValuePair kvp = new KeyValuePair(selected, selected);
-//        exportTblView.getItems().add(kvp);
-//        lstViewImportAttributes.getItems().remove(kvp.getKey());   
-
-        keyValuePairList.add(kvp);
-        attributeList.remove(selected);
-        
-        currentConfig.addRelation(selected, selected);
-    }
-
-    @FXML
-    private void btnRemoveClicked(ActionEvent event)
-    {
-        KeyValuePair selected = exportTblView.getSelectionModel().getSelectedItem();
-        
-        if (selected == null) {
-            return;
-        }
-        
-//        exportTblView.getItems().remove(selected);
-//        lstViewImportAttributes.getItems().add(0, selected.key);
-    
-        attributeList.add(0, selected.getKey());
-        keyValuePairList.remove(selected);
-    }
 
     @FXML
     private void btnSaveClicked(ActionEvent event)
@@ -237,17 +241,71 @@ public class NewConfigWindowController implements Initializable {
         }});
     }
 
-    private ObservableList<String> fillUpExport(){
+    private void addAttributes()
+    {
+        for (String normalAttribute : normalAttributes) {
+                keyValuePairList.add(new KeyValuePair(normalAttribute, ""));
+                currentConfig.addRelation(normalAttribute, "");
+            }
         
-        String[] exportFields = new String[]{"siteName", "assetSerialNumber", "type", "externalWorkOrderId", "systemStatus", "userStatus", 
-            "createdOn", "createdBy", "name", "priority", "status", "planning"};
-        comboBoxFields.addAll(Arrays.asList(exportFields));
+        keyValuePairList.add(new KeyValuePair("planning", "-----------------"));
         
-        return comboBoxFields;
-        
+        for (String planningAttribute : planningAttributes) {
+            keyValuePairList.add(new KeyValuePair("\t" + planningAttribute, ""));
+            currentConfig.addRelation(planningAttribute, "");
+        }
     }
-    
-    
+
+    private void setUpDragAndDrop()
+    {
+        lstViewImportAttributes.setOnDragDetected((MouseEvent event) -> {
+            Dragboard db = lstViewImportAttributes.startDragAndDrop(TransferMode.COPY_OR_MOVE);
+            ClipboardContent cc = new ClipboardContent();
+            cc.putString(lstViewImportAttributes.getSelectionModel().getSelectedItem());
+            db.setContent(cc);
+            
+            event.consume();
+        });
+        
+        lstViewImportAttributes.setOnDragDone(new EventHandler<DragEvent>()
+        {
+            @Override
+            public void handle(DragEvent event)
+            {
+                if (event.isDropCompleted() && event.getTransferMode() == TransferMode.MOVE) {
+                    lstViewImportAttributes.getItems().remove(event.getDragboard().getString());
+                }
+                
+                event.consume();
+            }
+        });
+        
+
+        exportTblView.setOnDragOver((DragEvent event) -> {
+            if (event.getGestureSource() != exportTblView && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.COPY);
+            }
+            
+            event.consume();
+        });
+    }
+
+
+    @FXML
+    private void btnRemoveClicked(ActionEvent event)
+    {
+        KeyValuePair selected = exportTblView.getSelectionModel().getSelectedItem();
+        
+        if (selected == null && selected.getKey().equals("planning")) {
+            return;
+        }
+        
+        attributeList.add(0, selected.getValue());
+        currentConfig.updateValue(selected.getKey(), "");
+        exportTblView.refresh();
+        selected.setValue("");
+    }
+
     /**
      * Nested class, used to store key-value pairs in the export attributes, to make displaying them easier.
      * table view.
