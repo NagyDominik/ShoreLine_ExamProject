@@ -3,9 +3,7 @@ package shoreline_examproject.GUI.Controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,20 +13,15 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.ComboBoxTableCell;
-import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.Background;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
@@ -73,6 +66,7 @@ public class NewConfigWindowController implements Initializable {
     
     private final String[] normalAttributes = new String[]{"siteName", "assetSerialNumber", "type", "externalWorkOrderId", "systemStatus", "userStatus", "createdOn", "createdBy", "name", "priority", "status"};
     private final String[] planningAttributes = new String[]{"latestFinishDate", "earliestStartDate", "latestStartDate", "estimatedTime"};
+
     
     /**
      * Initializes the controller class.
@@ -106,7 +100,7 @@ public class NewConfigWindowController implements Initializable {
             btnRemove.setDisable(true);
             
         } catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
     }
 
@@ -123,42 +117,51 @@ public class NewConfigWindowController implements Initializable {
             
             lstViewImportAttributes.setItems(filteredAttributeList);
             
-            exportTblView.setRowFactory(new Callback<TableView<KeyValuePair>, TableRow<KeyValuePair>>()
-            {
-                @Override
-                public TableRow<KeyValuePair> call(TableView<KeyValuePair> param)
-                {
-                    TableRow<KeyValuePair> tr = new TableRow();
-                    final Background bg = tr.getBackground();
-                    tr.setOnDragEntered((DragEvent event) -> {
-                        tr.setStyle("-fx-background-color: green");
-                    });
+            exportTblView.setRowFactory((TableView<KeyValuePair> param) -> {
+                TableRow<KeyValuePair> tr = new TableRow();
+
+                tr.setOnDragEntered((DragEvent event) -> {
+                    if (event.getSource() != exportTblView) {
+                        tr.setStyle("-fx-background-color: green"); // If the source is valid, indicate it to the user, by changing the color of the row
+                    }
                     
-                    tr.setOnDragExited((DragEvent event) -> {
-                        tr.setStyle("");
-                    });
+                    event.consume();
+                });
+                
+                tr.setOnDragExited((DragEvent event) -> {
+                    tr.setStyle("");    // Reset the stylo upon exitin from the row
                     
-                    tr.setOnDragDropped((DragEvent event) -> {
-                        Dragboard db = event.getDragboard();
-                        boolean success = false;
+                    event.consume();
+                });
+                
+                tr.setOnDragOver((DragEvent event) -> {
+                    if (event.getGestureSource() != exportTblView && event.getDragboard().hasString()) {
+                        event.acceptTransferModes(TransferMode.COPY);
+                    }
+
+                    event.consume();
+                });
+                
+                tr.setOnDragDropped((DragEvent event) -> {
+                    Dragboard db = event.getDragboard();
+                    boolean success = false;
+                    
+                    if (db.hasString()) {
+                        KeyValuePair kvp = tr.getItem();
+                        kvp.setValue(db.getString());
+                        currentConfig.updateValue(kvp.getKey().trim(), kvp.getValue());
                         
-                        if (db.hasString()) {
-                            KeyValuePair kvp = tr.getItem();
-                            kvp.setValue(db.getString());
-                            currentConfig.updateValue(kvp.getKey().trim(), kvp.getValue());
-                            
-                            attributeList.remove(kvp.getValue());
-                            
-                            exportTblView.refresh();
-                            success = true;                        
-                        }
+                        attributeList.remove(kvp.getValue());
                         
-                        event.setDropCompleted(success);
-                        
-                        event.consume();
-                    });
-                    return tr;
-                }
+                        exportTblView.refresh();
+                        success = true;
+                    }
+                    
+                    event.setDropCompleted(success);
+                    
+                    event.consume();
+                });
+                return tr;
             });
             
             exportTblView.setEditable(true);
@@ -186,7 +189,7 @@ public class NewConfigWindowController implements Initializable {
             );
         }
         catch (Exception ex) {
-            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured! Exception texts: \n" + ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured! Exception text: " + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -267,23 +270,9 @@ public class NewConfigWindowController implements Initializable {
             event.consume();
         });
         
-        lstViewImportAttributes.setOnDragDone(new EventHandler<DragEvent>()
-        {
-            @Override
-            public void handle(DragEvent event)
-            {
-                if (event.isDropCompleted() && event.getTransferMode() == TransferMode.MOVE) {
-                    lstViewImportAttributes.getItems().remove(event.getDragboard().getString());
-                }
-                
-                event.consume();
-            }
-        });
-        
-
-        exportTblView.setOnDragOver((DragEvent event) -> {
-            if (event.getGestureSource() != exportTblView && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.COPY);
+        lstViewImportAttributes.setOnDragDone((DragEvent event) -> {
+            if (event.isDropCompleted() && event.getTransferMode() == TransferMode.MOVE) {
+                lstViewImportAttributes.getItems().remove(event.getDragboard().getString());
             }
             
             event.consume();
