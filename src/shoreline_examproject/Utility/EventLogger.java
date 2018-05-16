@@ -30,6 +30,10 @@ public class EventLogger {
         //TODO DAL TO SAVE TO DATABASE
     }
 
+    public static ObservableList<EventLog> getLogList() {
+        return logList;
+    }
+    
     public boolean isIsChanged() {
         return isChanged.get();
     }
