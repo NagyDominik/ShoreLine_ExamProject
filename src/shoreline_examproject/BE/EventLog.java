@@ -28,6 +28,9 @@ public class EventLog {
         this.description = description;
     }
 
+    public EventLog() {
+    }
+
     public String getDescription() {
         return description;
     }
@@ -44,7 +47,7 @@ public class EventLog {
         this.type = type;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDateTime getLocalDateTime() {
         return date;
     }
 
