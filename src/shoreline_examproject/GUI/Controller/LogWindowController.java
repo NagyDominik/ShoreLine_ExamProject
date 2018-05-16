@@ -71,7 +71,7 @@ public class LogWindowController implements Initializable {
     private Callback<TableColumn.CellDataFeatures<EventLog, String>, ObservableValue<String>> getCustomDateCellFactory() {
            return (TableColumn.CellDataFeatures<EventLog, String> param) -> {
                DateTimeFormatter formater = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-               SimpleStringProperty formated = new SimpleStringProperty(param.getValue().getDate().format(formater));
+               SimpleStringProperty formated = new SimpleStringProperty(param.getValue().getLocalDateTime().format(formater));
                return formated;
            };
     }
