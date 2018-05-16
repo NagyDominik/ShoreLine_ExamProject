@@ -148,8 +148,16 @@ public class NewConfigWindowController implements Initializable {
                     
                     if (db.hasString()) {
                         KeyValuePair kvp = tr.getItem();
+                        if (kvp.getKey().equals("planning")) {
+                            return;
+                        }
+                        
+                        if (!kvp.getValue().isEmpty()) {    // If the row already contains a value, return it to the left table.
+                            attributeList.add(0, kvp.getValue());
+                        }
+                        
                         kvp.setValue(db.getString());
-                        currentConfig.updateValue(kvp.getKey().trim(), kvp.getValue());
+                        currentConfig.updateOutputName(kvp.getKey().trim(), kvp.getValue());
                         
                         attributeList.remove(kvp.getValue());
                         
@@ -290,7 +298,8 @@ public class NewConfigWindowController implements Initializable {
         }
         
         attributeList.add(0, selected.getValue());
-        currentConfig.updateValue(selected.getKey(), "");
+        //currentConfig.updateValue(selected.getKey(), "");
+        currentConfig.updateOutputName(selected.getKey(), "");
         exportTblView.refresh();
         selected.setValue("");
     }

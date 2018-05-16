@@ -37,20 +37,30 @@ public class Config {
     public void addRelation(String key, String value)
     {
         // TODO: dummy method, finish this (optimize?).
-        this.data.add(new DataPair(false, Type.STRING, key, value));
+        this.data.add(new DataPair(Type.STRING, key, value));
     }
     
-    public void updateValue(String key, String newValue)
+    public void updateOutputName(String value, String key)
     {
         for (DataPair dataPair : data) {
-            if (dataPair.containsKey(key)) {
-                dataPair.updateValue(newValue);
+            if (dataPair.hasValue(value)) {
+                dataPair.updateKey(key);
                 return;
             }
         }
-        
-        throw new IllegalArgumentException("This object does not contain the data associated with the provided key!");
     }
+    
+//    public void updateValue(String key, String newValue)
+//    {
+//        for (DataPair dataPair : data) {
+//            if (dataPair.containsKey(key)) {
+//                dataPair.updateValue(newValue);
+//                return;
+//            }
+//        }
+//        
+//        throw new IllegalArgumentException("This object does not contain the data associated with the provided key!");
+//    }
         
     public String getName() {
         return name;
@@ -66,7 +76,7 @@ public class Config {
     {
         StringBuilder sb = new StringBuilder();
         for (DataPair dataPair : data) {
-            sb.append(dataPair.inputName).append("->> ").append(dataPair.outputName).append("\n");
+            sb.append(dataPair.outputName).append("->> ").append(dataPair.inputName).append("\n");
         }
         
         return sb.toString();
@@ -75,20 +85,17 @@ public class Config {
     
     
     class DataPair
-    {
-        boolean isPlanning;
-        
+    {        
         private Type outputType;
         
         private String inputName;
         private String outputName;
 
-        public DataPair(boolean isPlanning, Type outputType, String inputName, String outputName)
+        public DataPair(Type outputType, String oldName, String newName)
         {
-            this.isPlanning = isPlanning;
             this.outputType = outputType;
-            this.inputName = inputName;
-            this.outputName = outputName;
+            this.inputName = newName;
+            this.outputName = oldName;
         }
         
         public boolean containsKey(String key) {
@@ -104,6 +111,11 @@ public class Config {
         {
             this.outputName = newValue;
         }
+        
+        private void updateKey(String key)
+        {
+            this.inputName = key;
+        }
 
         public String getInputName()
         {
@@ -113,6 +125,11 @@ public class Config {
         public String getOutputName()
         {
             return outputName;
+        }
+        
+        public boolean hasValue(String value)
+        {
+            return this.outputName.equals(value);
         }
     }
 }
