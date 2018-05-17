@@ -263,7 +263,7 @@ public class MainWindowController implements Initializable {
                     return;
                 }
                 
-                txtAreaPreview.setText(selected.toString());
+                txtAreaPreview.setText(selected.getAssociationMap());
             }
         });
     }

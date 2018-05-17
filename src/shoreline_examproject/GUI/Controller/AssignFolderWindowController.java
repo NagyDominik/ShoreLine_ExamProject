@@ -1,26 +1,20 @@
 package shoreline_examproject.GUI.Controller;
 
-import com.sun.javafx.binding.SelectBinding;
 import java.io.File;
 import java.net.URL;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.stage.DirectoryChooser;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.GUI.Model.Model;
@@ -66,6 +60,7 @@ public class AssignFolderWindowController implements Initializable
         tblColumnFolder.setCellValueFactory((TableColumn.CellDataFeatures<FolderInformation, String> param) -> {
             return new ReadOnlyStringWrapper(param.getValue().getFolderName());
         });  
+        
         
         tblColumConfig.setCellFactory(ComboBoxTableCell.forTableColumn(model.getConfList()));
         
