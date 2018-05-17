@@ -83,8 +83,8 @@
       </JFXButton>
       <TableView fx:id="exportTblView" editable="true" layoutX="450.0" layoutY="111.0" prefHeight="290.0" prefWidth="215.0">
         <columns>
-          <TableColumn fx:id="originalExportTblCol" prefWidth="75.0" text="Original" />
-          <TableColumn id="exportTblCol" fx:id="exportTblCol" prefWidth="139.0" text="New" />
+          <TableColumn fx:id="originalExportTblCol" prefWidth="75.0" text="Output" />
+          <TableColumn id="exportTblCol" fx:id="exportTblCol" prefWidth="139.0" text="Input" />
         </columns>
          <columnResizePolicy>
          </columnResizePolicy>

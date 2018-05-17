@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.AssignFolderWindowController">
+   <children>
+      <JFXButton layoutX="14.0" layoutY="14.0" onAction="#btnSelectFolderClicked" text="Select folder" />
+      <TableView fx:id="tblViewFiles" editable="true" layoutX="17.0" layoutY="52.0" prefHeight="317.0" prefWidth="532.0">
+        <columns>
+          <TableColumn fx:id="tblColumnFolder" prefWidth="205.0" text="Folder" />
+          <TableColumn fx:id="tblColumConfig" minWidth="0.0" prefWidth="157.0" text="Config" />
+            <TableColumn fx:id="tblColumNumOfFiles" prefWidth="169.0" text="# of convertible files" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </children>
+</AnchorPane>

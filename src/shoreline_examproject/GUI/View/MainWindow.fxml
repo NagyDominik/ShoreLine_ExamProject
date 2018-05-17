@@ -148,5 +148,6 @@
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
       <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="407.0" layoutY="113.0" onAction="#deleteTask" prefHeight="31.0" prefWidth="79.0" style="-fx-background-color: RED;" text="Delete task" />
+      <JFXButton layoutX="310.0" layoutY="68.0" onAction="#btnAssignFolderClicked" style="-fx-background-color: #6EE854;" text="Assign folder" />
    </children>
 </AnchorPane>

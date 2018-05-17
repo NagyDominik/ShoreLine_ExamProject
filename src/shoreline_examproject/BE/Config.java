@@ -86,7 +86,7 @@ public class Config {
     
     class DataPair
     {        
-        private Type outputType;
+        private final Type outputType;
         
         private String inputName;
         private String outputName;
