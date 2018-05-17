@@ -12,7 +12,6 @@ import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.DAL.DataBase.DBLogManager;
 import shoreline_examproject.DAL.FileWriters.IFileWriter;
 import shoreline_examproject.DAL.FileWriters.JSONWriter;
-import shoreline_examproject.Utility.EventLogger;
 
 /**
  * Provides access to file saving and loading.
@@ -60,5 +59,4 @@ public class DALManager implements IDataAccess {
     public void saveData(AttributesCollection data) {
         writer.saveData(data);
     }
-
 }

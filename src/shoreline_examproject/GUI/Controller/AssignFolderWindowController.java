@@ -11,15 +11,19 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.stage.DirectoryChooser;
+<<<<<<< HEAD
+=======
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+>>>>>>> 31b3e4a0b3d5cfdf6689b9071ea8a90b3fd113cd
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.GUI.Model.Model;
 
@@ -64,9 +68,17 @@ public class AssignFolderWindowController implements Initializable {
         });
 
         tblColumConfig.setCellFactory(ComboBoxTableCell.forTableColumn(model.getConfList()));
-
-        tblColumNumOfFiles.setCellValueFactory((TableColumn.CellDataFeatures<FolderInformation, Integer> param) -> param.getValue().numberOfConvertibleFilesProperty().asObject());
-
+        tblColumConfig.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<FolderInformation, Config>>()
+        {
+            @Override
+            public void handle(TableColumn.CellEditEvent<FolderInformation, Config> event)
+            {
+                if (event.getNewValue() != null) {
+                    event.getRowValue().setConfig(event.getNewValue());
+                }
+            }
+        });
+        
     }
 
     @FXML
@@ -95,6 +107,7 @@ public class AssignFolderWindowController implements Initializable {
 
         public FolderInformation(File selectedFolder) {
             this.selectedFolder = selectedFolder;
+            countNumberOfConvertibleFiles();
         }
 
         private int getNumberOfConvertibleFiles() {
@@ -113,5 +126,23 @@ public class AssignFolderWindowController implements Initializable {
             return this.selectedFolder.getName();
         }
 
+        private void setConfig(Config newValue)
+        {
+            this.assignedConfig = newValue;
+        }
+
+        private void countNumberOfConvertibleFiles()
+        {
+            int n = 0;
+            for (File listFile : selectedFolder.listFiles()) {
+                if (listFile.getAbsolutePath().endsWith(".xlsx")) {
+                    n++;
+                }
+            }
+            
+            this.numberOfConvertibleFiles.set(n);
+        }
+        
+        
     }
 }

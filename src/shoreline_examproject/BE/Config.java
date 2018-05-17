@@ -109,10 +109,6 @@ public class Config {
             return this.outputName;
         }
 
-        private void updateValue(String newValue)
-        {
-            this.outputName = newValue;
-        }
         
         private void updateKey(String key)
         {
