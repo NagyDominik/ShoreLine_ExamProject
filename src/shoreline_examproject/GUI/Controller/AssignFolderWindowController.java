@@ -1,5 +1,7 @@
 package shoreline_examproject.GUI.Controller;
 
+import com.jfoenix.controls.JFXButton;
+import com.sun.javafx.binding.SelectBinding;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,6 +18,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.stage.DirectoryChooser;
+<<<<<<< HEAD
+=======
+import javafx.stage.Stage;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
+>>>>>>> 31b3e4a0b3d5cfdf6689b9071ea8a90b3fd113cd
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.GUI.Model.Model;
 
@@ -24,8 +32,7 @@ import shoreline_examproject.GUI.Model.Model;
  *
  * @author sebok
  */
-public class AssignFolderWindowController implements Initializable
-{
+public class AssignFolderWindowController implements Initializable {
 
     @FXML
     private TableColumn<FolderInformation, String> tblColumnFolder;
@@ -36,32 +43,30 @@ public class AssignFolderWindowController implements Initializable
     @FXML
     private TableView<FolderInformation> tblViewFiles;
 
-    
     private Model model;
     private ObservableList<FolderInformation> selectedFolders;
-    
+    @FXML
+    private JFXButton closeButton;
+
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
+    public void initialize(URL url, ResourceBundle rb) {
         model = Model.getInstance();
         selectedFolders = FXCollections.observableArrayList();
-        
-        setUpTableView();
-        
-    }    
 
-    private void setUpTableView()
-    {
+        setUpTableView();
+
+    }
+
+    private void setUpTableView() {
         tblViewFiles.setItems(selectedFolders);
-        
+
         tblColumnFolder.setCellValueFactory((TableColumn.CellDataFeatures<FolderInformation, String> param) -> {
             return new ReadOnlyStringWrapper(param.getValue().getFolderName());
-        });  
-        
-        
+        });
+
         tblColumConfig.setCellFactory(ComboBoxTableCell.forTableColumn(model.getConfList()));
         tblColumConfig.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<FolderInformation, Config>>()
         {
@@ -74,50 +79,49 @@ public class AssignFolderWindowController implements Initializable
             }
         });
         
-        tblColumNumOfFiles.setCellValueFactory((TableColumn.CellDataFeatures<FolderInformation, Integer> param) -> param.getValue().numberOfConvertibleFilesProperty().asObject());
-        
     }
-    
+
     @FXML
-    private void btnSelectFolderClicked(ActionEvent event)
-    {
+    private void btnSelectFolderClicked(ActionEvent event) {
         DirectoryChooser dc = new DirectoryChooser();
         dc.setTitle("Select folder");
         File selectedDir = dc.showDialog(tblViewFiles.getScene().getWindow());
         selectedFolders.add(new FolderInformation(selectedDir));
     }
-   
-    
+
+    @FXML
+    private void backClicked(ActionEvent event) {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
+    }
+
     /**
-     * Store information about the selected folder, so it can be displayed in the table view.
+     * Store information about the selected folder, so it can be displayed in
+     * the table view.
      */
     class FolderInformation {
-        
-        private File selectedFolder; 
+
+        private File selectedFolder;
         private Config assignedConfig;
         private final IntegerProperty numberOfConvertibleFiles = new SimpleIntegerProperty();
-       
-        public FolderInformation(File selectedFolder)
-        {
+
+        public FolderInformation(File selectedFolder) {
             this.selectedFolder = selectedFolder;
             countNumberOfConvertibleFiles();
         }
 
-        private int getNumberOfConvertibleFiles()
-        {
+        private int getNumberOfConvertibleFiles() {
             return numberOfConvertibleFiles.get();
         }
 
-        private void setNumberOfConvertibleFiles(int value)
-        {
+        private void setNumberOfConvertibleFiles(int value) {
             numberOfConvertibleFiles.set(value);
         }
 
-        private IntegerProperty numberOfConvertibleFilesProperty()
-        {
+        private IntegerProperty numberOfConvertibleFilesProperty() {
             return numberOfConvertibleFiles;
         }
-        
+
         public String getFolderName() {
             return this.selectedFolder.getName();
         }

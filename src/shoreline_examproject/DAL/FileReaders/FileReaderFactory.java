@@ -11,8 +11,6 @@ public class FileReaderFactory {
         String extension = path.substring(path.lastIndexOf("."));
         switch (extension) {
             case ".xlsx": return new OptimizedExcelReader();
-//            case ".xls": return new OptimizedExcelReader();
-//            case ".xlsx": return new ExcelReader();
             case ".xls": return new ExcelReader();
             case ".xml": return new XMLReader();
             default: throw new IllegalArgumentException("File type not recognised");

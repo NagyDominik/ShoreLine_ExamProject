@@ -61,7 +61,6 @@ public class DirectoryWatcher
                         System.out.println(filename);
                     }
                 }
-
             }
             
         } catch (IOException ex) {
