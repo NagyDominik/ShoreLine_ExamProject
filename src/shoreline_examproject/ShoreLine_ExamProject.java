@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import shoreline_examproject.BLL.DirectoryWatcher;
 
 /**
  *
@@ -17,6 +18,10 @@ public class ShoreLine_ExamProject extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        
+        DirectoryWatcher dw = new DirectoryWatcher();
+        dw.start();
+        
         Parent root = FXMLLoader.load(getClass().getResource("GUI/View/MainWindow.fxml"));
 
         Scene scene = new Scene(root);

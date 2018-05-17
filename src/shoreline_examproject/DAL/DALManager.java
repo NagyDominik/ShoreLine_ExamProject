@@ -4,17 +4,14 @@ import shoreline_examproject.DAL.FileReaders.FileReader;
 import shoreline_examproject.BE.Config;
 import java.io.File;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.DAL.FileReaders.FileReaderFactory;
 import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.DAL.DataBase.DBLogManager;
-import shoreline_examproject.DAL.FileReaders.OptimizedExcelReader;
 import shoreline_examproject.DAL.FileWriters.IFileWriter;
 import shoreline_examproject.DAL.FileWriters.JSONWriter;
-import shoreline_examproject.Utility.EventLogger;
 
 /**
  * Provides access to file saving and loading.
@@ -58,5 +55,4 @@ public class DALManager implements IDataAccess {
     public void saveData(AttributesCollection data) {
         writer.saveData(data);
     }
-
 }
