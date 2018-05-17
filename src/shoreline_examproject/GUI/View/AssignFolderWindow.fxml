@@ -27,7 +27,7 @@
          <graphic>
             <ImageView>
                <image>
-                  <Image url="@../../../../../../../Downloads/icons8-open-24.png" />
+                  <Image url="@../../img/openFolder.png" />
                </image>
             </ImageView>
          </graphic></JFXButton>
