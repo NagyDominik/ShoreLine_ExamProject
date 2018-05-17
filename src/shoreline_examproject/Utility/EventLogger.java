@@ -1,7 +1,8 @@
 package shoreline_examproject.Utility;
 
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shoreline_examproject.BE.EventLog;
@@ -20,30 +21,29 @@ public class EventLogger {
     }
     
     private static ObservableList<EventLog> logList = FXCollections.observableArrayList();
-    private final BooleanProperty isChanged = new SimpleBooleanProperty();
+    private static StringProperty username = new SimpleStringProperty();
     
     public EventLogger() {
     }
     
     public static void log(Level level, String desc) {
         logList.add(new EventLog(EventLog.Type.valueOf(level.name()), desc));
-        //TODO DAL TO SAVE TO DATABASE
     }
 
     public static ObservableList<EventLog> getLogList() {
         return logList;
     }
-    
-    public boolean isIsChanged() {
-        return isChanged.get();
+
+    public static StringProperty getUsernameProperty() {
+        return username;
     }
 
-    public void setIsChanged(boolean value) {
-        isChanged.set(value);
+    public static void setUsername(String username) {
+        EventLogger.username.set(username);
     }
 
-    public BooleanProperty isChangedProperty() {
-        return isChanged;
+    public static String getUsername() {
+        return username.get();
     }
     
     public static ObservableList getLog() {

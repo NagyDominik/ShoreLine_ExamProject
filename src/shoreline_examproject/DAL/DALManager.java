@@ -4,14 +4,12 @@ import shoreline_examproject.DAL.FileReaders.FileReader;
 import shoreline_examproject.BE.Config;
 import java.io.File;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.DAL.FileReaders.FileReaderFactory;
 import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.DAL.DataBase.DBLogManager;
-import shoreline_examproject.DAL.FileReaders.OptimizedExcelReader;
 import shoreline_examproject.DAL.FileWriters.IFileWriter;
 import shoreline_examproject.DAL.FileWriters.JSONWriter;
 import shoreline_examproject.Utility.EventLogger;
@@ -26,6 +24,11 @@ public class DALManager implements IDataAccess {
     private IFileWriter writer = new JSONWriter();
     private FileReader reader;
     private DBLogManager dBlog;
+    private UserDataManager udmanager = new UserDataManager();
+
+    public DALManager() {
+        EventLogger.setUsername(udmanager.read());
+    }
 
     @Override
     public void saveLog(EventLog log) {
@@ -49,7 +52,6 @@ public class DALManager implements IDataAccess {
 
     @Override
     public AttributesCollection loadFileData(File file) {
-
         reader = FileReaderFactory.CreateFileReader(file.getPath());
         return reader.getData(file);
     }

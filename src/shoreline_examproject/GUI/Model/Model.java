@@ -17,17 +17,15 @@ public class Model {
     private static Model instance;
 
     private final IBLLManager bllManager;
-    private AttributesCollection currentAttributes; //The attributes of the currently loaded file.
-    private String currentUser;    
+    private AttributesCollection currentAttributes; //The attributes of the currently loaded file.  
     private ObservableList<ConversionTask> tasks = FXCollections.observableArrayList();
     private ObservableList<Config> confList = FXCollections.observableArrayList();
-    
+
     private ConversionTask currentConversionTask;
-    
+
     private Config selected;
     private boolean configEdit;
-    
-    
+
     private Model() {
         bllManager = new BLLManager();
     }
@@ -56,40 +54,30 @@ public class Model {
 
     /**
      * Save the given configuration to the database.
+     *
      * @param currentConfig The configuration that will be saved.
      */
-    public void saveConfig(Config currentConfig)
-    {
+    public void saveConfig(Config currentConfig) {
         bllManager.saveConfig(currentConfig);
     }
-    
-    public String getCurrentUser(){
-        return currentUser ;
-    }
-   
-    public String setCurrentUser(String user){
-        return this.currentUser = user;
-    }
 
-    public ObservableList<ConversionTask> getTasks()
-    {
+    public ObservableList<ConversionTask> getTasks() {
         return tasks;
     }
 
-    public void createNewConversionTask(Config value) throws ModelException
-    {
+    public void createNewConversionTask(Config value) throws ModelException {
         if (currentAttributes == null) {
             throw new ModelException("currentAttribute null! It is possible that no file was selected");
         }
         tasks.add(bllManager.createConversionTask(value, currentAttributes));
         System.out.println("tasks list size: " + tasks.size());
     }
-    
-    public ConversionTask getSelectedTask(){
-         return currentConversionTask;
+
+    public ConversionTask getSelectedTask() {
+        return currentConversionTask;
     }
-    
-    public void setSelectedTask(ConversionTask task){
+
+    public void setSelectedTask(ConversionTask task) {
         this.currentConversionTask = task;
     }
 
@@ -101,32 +89,28 @@ public class Model {
     public void pauseConverion(ConversionTask selectedItem) {
         bllManager.pauseConversion(selectedItem);
     }
-    
+
     public ObservableList<Config> getConfList() {
         return confList;
     }
-    
+
     public void addConfig(Config c) {
         this.confList.add(c);
     }
 
-    public void setSelectedConfig(Config selected)
-    {
+    public void setSelectedConfig(Config selected) {
         this.selected = selected;
     }
 
-    public Config getSelected()
-    {
+    public Config getSelected() {
         return selected;
-    }           
+    }
 
-    public void setConfigEdit(boolean b)
-    {
+    public void setConfigEdit(boolean b) {
         this.configEdit = b;
     }
 
-    public boolean isConfigEdit()
-    {
+    public boolean isConfigEdit() {
         return configEdit;
     }
 }

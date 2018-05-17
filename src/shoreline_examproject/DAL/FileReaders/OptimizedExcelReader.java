@@ -26,6 +26,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import shoreline_examproject.BE.AttributeMap;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.DataRow;
+import shoreline_examproject.Utility.EventLogger;
 
 /**
  * Excel file reader that can process large XLSX files. The implementation is
@@ -44,7 +45,7 @@ public class OptimizedExcelReader extends FileReader {
             return process(file.getPath());
         }
         catch (Exception ex) {
-            Logger.getLogger(OptimizedExcelReader.class.getName()).log(Level.SEVERE, null, ex);
+            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
         }
         return null;
     }
@@ -90,7 +91,7 @@ public class OptimizedExcelReader extends FileReader {
         public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
             if (name.equals("c")) { // c => cell
                 cellcount++;
-                System.out.print(attributes.getValue("r") + " - "); // Print the cell reference, r => position of a cell
+                //System.out.print(attributes.getValue("r") + " - "); // Print the cell reference, r => position of a cell
                 if (splitnumber(attributes.getValue("r")) > currentRow) {
                     if (currentRow > 1) {
                         data.addAttributeMap(row);
@@ -127,7 +128,7 @@ public class OptimizedExcelReader extends FileReader {
                     attributes.add(lastContents);
                 } else {
                     row.addData(createAM(attributes.get(cellcount), lastContents));
-                    System.out.println(lastContents);
+                    //System.out.println(lastContents);
                 }
             }
         }

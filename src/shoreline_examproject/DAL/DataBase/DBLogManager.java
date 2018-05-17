@@ -25,11 +25,6 @@ public class DBLogManager {
 
     private EventLogger logList;
     private ConnectionPool conpool = new ConnectionPool();
-
-    //listener kell az eventloggernek ischangedpropertyre
-    
-    
-    
     
     public void saveLog(EventLog log) throws DALException {
         try (Connection con = conpool.create())/* Lehet nem a create kell*/ {

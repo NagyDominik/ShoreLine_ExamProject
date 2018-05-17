@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import shoreline_examproject.GUI.Model.Model;
+import shoreline_examproject.Utility.EventLogger;
 
 /**
  * FXML Controller class
@@ -29,8 +30,7 @@ public class OptionsWindowController implements Initializable {
     private Label lblCurrentName;
     @FXML
     private JFXTextField txtFieldNewName;
-
-    private Model model;
+    
     private String newName;
 
     /**
@@ -38,17 +38,9 @@ public class OptionsWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        model = Model.getInstance();
-        lblCurrentName.setText(model.getCurrentUser());
+        lblCurrentName.setText(EventLogger.getUsername());
     }
-
-    private void changeName() {
-        if (txtFieldNewName != null) {
-            newName = txtFieldNewName.getText();
-            model.setCurrentUser(newName);
-        }
-    }
-
+    
     @FXML
     private void backClicked(ActionEvent event) {
         Stage stage = (Stage) closeButton.getScene().getWindow();
@@ -58,7 +50,14 @@ public class OptionsWindowController implements Initializable {
     @FXML
     private void btnSaveClicked(ActionEvent event) {
         changeName();
-        System.out.println(model.getCurrentUser());
     }
 
+    private void changeName() {
+        if (txtFieldNewName != null) {
+            newName = txtFieldNewName.getText();
+            EventLogger.setUsername(newName);
+            lblCurrentName.setText(newName);
+        }
+    }
+    
 }
