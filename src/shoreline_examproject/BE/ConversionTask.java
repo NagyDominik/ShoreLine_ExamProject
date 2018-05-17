@@ -82,7 +82,6 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
             progressPercentage = (double) progress / count * 100;
             updateProgress(progressPercentage, count);
             convertedData.addAttributeMap(convertedRow);
-            Thread.sleep(500);
         }
     }
 

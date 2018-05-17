@@ -28,7 +28,8 @@ import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.DataRow;
 
 /**
- * Excel file reader. The implementation is based on:
+ * Excel file reader that can process large XLSX files. The implementation is
+ * based on:
  * http://svn.apache.org/repos/asf/poi/trunk/src/examples/src/org/apache/poi/xssf/eventusermodel/examples/FromHowTo.java
  *
  * @author Dominik
@@ -58,7 +59,6 @@ public class OptimizedExcelReader extends FileReader {
         InputSource sheetSource = new InputSource(sheet);
         parser.parse(sheetSource);
         sheet.close();
-
         return data;
     }
 
@@ -79,7 +79,7 @@ public class OptimizedExcelReader extends FileReader {
         private boolean nextIsString;
         private DataRow row = new DataRow();
         private List<String> attributes = new ArrayList();
-        private int cellcount = 0;
+        private int cellcount = -1;
         private int currentRow = 1;
 
         private SheetHandler(SharedStringsTable stringtable) {
@@ -89,9 +89,12 @@ public class OptimizedExcelReader extends FileReader {
         @Override
         public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
             if (name.equals("c")) { // c => cell
-//                System.out.print(attributes.getValue("r") + " - "); // Print the cell reference
+                cellcount++;
+                System.out.print(attributes.getValue("r") + " - "); // Print the cell reference, r => position of a cell
                 if (splitnumber(attributes.getValue("r")) > currentRow) {
-                    data.addAttributeMap(row);
+                    if (currentRow > 1) {
+                        data.addAttributeMap(row);
+                    }
                     row = new DataRow();
                     cellcount = 0;
                     currentRow = splitnumber(attributes.getValue("r"));
@@ -122,10 +125,10 @@ public class OptimizedExcelReader extends FileReader {
             if (name.equals("v")) {
                 if (currentRow == 1) {
                     attributes.add(lastContents);
+                } else {
+                    row.addData(createAM(attributes.get(cellcount), lastContents));
+                    System.out.println(lastContents);
                 }
-                row.addData(createAM(attributes.get(cellcount), lastContents));
-                cellcount++;
-//                System.out.println(lastContents);
             }
         }
 
@@ -134,6 +137,12 @@ public class OptimizedExcelReader extends FileReader {
             lastContents += new String(ch, start, length);
         }
 
+        /**
+         * Splits the row number from the position reference of the cell
+         *
+         * @param index The position of the cell
+         * @return The row index of the given position
+         */
         private int splitnumber(String index) {
             int splitindex = -1;
             for (int i = 0; i < index.length(); i++) {
@@ -149,6 +158,7 @@ public class OptimizedExcelReader extends FileReader {
             celldata.setValue(vslue);
             return celldata;
         }
+
     }
 
 }
