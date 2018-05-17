@@ -6,8 +6,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,7 +20,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
@@ -152,41 +152,71 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void optionsClicked(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/OptionsWindow.fxml"));
-        Parent root = (Parent) loader.load();
-
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Options");
-        stage.setResizable(false);
-        stage.show();
+    private void optionsClicked(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/OptionsWindow.fxml"));
+            Parent root = (Parent) loader.load();
+            
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Options");
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window OptionsWindow! \n"  + ex.getMessage());
+            EventPopup.showAlertPopup(ex);        }
 
     }
 
     @FXML
-    private void moreDetailClicked(ActionEvent event) throws IOException {
-        model.setSelectedTask(taskTV.getSelectionModel().getSelectedItem());
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/DetailWindow.fxml"));
-        Parent root = (Parent) loader.load();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Details");
-        stage.setResizable(false);
-        stage.show();
+    private void moreDetailClicked(ActionEvent event) {
+        try {
+            model.setSelectedTask(taskTV.getSelectionModel().getSelectedItem());
+            
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/DetailWindow.fxml"));
+            Parent root = (Parent) loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Details");
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window DetailWindow! \n"  + ex.getMessage());
+            EventPopup.showAlertPopup(ex);        }
     }
 
     @FXML
-    private void logClicked(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/LogWindow.fxml"));
-        Parent root = (Parent) loader.load();
-
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Log");
-        stage.setResizable(false);
-        stage.show();
+    private void logClicked(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/LogWindow.fxml"));
+            Parent root = (Parent) loader.load();
+            
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Log");
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window LogWindow! \n"  + ex.getMessage());
+            EventPopup.showAlertPopup(ex);        }
+    }
+    
+    @FXML
+    private void btnAssignFolderClicked(ActionEvent event)
+    {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/AssignFolderWindow.fxml"));
+            Parent root = (Parent) loader.load();
+            
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Folders");
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window AssignFolderWindow! \n"  + ex.getMessage());
+            EventPopup.showAlertPopup(ex);
+        }
     }
 
     private void setUpTaskTableView() {
@@ -233,7 +263,7 @@ public class MainWindowController implements Initializable {
                     return;
                 }
                 
-                txtAreaPreview.setText(selected.toString());
+                txtAreaPreview.setText(selected.getAssociationMap());
             }
         });
     }

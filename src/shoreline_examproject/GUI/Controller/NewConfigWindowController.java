@@ -9,7 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -298,7 +297,6 @@ public class NewConfigWindowController implements Initializable {
         }
         
         attributeList.add(0, selected.getValue());
-        //currentConfig.updateValue(selected.getKey(), "");
         currentConfig.updateOutputName(selected.getKey(), "");
         exportTblView.refresh();
         selected.setValue("");

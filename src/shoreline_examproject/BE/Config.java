@@ -74,6 +74,10 @@ public class Config {
     @Override
     public String toString()
     {
+        return this.name;
+    }
+    
+    public String getAssociationMap() {
         StringBuilder sb = new StringBuilder();
         for (DataPair dataPair : data) {
             sb.append(dataPair.outputName).append("->> ").append(dataPair.inputName).append("\n");
@@ -82,11 +86,9 @@ public class Config {
         return sb.toString();
     }
     
-    
-    
     class DataPair
     {        
-        private Type outputType;
+        private final Type outputType;
         
         private String inputName;
         private String outputName;
