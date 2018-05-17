@@ -12,6 +12,7 @@ import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.DAL.DataBase.DBLogManager;
 import shoreline_examproject.DAL.FileWriters.IFileWriter;
 import shoreline_examproject.DAL.FileWriters.JSONWriter;
+import shoreline_examproject.Utility.EventLogger;
 
 /**
  * Provides access to file saving and loading.
@@ -23,6 +24,11 @@ public class DALManager implements IDataAccess {
     private IFileWriter writer = new JSONWriter();
     private FileReader reader;
     private DBLogManager dBlog;
+    private UserDataManager udmanager = new UserDataManager();
+
+    public DALManager() {
+        EventLogger.setUsername(udmanager.read());
+    }
 
     @Override
     public void saveLog(EventLog log) {
@@ -46,7 +52,6 @@ public class DALManager implements IDataAccess {
 
     @Override
     public AttributesCollection loadFileData(File file) {
-
         reader = FileReaderFactory.CreateFileReader(file.getPath());
         return reader.getData(file);
     }

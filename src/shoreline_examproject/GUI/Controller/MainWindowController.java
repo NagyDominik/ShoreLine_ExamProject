@@ -5,11 +5,13 @@ import com.jfoenix.controls.JFXTextArea;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -28,6 +30,7 @@ import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
+import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
 import shoreline_examproject.Utility.EventLogger;
@@ -69,13 +72,12 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            userNameLbl.setText(System.getProperty("user.name"));
             userNameLbl.setAlignment(Pos.CENTER_RIGHT);
             model = Model.getInstance();
-            model.setCurrentUser(userNameLbl.getText());
             taskTV.setItems(model.getTasks());
             configComboBox.setItems(model.getConfList());
-            
+            userNameLbl.textProperty().bind(EventLogger.getUsernameProperty());
+
             setUpConfigComboBox();
             setUpTaskTableView();
             setUpHandlersAndListeners();
@@ -83,6 +85,7 @@ public class MainWindowController implements Initializable {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
+
     }
 
     @FXML
@@ -103,13 +106,13 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void newConfigClicked(ActionEvent event) throws IOException {
-        
+
         Config selected = configComboBox.getSelectionModel().getSelectedItem();
         if (selected != null) {
             model.setSelectedConfig(selected);
             model.setConfigEdit(true);
         }
-        
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/NewConfigWindow.fxml"));
         Parent root = (Parent) loader.load();
 
@@ -161,15 +164,17 @@ public class MainWindowController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/OptionsWindow.fxml"));
             Parent root = (Parent) loader.load();
-            
+
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Options");
             stage.setResizable(false);
             stage.show();
-        } catch (IOException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window OptionsWindow! \n"  + ex.getMessage());
-            EventPopup.showAlertPopup(ex);        }
+        }
+        catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window OptionsWindow! \n" + ex.getMessage());
+            EventPopup.showAlertPopup(ex);
+        }
 
     }
 
@@ -177,7 +182,7 @@ public class MainWindowController implements Initializable {
     private void moreDetailClicked(ActionEvent event) {
         try {
             model.setSelectedTask(taskTV.getSelectionModel().getSelectedItem());
-            
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/DetailWindow.fxml"));
             Parent root = (Parent) loader.load();
             Stage stage = new Stage();
@@ -185,9 +190,11 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Details");
             stage.setResizable(false);
             stage.show();
-        } catch (IOException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window DetailWindow! \n"  + ex.getMessage());
-            EventPopup.showAlertPopup(ex);        }
+        }
+        catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window DetailWindow! \n" + ex.getMessage());
+            EventPopup.showAlertPopup(ex);
+        }
     }
 
     @FXML
@@ -195,31 +202,33 @@ public class MainWindowController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/LogWindow.fxml"));
             Parent root = (Parent) loader.load();
-            
+
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Log");
             stage.setResizable(false);
             stage.show();
-        } catch (IOException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window LogWindow! \n"  + ex.getMessage());
-            EventPopup.showAlertPopup(ex);        }
+        }
+        catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window LogWindow! \n" + ex.getMessage());
+            EventPopup.showAlertPopup(ex);
+        }
     }
-    
+
     @FXML
-    private void btnAssignFolderClicked(ActionEvent event)
-    {
+    private void btnAssignFolderClicked(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/AssignFolderWindow.fxml"));
             Parent root = (Parent) loader.load();
-            
+
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Folders");
             stage.setResizable(false);
             stage.show();
-        } catch (IOException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window AssignFolderWindow! \n"  + ex.getMessage());
+        }
+        catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window AssignFolderWindow! \n" + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -256,18 +265,16 @@ public class MainWindowController implements Initializable {
                 return configComboBox.getItems().stream().filter(c -> c.getName().equals(string)).findFirst().orElse(null); // Curtesy of StackOverflow
             }
         });
-        
-        configComboBox.setOnAction(new EventHandler<ActionEvent>()
-        {
+
+        configComboBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 Config selected = configComboBox.getSelectionModel().getSelectedItem();
-                
+
                 if (selected == null) {
                     return;
                 }
-                
+
                 txtAreaPreview.setText(selected.getAssociationMap());
             }
         });
@@ -304,6 +311,23 @@ public class MainWindowController implements Initializable {
                 progressLbl.textProperty().unbind();
                 progressLbl.setText("");
                 startTimeLbl.setText("");
+            }
+        });
+
+        EventLogger.getLogList().addListener(new ListChangeListener<EventLog>() {
+            @Override
+            public void onChanged(ListChangeListener.Change<? extends EventLog> c) {
+                while (c.next()) {
+                    if (c.wasAdded()) {
+                        List<EventLog> changes = new ArrayList<>();
+                        changes.addAll(c.getAddedSubList());
+                        for (EventLog change : changes) {
+                            if (change.getType().name().equals("ERROR")) {
+                                EventPopup.showAlertPopup(change.getDescription());
+                            }
+                        }
+                    }
+                }
             }
         });
 

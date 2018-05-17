@@ -114,4 +114,9 @@ public class AssignFolderWindowController implements Initializable {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
+
+    @FXML
+    private void btnStartClicked(ActionEvent event) {
+        model.startFolderWatch();
+    }
 }

@@ -20,6 +20,7 @@ import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
 import shoreline_examproject.Utility.EventLogger;
 import shoreline_examproject.Utility.EventPopup;
+import shoreline_examproject.Utility.EventLogger;
 
 /**
  * FXML Controller class
@@ -34,10 +35,10 @@ public class OptionsWindowController implements Initializable {
     private Label lblCurrentName;
     @FXML
     private JFXTextField txtFieldNewName;
-
-    private Model model;
+    
     private String newName;
 
+    private Model model;
     /**
      * Initializes the controller class.
      */
@@ -51,14 +52,7 @@ public class OptionsWindowController implements Initializable {
             EventPopup.showAlertPopup(ex);       
         }
     }
-
-    private void changeName() {
-        if (txtFieldNewName != null) {
-            newName = txtFieldNewName.getText();
-            model.setCurrentUser(newName);
-        }
-    }
-
+    
     @FXML
     private void backClicked(ActionEvent event) {
         Stage stage = (Stage) closeButton.getScene().getWindow();
@@ -68,7 +62,15 @@ public class OptionsWindowController implements Initializable {
     @FXML
     private void btnSaveClicked(ActionEvent event) {
         changeName();
-        System.out.println(model.getCurrentUser());
     }
 
+    private void changeName() {
+        if (txtFieldNewName != null) {
+            newName = txtFieldNewName.getText();
+            EventLogger.setUsername(newName);
+            lblCurrentName.setText(newName);
+        }
+            lblCurrentName.setText(EventLogger.getUsername());
+    }
+    
 }
