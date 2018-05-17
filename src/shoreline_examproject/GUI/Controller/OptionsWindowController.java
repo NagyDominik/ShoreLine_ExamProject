@@ -9,12 +9,17 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import shoreline_examproject.GUI.Model.Model;
+import shoreline_examproject.GUI.Model.ModelException;
+import shoreline_examproject.Utility.EventLogger;
+import shoreline_examproject.Utility.EventPopup;
 
 /**
  * FXML Controller class
@@ -38,8 +43,13 @@ public class OptionsWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        model = Model.getInstance();
-        lblCurrentName.setText(model.getCurrentUser());
+        try {
+            model = Model.getInstance();
+            lblCurrentName.setText(model.getCurrentUser());
+        } catch (ModelException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventPopup.showAlertPopup(ex);       
+        }
     }
 
     private void changeName() {

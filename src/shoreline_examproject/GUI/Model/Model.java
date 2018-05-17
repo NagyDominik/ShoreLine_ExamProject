@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
+import shoreline_examproject.BE.FolderInformation;
+import shoreline_examproject.BLL.BLLException;
 import shoreline_examproject.BLL.BLLManager;
 import shoreline_examproject.BLL.IBLLManager;
 
@@ -18,21 +20,26 @@ public class Model {
 
     private final IBLLManager bllManager;
     private AttributesCollection currentAttributes; //The attributes of the currently loaded file.
-    private String currentUser;    
+    private String currentUser;
     private ObservableList<ConversionTask> tasks = FXCollections.observableArrayList();
     private ObservableList<Config> confList = FXCollections.observableArrayList();
-    
+
     private ConversionTask currentConversionTask;
-    
+
     private Config selected;
     private boolean configEdit;
-    
-    
-    private Model() {
-        bllManager = new BLLManager();
+
+    private ObservableList<FolderInformation> monitoredFolders = FXCollections.observableArrayList();
+
+    private Model() throws ModelException {
+        try {
+            bllManager = new BLLManager();
+        } catch (BLLException ex) {
+            throw new ModelException(ex);
+        }
     }
 
-    public static Model getInstance() {
+    public static Model getInstance() throws ModelException {
         if (instance == null) {
             instance = new Model();
         }
@@ -56,40 +63,38 @@ public class Model {
 
     /**
      * Save the given configuration to the database.
+     *
      * @param currentConfig The configuration that will be saved.
      */
-    public void saveConfig(Config currentConfig)
-    {
+    public void saveConfig(Config currentConfig) {
         bllManager.saveConfig(currentConfig);
     }
-    
-    public String getCurrentUser(){
-        return currentUser ;
+
+    public String getCurrentUser() {
+        return currentUser;
     }
-   
-    public String setCurrentUser(String user){
+
+    public String setCurrentUser(String user) {
         return this.currentUser = user;
     }
 
-    public ObservableList<ConversionTask> getTasks()
-    {
+    public ObservableList<ConversionTask> getTasks() {
         return tasks;
     }
 
-    public void createNewConversionTask(Config value) throws ModelException
-    {
+    public void createNewConversionTask(Config value) throws ModelException {
         if (currentAttributes == null) {
             throw new ModelException("currentAttribute null! It is possible that no file was selected");
         }
         tasks.add(bllManager.createConversionTask(value, currentAttributes));
         System.out.println("tasks list size: " + tasks.size());
     }
-    
-    public ConversionTask getSelectedTask(){
-         return currentConversionTask;
+
+    public ConversionTask getSelectedTask() {
+        return currentConversionTask;
     }
-    
-    public void setSelectedTask(ConversionTask task){
+
+    public void setSelectedTask(ConversionTask task) {
         this.currentConversionTask = task;
     }
 
@@ -101,32 +106,45 @@ public class Model {
     public void pauseConverion(ConversionTask selectedItem) {
         bllManager.pauseConversion(selectedItem);
     }
-    
+
     public ObservableList<Config> getConfList() {
         return confList;
     }
-    
+
     public void addConfig(Config c) {
         this.confList.add(c);
     }
 
-    public void setSelectedConfig(Config selected)
-    {
+    public void setSelectedConfig(Config selected) {
         this.selected = selected;
     }
 
-    public Config getSelected()
-    {
+    public Config getSelectedConfig() {
         return selected;
-    }           
+    }
 
-    public void setConfigEdit(boolean b)
-    {
+    public void setConfigEdit(boolean b) {
         this.configEdit = b;
     }
 
-    public boolean isConfigEdit()
-    {
+    public boolean isConfigEdit() {
         return configEdit;
+    }
+
+    public ObservableList<FolderInformation> getMonitoredFolders() {
+        return monitoredFolders;
+    }
+
+    public void addFolderToList(FolderInformation fi) throws ModelException {
+        try {
+            this.monitoredFolders.add(fi);
+            bllManager.assignFolder(fi);
+        } catch (BLLException ex) {
+            throw new ModelException(ex);
+        }
+    }
+    
+    public void startFolderWatch() {
+        bllManager.startFolderWatch();
     }
 }

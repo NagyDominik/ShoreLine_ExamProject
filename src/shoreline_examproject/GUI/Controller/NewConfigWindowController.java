@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -18,6 +19,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.stage.Stage;
@@ -75,10 +78,18 @@ public class NewConfigWindowController implements Initializable {
         try {
             model = Model.getInstance();
             attributeList = FXCollections.observableArrayList(model.getCurrentAttributes().getAttributesAsString());
+            txtFieldConfName.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                @Override
+                public void handle(KeyEvent event) {
+                    if (event.getCode() == KeyCode.ENTER) {
+                        btnSaveClicked(null);
+                    }
+                }
+            });
             
             
             if (model.isConfigEdit()) {
-                currentConfig = model.getSelected();
+                currentConfig = model.getSelectedConfig();
                 //TODO: make it possible to edit a config.
                 keyValuePairList = FXCollections.observableArrayList();
 
@@ -302,11 +313,12 @@ public class NewConfigWindowController implements Initializable {
         selected.setValue("");
     }
 
+    
+
     /**
      * Nested class, used to store key-value pairs in the export attributes, to make displaying them easier.
      * table view.
      */
-    
     class KeyValuePair {
 
         private String key;

@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -21,7 +23,9 @@ import javafx.util.Callback;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.BE.EventLog.Type;
+import shoreline_examproject.GUI.Model.ModelException;
 import shoreline_examproject.Utility.EventLogger;
+import shoreline_examproject.Utility.EventPopup;
 
 /**
  * FXML Controller class
@@ -43,14 +47,20 @@ public class LogWindowController implements Initializable {
     @FXML
     private JFXButton closeButton;
 
-    private Model model = Model.getInstance();
+    private Model model;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        setupTV();
+        try {
+            model = Model.getInstance();
+            setupTV();
+        } catch (ModelException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventPopup.showAlertPopup(ex);
+        }
     }
 
     private void setupTV() {

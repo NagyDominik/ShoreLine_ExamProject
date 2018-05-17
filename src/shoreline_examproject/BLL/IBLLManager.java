@@ -4,6 +4,7 @@ import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.BE.EventLog;
+import shoreline_examproject.BE.FolderInformation;
 
 /**
  *
@@ -28,4 +29,7 @@ public interface IBLLManager
 
     public void pauseConversion(ConversionTask selectedItem);
     
+    public void assignFolder(FolderInformation fi) throws BLLException;
+    
+    public void startFolderWatch();
 }

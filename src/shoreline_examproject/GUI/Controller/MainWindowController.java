@@ -68,16 +68,21 @@ public class MainWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        userNameLbl.setText(System.getProperty("user.name"));
-        userNameLbl.setAlignment(Pos.CENTER_RIGHT);
-        model = Model.getInstance();
-        model.setCurrentUser(userNameLbl.getText());
-        taskTV.setItems(model.getTasks());
-        configComboBox.setItems(model.getConfList());
-        
-        setUpConfigComboBox();
-        setUpTaskTableView();
-        setUpHandlersAndListeners();
+        try {
+            userNameLbl.setText(System.getProperty("user.name"));
+            userNameLbl.setAlignment(Pos.CENTER_RIGHT);
+            model = Model.getInstance();
+            model.setCurrentUser(userNameLbl.getText());
+            taskTV.setItems(model.getTasks());
+            configComboBox.setItems(model.getConfList());
+            
+            setUpConfigComboBox();
+            setUpTaskTableView();
+            setUpHandlersAndListeners();
+        } catch (ModelException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventPopup.showAlertPopup(ex);
+        }
     }
 
     @FXML
