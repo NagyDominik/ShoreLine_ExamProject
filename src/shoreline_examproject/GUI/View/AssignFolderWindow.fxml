@@ -3,12 +3,35 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.AssignFolderWindowController">
+<AnchorPane id="AnchorPane" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.AssignFolderWindowController">
    <children>
-      <JFXButton layoutX="14.0" layoutY="14.0" onAction="#btnSelectFolderClicked" text="Select folder" />
-      <TableView fx:id="tblViewFiles" editable="true" layoutX="17.0" layoutY="52.0" prefHeight="317.0" prefWidth="532.0">
+      <ImageView fitHeight="64.0" fitWidth="134.0" layoutY="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../../img/bar.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="51.0" fitWidth="71.0" layoutY="4.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="7.0">
+         <image>
+            <Image url="@../../img/shortlogo.png" />
+         </image>
+      </ImageView>
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="56.0" layoutY="410.0" onAction="#btnSelectFolderClicked" style="-fx-background-color: #d8d504;" text="Select folder">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="13.0" />
+         </font>
+         <graphic>
+            <ImageView>
+               <image>
+                  <Image url="@../../../../../../../Downloads/icons8-open-24.png" />
+               </image>
+            </ImageView>
+         </graphic></JFXButton>
+      <TableView fx:id="tblViewFiles" editable="true" layoutX="56.0" layoutY="72.0" prefHeight="317.0" prefWidth="532.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="72.0">
         <columns>
           <TableColumn fx:id="tblColumnFolder" prefWidth="205.0" text="Folder" />
           <TableColumn fx:id="tblColumConfig" minWidth="0.0" prefWidth="157.0" text="Config" />
@@ -18,5 +41,22 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
+      <ImageView fitHeight="64.0" fitWidth="134.0" layoutX="617.0" layoutY="395.0" style="-fx-rotate: 180;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <image>
+            <Image url="@../../img/bar.png" />
+         </image>
+      </ImageView>
+      <JFXButton fx:id="closeButton" buttonType="RAISED" layoutX="687.0" layoutY="419.0" onAction="#backClicked" text="Back" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+         <graphic>
+            <ImageView fitHeight="18.0" fitWidth="18.0">
+               <image>
+                  <Image url="@../../img/back.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Exo 2 Semi Bold" size="13.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

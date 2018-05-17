@@ -1,5 +1,6 @@
 package shoreline_examproject.GUI.Controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.sun.javafx.binding.SelectBinding;
 import java.io.File;
 import java.net.URL;
@@ -20,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import shoreline_examproject.BE.Config;
@@ -45,6 +47,8 @@ public class AssignFolderWindowController implements Initializable
     
     private Model model;
     private ObservableList<FolderInformation> selectedFolders;
+    @FXML
+    private JFXButton closeButton;
     
     /**
      * Initializes the controller class.
@@ -80,6 +84,12 @@ public class AssignFolderWindowController implements Initializable
         dc.setTitle("Select folder");
         File selectedDir = dc.showDialog(tblViewFiles.getScene().getWindow());
         selectedFolders.add(new FolderInformation(selectedDir));
+    }
+
+    @FXML
+    private void backClicked(ActionEvent event) {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
     }
    
     
