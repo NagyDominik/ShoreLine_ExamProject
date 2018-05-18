@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import shoreline_examproject.Utility.EventLogger;
 
 /**
  * Store information about the selected folder, so it can be displayed in the
@@ -13,7 +14,7 @@ public class FolderInformation {
 
     private File selectedFolder;
     private Config assignedConfig;
-    private final IntegerProperty numberOfConvertibleFiles = new SimpleIntegerProperty();
+    private IntegerProperty numberOfConvertibleFiles = new SimpleIntegerProperty();
 
     public FolderInformation(File selectedFolder) {
         this.selectedFolder = selectedFolder;
@@ -49,5 +50,23 @@ public class FolderInformation {
     
     public Config getConfig() {
         return this.assignedConfig;
+    }
+    
+    public void increaseNumberOfConvertibleFiles() {
+        this.numberOfConvertibleFiles.set(numberOfConvertibleFiles.get()+1);
+    }
+
+    public boolean contains(Path filename) {
+        //return new File(selectedFolder.getAbsolutePath(), filename.getParent().toString()).exists();
+        return this.selectedFolder.getAbsolutePath().equals(filename.getParent().toString());
+    }
+
+    public void decreaseNumberOfConvertibleFiles() {
+        if (this.numberOfConvertibleFiles.get() < 1) {
+            EventLogger.log(EventLogger.Level.ALERT, "Cannot delete from empty folder!");
+            return;
+        }
+        
+        this.numberOfConvertibleFiles.set(numberOfConvertibleFiles.get() - 1);
     }
 }

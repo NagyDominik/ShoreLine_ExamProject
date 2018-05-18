@@ -74,10 +74,48 @@ public class FolderHandler {
                             continue;
                         }
 
-                        WatchEvent<Path> ev = (WatchEvent<Path>) pollEvent;
-                        Path filename = ev.context();
+                        if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
+                            WatchEvent<Path> ev = (WatchEvent<Path>) pollEvent;
+                            Path filename = ev.context();
+                           
+                            Path f = (Path)key.watchable();
+                            Path full = f.resolve(filename);
+                            
+                            if (filename.toString().endsWith(".xlsx")) {
+                                for (FolderInformation folder : folders) {
+                                    if (folder.contains(full)) {
+                                        folder.increaseNumberOfConvertibleFiles();
+                                        break;
+                                    }
+                                }
+                            }
 
-                        System.out.println(filename);
+                            System.out.println("File created: " + filename);
+                            //EventLogger.log(EventLogger.Level.INFORMATION, "File created: " + filename);
+                            continue;
+                        }
+                        
+                        if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
+                            WatchEvent<Path> ev = (WatchEvent<Path>) pollEvent;
+                            Path filename = ev.context();
+                           
+                            Path f = (Path)key.watchable();
+                            Path full = f.resolve(filename);
+
+                            if (filename.toString().endsWith(".xlsx")) {
+                                for (FolderInformation folder : folders) {
+                                    if (folder.contains(full)) {
+                                        folder.decreaseNumberOfConvertibleFiles();
+                                        break;
+                                    }
+                                }
+                            }
+                            
+                            System.out.println("File deleted: " + filename);
+                            //EventLogger.log(EventLogger.Level.INFORMATION, "File deleted: " + filename);
+                            continue;
+                        }
+
                     }
                 }
             }
@@ -96,7 +134,7 @@ public class FolderHandler {
         }
         
         for (FolderInformation folder : folders) {
-            keys.add(folder.getPath().register(watcher, StandardWatchEventKinds.ENTRY_CREATE));
+            keys.add(folder.getPath().register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE));
         }
     }
     
