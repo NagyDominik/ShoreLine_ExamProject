@@ -1,5 +1,7 @@
 package shoreline_examproject.GUI.Model;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -151,5 +153,14 @@ public class Model {
     
     public BooleanProperty isMonitoring() {
         return bllManager.isMonitoring();
+    }
+
+    public void removeFolder(FolderInformation selected) throws ModelException{
+        try {
+            this.bllManager.removeFolder(selected);
+            this.monitoredFolders.remove(selected);
+        } catch (BLLException ex) {
+            throw new ModelException(ex);
+        }
     }
 }

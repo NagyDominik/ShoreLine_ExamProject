@@ -111,4 +111,14 @@ public class FolderHandler {
     public BooleanProperty isMonitoringProperty() {
         return isMonitoring;
     }
+
+    void removeFolder(FolderInformation selected) throws IOException {
+        if (folders == null) {
+            EventLogger.log(EventLogger.Level.ALERT, "The folders List have not been initialized yet!");
+            throw new NullPointerException("The folders List have not been initialized yet!");
+        }
+        
+        folders.remove(selected);
+        getKeys();
+    }
 }

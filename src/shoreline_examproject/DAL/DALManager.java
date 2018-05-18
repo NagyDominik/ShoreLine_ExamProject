@@ -26,7 +26,7 @@ public class DALManager implements IDataAccess {
 
     public DALManager() {
         EventLogger.setUsername(udmanager.read());
-//        dBlog.loadLog();
+        dBlog.loadLog();
     }
 
     @Override

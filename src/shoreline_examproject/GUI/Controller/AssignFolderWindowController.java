@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
@@ -133,6 +135,27 @@ public class AssignFolderWindowController implements Initializable {
 
     @FXML
     private void btnStartClicked(ActionEvent event) {
+        if (tblViewFiles.getItems().isEmpty()) {
+            return;
+        }
         model.changeMonitoring();
+    }
+
+    @FXML
+    private void btnRemoveFolderClicked(ActionEvent event) {
+        try {
+            FolderInformation selected = tblViewFiles.getSelectionModel().getSelectedItem();
+            
+            if (selected == null) {
+                return;
+            }
+            model.changeMonitoring();
+            model.removeFolder(selected);
+            model.changeMonitoring();
+            
+        } catch (ModelException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventPopup.showAlertPopup(ex);
+        }
     }
 }

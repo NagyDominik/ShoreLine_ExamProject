@@ -59,7 +59,8 @@
             <Font name="Exo 2 Semi Bold" size="13.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="btnMonitor" layoutX="206.0" layoutY="412.0" onAction="#btnStartClicked" prefHeight="34.0" prefWidth="134.0" style="-fx-background-color: green;" text="Start monitoring" />
-      <Circle fx:id="crclStatusIndicator" fill="#ff1f1f" layoutX="370.0" layoutY="429.0" radius="13.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <JFXButton fx:id="btnMonitor" layoutX="408.0" layoutY="410.0" onAction="#btnStartClicked" prefHeight="34.0" prefWidth="134.0" style="-fx-background-color: green;" text="Start monitoring" />
+      <Circle fx:id="crclStatusIndicator" fill="#ff1f1f" layoutX="584.0" layoutY="427.0" radius="13.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <JFXButton layoutX="200.0" layoutY="412.0" onAction="#btnRemoveFolderClicked" prefHeight="34.0" prefWidth="134.0" text="Remove folder" />
    </children>
 </AnchorPane>

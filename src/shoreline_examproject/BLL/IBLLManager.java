@@ -36,4 +36,6 @@ public interface IBLLManager
     public void changeMonitoring();
     
     public BooleanProperty isMonitoring();
+
+    public void removeFolder(FolderInformation selected) throws BLLException;
 }

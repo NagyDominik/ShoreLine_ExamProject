@@ -1,6 +1,8 @@
 package shoreline_examproject.BLL;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import shoreline_examproject.BE.AttributesCollection;
@@ -90,5 +92,14 @@ public class BLLManager implements IBLLManager {
         }
         
         return folderHandler.isMonitoringProperty();
+    }
+
+    @Override
+    public void removeFolder(FolderInformation selected) throws BLLException{
+        try {
+            folderHandler.removeFolder(selected);
+        } catch (IOException ex) {
+            throw new BLLException(ex);
+        }
     }
 }
