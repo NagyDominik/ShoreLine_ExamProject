@@ -81,7 +81,8 @@ public class MainWindowController implements Initializable {
             setUpConfigComboBox();
             setUpTaskTableView();
             setUpHandlersAndListeners();
-        } catch (ModelException ex) {
+        }
+        catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
@@ -317,13 +318,15 @@ public class MainWindowController implements Initializable {
         EventLogger.getLogList().addListener(new ListChangeListener<EventLog>() {
             @Override
             public void onChanged(ListChangeListener.Change<? extends EventLog> c) {
-                while (c.next()) {
-                    if (c.wasAdded()) {
-                        List<EventLog> changes = new ArrayList<>();
-                        changes.addAll(c.getAddedSubList());
-                        for (EventLog change : changes) {
-                            if (change.getType().name().equals("ERROR")) {
-                                EventPopup.showAlertPopup(change.getDescription());
+                if (EventLogger.isSetUp()) {
+                    while (c.next()) {
+                        if (c.wasAdded()) {
+                            List<EventLog> changes = new ArrayList<>();
+                            changes.addAll(c.getAddedSubList());
+                            for (EventLog change : changes) {
+                                if (change.getType().name().equals("ERROR")) {
+                                    EventPopup.showAlertPopup(change.getDescription());
+                                }
                             }
                         }
                     }

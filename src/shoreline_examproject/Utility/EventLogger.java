@@ -1,10 +1,11 @@
 package shoreline_examproject.Utility;
 
-import javafx.beans.property.BooleanProperty;
+import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 import shoreline_examproject.BE.EventLog;
 
 /**
@@ -22,6 +23,7 @@ public class EventLogger {
     
     private static ObservableList<EventLog> logList = FXCollections.observableArrayList();
     private static StringProperty username = new SimpleStringProperty();
+    private static Boolean isSetUp = false;
     
     public EventLogger() {
     }
@@ -50,4 +52,15 @@ public class EventLogger {
         return logList;
     }
 
+    public static Boolean isSetUp() {
+        return isSetUp;
+    }
+
+    public static void setIsSetUp(Boolean isSetUp) {
+        EventLogger.isSetUp = isSetUp;
+    }
+    
+    public static void loadLog(List<EventLog> list) {
+        //logList.addAll(list);
+    }
 }

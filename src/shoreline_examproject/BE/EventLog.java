@@ -1,6 +1,5 @@
 package shoreline_examproject.BE;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -45,6 +44,10 @@ public class EventLog {
 
     public void setType(Type type) {
         this.type = type;
+    }
+    
+    public void setType(String type) {
+        this.type = EventLog.Type.valueOf(type);
     }
 
     public LocalDateTime getLocalDateTime() {

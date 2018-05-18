@@ -4,8 +4,6 @@ import shoreline_examproject.DAL.FileReaders.FileReader;
 import shoreline_examproject.BE.Config;
 import java.io.File;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.DAL.FileReaders.FileReaderFactory;
 import shoreline_examproject.BE.EventLog;
@@ -23,20 +21,17 @@ public class DALManager implements IDataAccess {
 
     private IFileWriter writer = new JSONWriter();
     private FileReader reader;
-    private DBLogManager dBlog;
+    private DBLogManager dBlog = new DBLogManager();
     private UserDataManager udmanager = new UserDataManager();
 
     public DALManager() {
         EventLogger.setUsername(udmanager.read());
+        dBlog.loadLog();
     }
 
     @Override
     public void saveLog(EventLog log) {
-        try {
-            dBlog.saveLog(log);
-        } catch (DALException ex) {
-            Logger.getLogger(DALManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        dBlog.saveLog(log);
     }
 
     @Override
