@@ -9,6 +9,8 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import shoreline_examproject.BE.FolderInformation;
 import shoreline_examproject.Utility.EventLogger;
 
@@ -24,20 +26,29 @@ public class FolderHandler {
     private List<WatchKey> keys;
     
     private Thread watcherThread;
-    
+    private final BooleanProperty isMonitoring = new SimpleBooleanProperty();
+   
     public FolderHandler() throws IOException {
         folders = new ArrayList<>();
         watcher = FileSystems.getDefault().newWatchService();
+        isMonitoring.setValue(false);
     }
     
-    public void startWatch() {
-        Runnable r = () -> {
-            watch();
-        };
-        
-        watcherThread = new Thread(r);
-        watcherThread.setDaemon(true);
-        watcherThread.start();
+    public void changeMonitoring() {
+        if (isMonitoring.get()) {
+            watcherThread.interrupt();
+            isMonitoring.setValue(false);
+        } 
+        else {
+            Runnable r = () -> {
+                watch();
+            };
+
+            watcherThread = new Thread(r);
+            watcherThread.setDaemon(true);
+            watcherThread.start();
+            isMonitoring.setValue(true);
+        }
     }
     
     public void addFolderInformation(FolderInformation fi) throws IOException {
@@ -87,5 +98,17 @@ public class FolderHandler {
         for (FolderInformation folder : folders) {
             keys.add(folder.getPath().register(watcher, StandardWatchEventKinds.ENTRY_CREATE));
         }
+    }
+    
+    public boolean isIsMonitoring() {
+        return isMonitoring.get();
+    }
+
+    public void setIsMonitoring(boolean value) {
+        isMonitoring.set(value);
+    }
+
+    public BooleanProperty isMonitoringProperty() {
+        return isMonitoring;
     }
 }

@@ -1,5 +1,6 @@
 package shoreline_examproject.GUI.Model;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shoreline_examproject.BE.AttributesCollection;
@@ -144,7 +145,11 @@ public class Model {
         }
     }
     
-    public void startFolderWatch() {
-        bllManager.startFolderWatch();
+    public void changeMonitoring() {
+        bllManager.changeMonitoring();
+    }
+    
+    public BooleanProperty isMonitoring() {
+        return bllManager.isMonitoring();
     }
 }

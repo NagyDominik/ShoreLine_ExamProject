@@ -1,5 +1,7 @@
 package shoreline_examproject.BLL;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
@@ -31,5 +33,7 @@ public interface IBLLManager
     
     public void assignFolder(FolderInformation fi) throws BLLException;
     
-    public void startFolderWatch();
+    public void changeMonitoring();
+    
+    public BooleanProperty isMonitoring();
 }

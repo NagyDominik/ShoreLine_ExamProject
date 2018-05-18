@@ -1,29 +1,25 @@
 package shoreline_examproject.GUI.Controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.sun.javafx.binding.SelectBinding;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ObservableObjectValue;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.FolderInformation;
 import shoreline_examproject.GUI.Model.Model;
@@ -52,6 +48,10 @@ public class AssignFolderWindowController implements Initializable {
     private Model model;
 
     private List<Config> confList;
+    @FXML
+    private JFXButton btnMonitor;
+    @FXML
+    private Circle crclStatusIndicator;
 
     /**
      * Initializes the controller class.
@@ -61,6 +61,17 @@ public class AssignFolderWindowController implements Initializable {
         try {
             model = Model.getInstance();
             confList = new ArrayList<Config>(model.getConfList());
+            
+            model.isMonitoring().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                if (newValue) {
+                    crclStatusIndicator.setFill(new Color(0, 1, 0, 1));
+                    btnMonitor.setText("Stop monitoring");
+                }
+                else {
+                    crclStatusIndicator.setFill(new Color(1, 0, 0, 1));
+                    btnMonitor.setText("Start monitoring");
+                }
+            });
             
             setUpTableView();
         } catch (ModelException ex) {
@@ -102,7 +113,12 @@ public class AssignFolderWindowController implements Initializable {
             DirectoryChooser dc = new DirectoryChooser();
             dc.setTitle("Select folder");
             File selectedDir = dc.showDialog(tblViewFiles.getScene().getWindow());
+            if (selectedDir == null) {
+                return;
+            }
+            model.changeMonitoring();   // Stop monitoring while a new folder is being added
             model.addFolderToList((new FolderInformation(selectedDir)));
+            model.changeMonitoring();   // Restart monitoring
         } catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
             EventPopup.showAlertPopup(ex);
@@ -117,6 +133,6 @@ public class AssignFolderWindowController implements Initializable {
 
     @FXML
     private void btnStartClicked(ActionEvent event) {
-        model.startFolderWatch();
+        model.changeMonitoring();
     }
 }
