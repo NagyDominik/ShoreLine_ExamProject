@@ -16,7 +16,8 @@ public class AttributeMap {
     private boolean isTreeRoot;
 
     private String value; // Used if the object represents a single key-value pair.
-    private HashSet<AttributeMap> values; // Used if the object represent a tree-like structure of data
+  //  private HashSet<AttributeMap> values; // Used if the object represent a tree-like structure of data
+    private List<AttributeMap> values; // Used if the object represent a tree-like structure of data
 
     public AttributeMap(String key, boolean isTreeRoot) {
         this.key = key;
@@ -26,7 +27,7 @@ public class AttributeMap {
             values = null;
         } else {
             value = null;
-            values = new HashSet<>(10);
+            values = new ArrayList<>(10);
         }
     }
     
@@ -65,7 +66,7 @@ public class AttributeMap {
             values = null;
         } else {
             value = null;
-            values = new HashSet<>(10);
+            values = new ArrayList<>(10);
         }
     }
 
@@ -106,7 +107,7 @@ public class AttributeMap {
      * @return The AttributeMap objects that are mapped to this instance.
      * @throws NoSuchFieldException If the instance is not a tree root.
      */
-    public HashSet<AttributeMap> getValues() throws NoSuchFieldException {
+    public List<AttributeMap> getValues() throws NoSuchFieldException {
         if (!isTreeRoot) {
             EventLogger.log(EventLogger.Level.ERROR, "Attempted to access the values collection of a node that is not a tree root!");
             throw new NoSuchFieldException("This instance represents a single key-value pair.");

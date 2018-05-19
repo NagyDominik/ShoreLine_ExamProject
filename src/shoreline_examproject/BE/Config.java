@@ -34,10 +34,10 @@ public class Config {
         throw new IllegalArgumentException("This object does not contain the data associated with the provided key!");
     }
 
-    public void addRelation(String key, String value)
+    public void addRelation(String key, String value, boolean isPlanning)
     {
         // TODO: dummy method, finish this (optimize?).
-        this.data.add(new DataPair(Type.STRING, key, value));
+        this.data.add(new DataPair(Type.STRING, key, value, isPlanning));
     }
     
     public void updateOutputName(String value, String key)
@@ -92,12 +92,14 @@ public class Config {
         
         private String inputName;
         private String outputName;
+        private boolean isPlanning;
 
-        public DataPair(Type outputType, String oldName, String newName)
+        public DataPair(Type outputType, String oldName, String newName, boolean isPlanning)
         {
             this.outputType = outputType;
             this.inputName = newName;
             this.outputName = oldName;
+            this.isPlanning = isPlanning;
         }
         
         public boolean containsKey(String key) {
@@ -128,6 +130,14 @@ public class Config {
         public boolean hasValue(String value)
         {
             return this.outputName.equals(value);
+        }
+
+        public boolean isIsPlanning() {
+            return isPlanning;
+        }
+
+        public void setIsPlanning(boolean isPlanning) {
+            this.isPlanning = isPlanning;
         }
     }
 }

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.FolderInformation;
 import shoreline_examproject.Utility.EventLogger;
 
@@ -28,10 +29,14 @@ public class FolderHandler {
     private Thread watcherThread;
     private final BooleanProperty isMonitoring = new SimpleBooleanProperty();
    
-    public FolderHandler() throws IOException {
-        folders = new ArrayList<>();
-        watcher = FileSystems.getDefault().newWatchService();
-        isMonitoring.setValue(false);
+    private BLLManager manager;
+    
+    public FolderHandler(BLLManager manager) throws IOException {
+        this.manager = manager;
+        this.folders = new ArrayList<>();
+        this.watcher = FileSystems.getDefault().newWatchService();
+        this.isMonitoring.setValue(false);
+        
     }
     
     public void changeMonitoring() {
@@ -85,6 +90,8 @@ public class FolderHandler {
                                 for (FolderInformation folder : folders) {
                                     if (folder.contains(full)) {
                                         folder.increaseNumberOfConvertibleFiles();
+                                        AttributesCollection ac = manager.loadFileData(full.toString());
+                                        manager.createConversionTask(folder.getConfig(), ac);
                                         break;
                                     }
                                 }

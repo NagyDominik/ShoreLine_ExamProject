@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a collection of kex-value pairs.
+ * Represents a collection of key-value pairs.
  *
  * @author sebok
  */
