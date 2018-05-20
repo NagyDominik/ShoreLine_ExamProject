@@ -5,62 +5,68 @@
  */
 package shoreline_examproject.DAL.DataBase;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
-import shoreline_examproject.BE.EventLog;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import shoreline_examproject.BE.Config;
 import shoreline_examproject.Utility.EventLogger;
+import sun.awt.image.ByteArrayImageSource;
 
 /**
  *
  * @author Dominik
  */
 public class DBConfigManager {
-    
+
     private ConnectionPool conpool = new ConnectionPool();
 
-    public void saveLog(EventLog log) {
+    public void saveConfig(Config config) {
         try (Connection con = conpool.checkOut()) {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO Config(configName, siteName, assetSerialNumber, type, externalWorkOrderId, "
-                    + "systemStatus, userStatus, name, priority, status, latestFinishDate, earliestFinishDate, latestStartDate, estimatedTime) VALUES(?, ?, ?, ?)");
-
-            ps.setTimestamp(1, new Timestamp(log.getLocalDateTime().toInstant(ZoneOffset.UTC).toEpochMilli()));
-            ps.setString(2, log.getUser());
-            ps.setString(3, log.getType().toString());
-            ps.setString(4, log.getDescription());
+            PreparedStatement ps = con.prepareStatement("INSERT INTO Config(configBinary) VALUES(?)");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(config);
+            oos.flush();
+            oos.close();
+            byte[] data = baos.toByteArray();
+            ps.setObject(1, data);
             int affected = ps.executeUpdate();
             if (affected < 1) {
-                EventLogger.log(EventLogger.Level.ERROR, "The log could not be saved!");
+                EventLogger.log(EventLogger.Level.ERROR, "The config could not be saved!");
             }
         }
-        catch (SQLException ex) {
-            EventLogger.logIncognito(EventLogger.Level.ERROR, ex.getMessage());
+        catch (SQLException | IOException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
         }
     }
 
-    public List<EventLog> loadLog() {
+    public List<Config> loadConfigs() {
+        List<Config> configList = new ArrayList();
         try (Connection con = conpool.checkOut()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM Config");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                EventLog tmp = new EventLog();
-                tmp.setDate(Instant.ofEpochMilli(rs.getTimestamp("Date").getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime());
-                tmp.setUser(rs.getString("userName"));
-                tmp.setType(rs.getString("Type").trim().toUpperCase());
-                tmp.setDescription(rs.getString("Description"));
+                ByteArrayInputStream bais = new ByteArrayInputStream(rs.getBytes("configBinary"));
+                ObjectInputStream ois = new ObjectInputStream(bais);
+                Config temp = (Config) ois.readObject();
+                configList.add(temp);
             }
         }
-        catch (SQLException ex) {
+        catch (SQLException | IOException | ClassNotFoundException ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
         }
-        EventLogger.setIsSetUp(Boolean.TRUE);
-        return null;
+        return configList;
     }
 
 }

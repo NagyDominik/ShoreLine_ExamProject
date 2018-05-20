@@ -39,8 +39,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         try {
             convert();
             return convertedData;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, String.format("Exception: %s", ex.getMessage()));
             throw ex;
         }
@@ -69,13 +68,12 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
                         try {
                             System.out.println("PAUSED");
                             pauseLock.wait();
-                        }
-                        catch (InterruptedException e) {
+                        } catch (InterruptedException e) {
                         }
                     }
                 }
                 if (usedConfig.containsKey(attributeMap.getKey())) {
-                        convertedRow.addData(convertMap(attributeMap));
+                    convertedRow.addData(convertMap(attributeMap));
                 }
             }
             progress++;
@@ -113,7 +111,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm:ss");
         return startTime.format(format);
     }
-    
+
     public void stop() {
         isCanceled = true;
     }
@@ -136,7 +134,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     public Boolean getIsCanceled() {
         return isCanceled;
     }
-    
+
     /**
      * Convert the provided attribute map using the configuration.
      *
@@ -148,18 +146,16 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
      * a tree root.
      */
     private AttributeMap convertMap(AttributeMap attributeMap) throws IllegalAccessException, NoSuchFieldException {
-        AttributeMap convertedMap = new AttributeMap();        
+        AttributeMap convertedMap = new AttributeMap();
         if (!attributeMap.isIsTreeRoot()) {
             oldKey = attributeMap.getKey();
             value = attributeMap.getValue();
 
             newKey = usedConfig.getNewKey(oldKey);
 
-                /*if (usedConfig.isPlanning(oldKey)) {
+            /*if (usedConfig.isPlanning(oldKey)) { //no is Planning implemented
                 convertedMap.setIsTreeRoot(true);
-                convertedMap.setKey(newKey);
-                convertedMap.addValue(value);
-            }*/
+             */
             convertedMap.setKey(newKey);
             convertedMap.addValue(value);
         } else {

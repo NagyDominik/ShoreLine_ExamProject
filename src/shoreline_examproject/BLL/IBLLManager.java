@@ -1,7 +1,7 @@
 package shoreline_examproject.BLL;
 
+import java.util.List;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
@@ -18,6 +18,8 @@ public interface IBLLManager
     public void saveLog(EventLog log);
     
     public void saveConfig(Config config);
+    
+    public List<Config> loadConfigs();
     
     public void saveToJSON(AttributesCollection data);
 

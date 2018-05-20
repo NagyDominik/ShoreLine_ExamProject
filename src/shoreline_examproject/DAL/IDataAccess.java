@@ -2,6 +2,7 @@ package shoreline_examproject.DAL;
 
 import shoreline_examproject.BE.Config;
 import java.io.File;
+import java.util.List;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.EventLog;
 
@@ -15,6 +16,8 @@ public interface IDataAccess {
     public void saveLog(EventLog log);
     
     public void saveConfig(Config config);
+    
+    public List<Config> loadConfigs();
     
     public void saveData(AttributesCollection data);
 
