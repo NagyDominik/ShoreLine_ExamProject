@@ -1,10 +1,7 @@
 package shoreline_examproject.BLL;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
@@ -24,7 +21,7 @@ public class BLLManager implements IBLLManager {
         try {
             this.dal = new DALManager();
             this.converter = new Converter(this);
-            this.folderHandler = new FolderHandler();
+            this.folderHandler = new FolderHandler(this);
         } catch (IOException ex) {
             throw new BLLException(ex);
         }

@@ -12,7 +12,8 @@ public class EventLog {
         ERROR,
         INFORMATION,
         ALERT,
-        SUCCESS;
+        SUCCESS,
+        NOTIFICATION;
     }
 
     private LocalDateTime date;
