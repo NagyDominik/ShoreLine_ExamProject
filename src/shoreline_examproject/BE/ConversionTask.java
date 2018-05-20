@@ -160,8 +160,11 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
                 convertedMap.setKey(newKey);
                 convertedMap.addValue(value);
             }
-            convertedMap.setKey(newKey);
-            convertedMap.addValue(value);
+            else {
+                convertedMap.setKey(newKey);
+                convertedMap.addValue(value);
+            }
+
         } else {
             for (AttributeMap value1 : attributeMap.getValues()) {
                 AttributeMap nestedMap = convertMap(value1);

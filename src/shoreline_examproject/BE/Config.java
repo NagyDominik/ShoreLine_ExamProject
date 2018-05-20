@@ -9,7 +9,6 @@ import java.util.List;
  * @author sebok
  */
 public class Config {
-
     private enum Type {STRING, INT, DATE}
     private String name;
     
@@ -38,6 +37,15 @@ public class Config {
     {
         // TODO: dummy method, finish this (optimize?).
         this.data.add(new DataPair(Type.STRING, key, value, isPlanning));
+    }
+    
+    boolean isPlanning(String oldKey) {
+        for (DataPair dataPair : data) {
+            if (dataPair.containsKey(oldKey)) {
+                return dataPair.isPlanning;
+            }
+        }
+        return false;
     }
     
     public void updateOutputName(String value, String key)
