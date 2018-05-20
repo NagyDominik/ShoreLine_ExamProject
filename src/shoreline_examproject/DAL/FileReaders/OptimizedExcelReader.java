@@ -74,6 +74,7 @@ public class OptimizedExcelReader extends FileReader {
         private List<String> attributes = new ArrayList();
         private int cellcount = -1;
         private int currentRow = 1;
+        private int repeatcount = 2;
 
         private SheetHandler(SharedStringsTable stringtable) {
             this.stringtable = stringtable;
@@ -117,7 +118,7 @@ public class OptimizedExcelReader extends FileReader {
             // Output after we've seen the string contents
             if (name.equals("v")) {
                 if (currentRow == 1) {
-                    attributes.add(lastContents);
+                    attributes.add(checkIfExists(lastContents));
                 } else {
                     row.addData(createAM(attributes.get(cellcount), lastContents));
                     //System.out.println(lastContents);
@@ -150,6 +151,17 @@ public class OptimizedExcelReader extends FileReader {
             AttributeMap celldata = new AttributeMap(key, false);
             celldata.setValue(vslue);
             return celldata;
+        }
+        
+        private String checkIfExists(String attribute) {
+            if (attributes.contains(attribute)) {
+                attribute += "(" +repeatcount++ + ")";
+                checkIfExists(attribute);
+            } else {
+                return attribute;
+            }
+            repeatcount = 1;
+            return attribute;
         }
 
     }
