@@ -266,14 +266,14 @@ public class NewConfigWindowController implements Initializable {
     {
         for (String normalAttribute : normalAttributes) {
                 keyValuePairList.add(new KeyValuePair(normalAttribute, ""));
-                currentConfig.addRelation(normalAttribute, "");
+                currentConfig.addRelation(normalAttribute, "", false);
             }
         
         keyValuePairList.add(new KeyValuePair("planning", "-----------------"));
         
         for (String planningAttribute : planningAttributes) {
             keyValuePairList.add(new KeyValuePair("\t" + planningAttribute, ""));
-            currentConfig.addRelation(planningAttribute, "");
+            currentConfig.addRelation(planningAttribute, "", true);
         }
     }
 

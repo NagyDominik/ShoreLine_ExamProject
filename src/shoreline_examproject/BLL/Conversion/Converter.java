@@ -24,7 +24,6 @@ public class Converter {
 
     private List<ConversionTask> tasks = new ArrayList();
     private ConversionTaskPool pool = new ConversionTaskPool();
-    private List<Future> futures = new ArrayList();
     private ExecutorService execService;
     private IBLLManager manager;
 

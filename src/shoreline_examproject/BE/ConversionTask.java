@@ -148,13 +148,18 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
      * a tree root.
      */
     private AttributeMap convertMap(AttributeMap attributeMap) throws IllegalAccessException, NoSuchFieldException {
-        AttributeMap convertedMap = new AttributeMap();
+        AttributeMap convertedMap = new AttributeMap();        
         if (!attributeMap.isIsTreeRoot()) {
             oldKey = attributeMap.getKey();
             value = attributeMap.getValue();
 
             newKey = usedConfig.getNewKey(oldKey);
 
+            if (usedConfig.isPlanning(oldKey)) {
+                convertedMap.setIsTreeRoot(true);
+                convertedMap.setKey(newKey);
+                convertedMap.addValue(value);
+            }
             convertedMap.setKey(newKey);
             convertedMap.addValue(value);
         } else {

@@ -11,10 +11,12 @@ import java.util.List;
  */
 public class DataRow {
 
-    private HashSet<AttributeMap> data;
-
+    //private HashSet<AttributeMap> data;
+    private List<AttributeMap> data;
+    
     public DataRow() {
-        data = new HashSet<>();
+        //data = new HashSet<>();
+        data = new ArrayList<>();
     }
 
     public void addData(AttributeMap data) {
@@ -37,6 +39,7 @@ public class DataRow {
 
     public List<AttributeMap> getData()
     {
-        return new ArrayList<>(this.data);
+        //return new ArrayList<>(this.data);
+        return data;
     }
 }

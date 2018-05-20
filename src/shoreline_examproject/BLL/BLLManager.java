@@ -21,7 +21,7 @@ public class BLLManager implements IBLLManager {
         try {
             this.dal = new DALManager();
             this.converter = new Converter(this);
-            this.folderHandler = new FolderHandler();
+            this.folderHandler = new FolderHandler(this);
         } catch (IOException ex) {
             throw new BLLException(ex);
         }
