@@ -106,7 +106,7 @@ public class Converter {
             System.out.println("Task Stopped");
         }
         catch (Exception e) {
-            EventLogger.log(EventLogger.Level.ERROR, e.getMessage());
+            EventLogger.log(EventLogger.Level.NOTIFICATION, e.getMessage());
         }
     }
 
@@ -124,6 +124,7 @@ public class Converter {
             }
         }
         catch (Exception e) {
+            EventLogger.log(EventLogger.Level.NOTIFICATION, e.getMessage());
         }
     }
 

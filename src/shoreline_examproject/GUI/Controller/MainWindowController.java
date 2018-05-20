@@ -81,11 +81,10 @@ public class MainWindowController implements Initializable {
             setUpConfigComboBox();
             setUpTaskTableView();
             setUpHandlersAndListeners();
-        } catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
-            EventPopup.showAlertPopup(ex);
         }
-
+        catch (ModelException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+        }
     }
 
     @FXML
@@ -97,21 +96,31 @@ public class MainWindowController implements Initializable {
                 return;
             }
             loadFile(f.getPath());
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             EventPopup.showAlertPopup(ex);
         }
+    }
+    
+    @FXML
+    private void export(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save export file");
+        //Set extension 
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
 
     }
 
     @FXML
     private void newConfigClicked(ActionEvent event) throws IOException {
-
         Config selected = configComboBox.getSelectionModel().getSelectedItem();
         if (selected != null) {
             model.setSelectedConfig(selected);
             model.setConfigEdit(true);
         }
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/NewConfigWindow.fxml"));
         Parent root = (Parent) loader.load();
 
@@ -126,7 +135,8 @@ public class MainWindowController implements Initializable {
     private void startClicked(ActionEvent event) {
         try {
             model.startConversion();
-        } catch (ModelException ex) {
+        }
+        catch (ModelException ex) {
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -139,11 +149,17 @@ public class MainWindowController implements Initializable {
         }
         try {
             model.createNewConversionTask(configComboBox.getValue());
-        } catch (ModelException ex) {
+        }
+        catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
-            EventPopup.showAlertPopup(ex);
         }
         System.out.println(taskTV.getItems().size());
+    }
+    
+    @FXML
+    private void deleteTask(ActionEvent event) {
+        ConversionTask selectedItem = taskTV.getSelectionModel().getSelectedItem();
+        model.stopConversion(selectedItem);
     }
 
     @FXML
@@ -167,9 +183,9 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Options");
             stage.setResizable(false);
             stage.show();
-        } catch (IOException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window OptionsWindow! \n" + ex.getMessage());
-            EventPopup.showAlertPopup(ex);
+        }
+        catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window OptionsWindow! \n" + ex.getMessage());
         }
 
     }
@@ -186,9 +202,9 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Details");
             stage.setResizable(false);
             stage.show();
-        } catch (IOException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window DetailWindow! \n" + ex.getMessage());
-            EventPopup.showAlertPopup(ex);
+        }
+        catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window DetailWindow! \n" + ex.getMessage());
         }
     }
 
@@ -203,9 +219,9 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Log");
             stage.setResizable(false);
             stage.show();
-        } catch (IOException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window LogWindow! \n" + ex.getMessage());
-            EventPopup.showAlertPopup(ex);
+        }
+        catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window LogWindow! \n" + ex.getMessage());
         }
     }
 
@@ -220,9 +236,9 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Folders");
             stage.setResizable(false);
             stage.show();
-        } catch (IOException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, "Failed to open window AssignFolderWindow! \n" + ex.getMessage());
-            EventPopup.showAlertPopup(ex);
+        }
+        catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window AssignFolderWindow! \n" + ex.getMessage());
         }
     }
 
@@ -286,9 +302,9 @@ public class MainWindowController implements Initializable {
             Thread t1 = new Thread(r1);
             t1.start();
             filePathLbl.setText(path);
-        } catch (Exception ex) {
-            EventLogger.log(EventLogger.Level.ERROR, String.format("An error occured while attempting to load the given file: %s \nException message: %s", path, ex.getMessage()));
-            EventPopup.showAlertPopup(ex);
+        }
+        catch (Exception ex) {
+            EventLogger.log(EventLogger.Level.NOTIFICATION, String.format("An error occured while attempting to load the given file: %s \nException message: %s", path, ex.getMessage()));
         }
     }
 
@@ -318,6 +334,9 @@ public class MainWindowController implements Initializable {
                                 if (change.getType().name().equals("ERROR")) {
                                     EventPopup.showAlertPopup(change.getDescription());
                                 }
+                                if (change.getType().name().equals("NOTIFICATION")) {
+                                    EventPopup.showInformationPopup(change.getDescription());
+                                }
                             }
                         }
                     }
@@ -327,23 +346,4 @@ public class MainWindowController implements Initializable {
 
     }
 
-    @FXML
-    private void deleteTask(ActionEvent event) {
-        ConversionTask selectedItem = taskTV.getSelectionModel().getSelectedItem();
-        model.stopConversion(selectedItem);
-    }
-
-    @FXML
-    private void export(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save export file");
-
-        //Set extension 
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XLS files (*.xls)", "*.xls", "FXML files (*.fxml)", "*.fxml");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        //Show save file dialog
-        File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
-
-    }
 }
