@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -316,7 +317,9 @@ public class MainWindowController implements Initializable {
                             changes.addAll(c.getAddedSubList());
                             for (EventLog change : changes) {
                                 if (change.getType().name().equals("ERROR")) {
-                                    EventPopup.showAlertPopup(change.getDescription());
+                                    Platform.runLater(() -> {
+                                        EventPopup.showAlertPopup(change.getDescription());
+                                    });
                                 }
                             }
                         }

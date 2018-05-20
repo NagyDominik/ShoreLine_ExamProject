@@ -153,9 +153,8 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
 
             newKey = usedConfig.getNewKey(oldKey);
 
-            /*if (usedConfig.isPlanning(oldKey)) { //no is Planning implemented
+            if (usedConfig.isPlanning(oldKey)) { //no is Planning implemented
                 convertedMap.setIsTreeRoot(true);
-<<<<<<< HEAD
                 convertedMap.setKey(newKey);
                 convertedMap.addValue(value);
             }
@@ -163,11 +162,9 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
                 convertedMap.setKey(newKey);
                 convertedMap.addValue(value);
             }
-
-=======
-             */
-            convertedMap.setKey(newKey);
-            convertedMap.addValue(value);
+            
+//            convertedMap.setKey(newKey);
+//            convertedMap.addValue(value);
         } else {
             for (AttributeMap value1 : attributeMap.getValues()) {
                 AttributeMap nestedMap = convertMap(value1);
