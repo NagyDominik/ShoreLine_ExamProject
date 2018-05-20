@@ -81,8 +81,7 @@ public class MainWindowController implements Initializable {
             setUpConfigComboBox();
             setUpTaskTableView();
             setUpHandlersAndListeners();
-        }
-        catch (ModelException ex) {
+        } catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
@@ -98,8 +97,7 @@ public class MainWindowController implements Initializable {
                 return;
             }
             loadFile(f.getPath());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             EventPopup.showAlertPopup(ex);
         }
 
@@ -128,8 +126,7 @@ public class MainWindowController implements Initializable {
     private void startClicked(ActionEvent event) {
         try {
             model.startConversion();
-        }
-        catch (ModelException ex) {
+        } catch (ModelException ex) {
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -142,8 +139,7 @@ public class MainWindowController implements Initializable {
         }
         try {
             model.createNewConversionTask(configComboBox.getValue());
-        }
-        catch (ModelException ex) {
+        } catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
@@ -171,8 +167,7 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Options");
             stage.setResizable(false);
             stage.show();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             EventLogger.log(EventLogger.Level.ERROR, "Failed to open window OptionsWindow! \n" + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
@@ -191,8 +186,7 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Details");
             stage.setResizable(false);
             stage.show();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             EventLogger.log(EventLogger.Level.ERROR, "Failed to open window DetailWindow! \n" + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
@@ -209,8 +203,7 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Log");
             stage.setResizable(false);
             stage.show();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             EventLogger.log(EventLogger.Level.ERROR, "Failed to open window LogWindow! \n" + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
@@ -227,8 +220,7 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Folders");
             stage.setResizable(false);
             stage.show();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             EventLogger.log(EventLogger.Level.ERROR, "Failed to open window AssignFolderWindow! \n" + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
@@ -287,15 +279,14 @@ public class MainWindowController implements Initializable {
                 Scene s = userNameLbl.getScene();
                 s.setCursor(Cursor.WAIT);
                 model.loadFileData(path);
-                EventLogger.log(EventLogger.Level.INFORMATION, String.format("The file %s has been loaded: ", path));
+                EventLogger.log(EventLogger.Level.NOTIFICATION, String.format("The file %s has been loaded: ", path));
                 s.setCursor(Cursor.DEFAULT);
             };
 
             Thread t1 = new Thread(r1);
             t1.start();
             filePathLbl.setText(path);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, String.format("An error occured while attempting to load the given file: %s \nException message: %s", path, ex.getMessage()));
             EventPopup.showAlertPopup(ex);
         }
@@ -340,5 +331,19 @@ public class MainWindowController implements Initializable {
     private void deleteTask(ActionEvent event) {
         ConversionTask selectedItem = taskTV.getSelectionModel().getSelectedItem();
         model.stopConversion(selectedItem);
+    }
+
+    @FXML
+    private void export(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save export file");
+
+        //Set extension 
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XLS files (*.xls)", "*.xls", "FXML files (*.fxml)", "*.fxml");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
+
     }
 }

@@ -1,10 +1,8 @@
 package shoreline_examproject.BLL;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
@@ -16,13 +14,13 @@ import shoreline_examproject.DAL.IDataAccess;
 
 public class BLLManager implements IBLLManager {
 
-    private IDataAccess dal;
+    private IDataAccess dalManager;
     private Converter converter;
     private FolderHandler folderHandler;
     
     public BLLManager() throws BLLException {
         try {
-            this.dal = new DALManager();
+            this.dalManager = new DALManager();
             this.converter = new Converter(this);
             this.folderHandler = new FolderHandler(this);
         } catch (IOException ex) {
@@ -32,22 +30,27 @@ public class BLLManager implements IBLLManager {
 
     @Override
     public void saveLog(EventLog log) {
-        dal.saveLog(log);
+        dalManager.saveLog(log);
     }
 
     @Override
     public void saveConfig(Config config) {
-        dal.saveConfig(config);
+        dalManager.saveConfig(config);
+    }
+    
+    @Override
+    public List<Config> loadConfigs() {
+        return dalManager.loadConfigs();
     }
 
     @Override
     public AttributesCollection loadFileData(String filePath) {
-        return dal.loadFileData(filePath);
+        return dalManager.loadFileData(filePath);
     }
 
     @Override
     public void saveToJSON(AttributesCollection data) {
-        dal.saveData(data);
+        dalManager.saveData(data);
     }
 
     @Override
@@ -102,4 +105,5 @@ public class BLLManager implements IBLLManager {
             throw new BLLException(ex);
         }
     }
+
 }

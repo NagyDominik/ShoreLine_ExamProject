@@ -1,19 +1,26 @@
 package shoreline_examproject.BE;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Maps relations between input and output data.
- *  Works similarly as an AtttributeMap to allow saving multi-layered objects.
+ * Maps relations between input and output data. Works similarly as an
+ * AtttributeMap to allow saving multi-layered objects.
+ *
  * @author sebok
  */
-public class Config {
-    private enum Type {STRING, INT, DATE}
+public class Config implements Serializable {
+
+    private static final long serialVersionUID = 123L;
+
+    private enum Type {
+        STRING, INT, DATE
+    }
     private String name;
-    
+
     List<DataPair> data = new ArrayList<>(15);
-    
+
     public boolean containsKey(String key) {
         for (DataPair dataPair : data) {
             if (dataPair.containsKey(key)) {
@@ -29,12 +36,11 @@ public class Config {
                 return dataPair.getNewValue();
             }
         }
-        
+
         throw new IllegalArgumentException("This object does not contain the data associated with the provided key!");
     }
 
-    public void addRelation(String key, String value, boolean isPlanning)
-    {
+    public void addRelation(String key, String value, boolean isPlanning) {
         // TODO: dummy method, finish this (optimize?).
         this.data.add(new DataPair(Type.STRING, key, value, isPlanning));
     }
@@ -48,8 +54,8 @@ public class Config {
         return false;
     }
     
-    public void updateOutputName(String value, String key)
-    {
+
+    public void updateOutputName(String value, String key) {
         for (DataPair dataPair : data) {
             if (dataPair.hasValue(value)) {
                 dataPair.updateKey(key);
@@ -57,7 +63,7 @@ public class Config {
             }
         }
     }
-    
+
 //    public void updateValue(String key, String newValue)
 //    {
 //        for (DataPair dataPair : data) {
@@ -69,78 +75,68 @@ public class Config {
 //        
 //        throw new IllegalArgumentException("This object does not contain the data associated with the provided key!");
 //    }
-        
     public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return this.name;
     }
-    
+
     public String getAssociationMap() {
         StringBuilder sb = new StringBuilder();
         for (DataPair dataPair : data) {
             sb.append(dataPair.outputName).append("->> ").append(dataPair.inputName).append("\n");
         }
-        
+
         return sb.toString();
     }
-    
-    class DataPair
-    {        
+
+    private class DataPair implements Serializable{
+
         private final Type outputType;
-        
+
         private String inputName;
         private String outputName;
         private boolean isPlanning;
 
-        public DataPair(Type outputType, String oldName, String newName, boolean isPlanning)
-        {
+        public DataPair(Type outputType, String oldName, String newName, boolean isPlanning) {
             this.outputType = outputType;
             this.inputName = newName;
             this.outputName = oldName;
             this.isPlanning = isPlanning;
         }
-        
+
         public boolean containsKey(String key) {
-           return this.inputName.equals(key);
+            return this.inputName.equals(key);
         }
-        
-        
+
         public String getNewValue() {
             return this.outputName;
         }
 
-        
-        private void updateKey(String key)
-        {
+        private void updateKey(String key) {
             this.inputName = key;
         }
 
-        public String getInputName()
-        {
+        public String getInputName() {
             return inputName;
         }
 
-        public String getOutputName()
-        {
+        public String getOutputName() {
             return outputName;
         }
-        
-        public boolean hasValue(String value)
-        {
+
+        public boolean hasValue(String value) {
             return this.outputName.equals(value);
         }
 
-        public boolean isIsPlanning() {
+        public boolean isPlanning() {
             return isPlanning;
         }
 

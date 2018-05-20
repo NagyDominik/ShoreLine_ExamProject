@@ -40,7 +40,7 @@ public class JSONWriter extends IFileWriter {
     public void saveData(AttributesCollection data) {
         synchronized (lock) {
             File output = new File(getNextFilePath("exporttest/ConvertedData_" + LocalDate.now() + "_" + System.currentTimeMillis() + ".json_temp"));
-
+            output.getParentFile().mkdirs();
             try (JsonWriter jwriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(output)))) {
                 jwriter.beginArray();
                 for (DataRow datarow : data.getAttributes()) {

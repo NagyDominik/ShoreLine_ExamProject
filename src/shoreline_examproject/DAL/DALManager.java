@@ -3,10 +3,12 @@ package shoreline_examproject.DAL;
 import shoreline_examproject.DAL.FileReaders.FileReader;
 import shoreline_examproject.BE.Config;
 import java.io.File;
+import java.util.List;
 
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.DAL.FileReaders.FileReaderFactory;
 import shoreline_examproject.BE.EventLog;
+import shoreline_examproject.DAL.DataBase.DBConfigManager;
 import shoreline_examproject.DAL.DataBase.DBLogManager;
 import shoreline_examproject.DAL.FileWriters.IFileWriter;
 import shoreline_examproject.DAL.FileWriters.JSONWriter;
@@ -21,22 +23,23 @@ public class DALManager implements IDataAccess {
 
     private IFileWriter writer = new JSONWriter();
     private FileReader reader;
-    private DBLogManager dBlog = new DBLogManager();
+    private DBLogManager DBLog = new DBLogManager();
+    private DBConfigManager DBConfig = new DBConfigManager();
     private UserDataManager udmanager = new UserDataManager();
 
     public DALManager() {
         EventLogger.setUsername(udmanager.read());
-        dBlog.loadLog();
+        DBLog.loadLog();
     }
 
     @Override
     public void saveLog(EventLog log) {
-        dBlog.saveLog(log);
+        DBLog.saveLog(log);
     }
 
     @Override
     public void saveConfig(Config config) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        DBConfig.saveConfig(config);
     }
 
     @Override
@@ -54,5 +57,10 @@ public class DALManager implements IDataAccess {
     @Override
     public void saveData(AttributesCollection data) {
         writer.saveData(data);
+    }
+
+    @Override
+    public List<Config> loadConfigs() {
+        return DBConfig.loadConfigs();
     }
 }

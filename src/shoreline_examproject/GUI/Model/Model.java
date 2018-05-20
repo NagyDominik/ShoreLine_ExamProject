@@ -37,6 +37,7 @@ public class Model {
     private Model() throws ModelException {
         try {
             bllManager = new BLLManager();
+            confList.addAll(bllManager.loadConfigs());
         } catch (BLLException ex) {
             throw new ModelException(ex);
         }
@@ -70,6 +71,7 @@ public class Model {
      * @param currentConfig The configuration that will be saved.
      */
     public void saveConfig(Config currentConfig) {
+        this.confList.add(currentConfig);
         bllManager.saveConfig(currentConfig);
     }
 
@@ -112,10 +114,6 @@ public class Model {
 
     public ObservableList<Config> getConfList() {
         return confList;
-    }
-
-    public void addConfig(Config c) {
-        this.confList.add(c);
     }
 
     public void setSelectedConfig(Config selected) {

@@ -222,7 +222,7 @@ public class NewConfigWindowController implements Initializable {
             return;
         }
         currentConfig.setName(name);
-        model.addConfig(currentConfig);
+        model.saveConfig(currentConfig);
         Stage s = (Stage) btnRemove.getScene().getWindow();
         s.close();
     }
