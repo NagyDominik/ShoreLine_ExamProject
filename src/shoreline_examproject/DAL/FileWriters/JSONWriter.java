@@ -12,14 +12,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.xmlbeans.impl.xb.ltgfmt.TestCase;
 import shoreline_examproject.BE.AttributeMap;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.DataRow;
@@ -44,7 +40,7 @@ public class JSONWriter extends IFileWriter {
     public void saveData(AttributesCollection data) {
         synchronized (lock) {
             File output = new File(getNextFilePath("exporttest/ConvertedData_" + LocalDate.now() + "_" + System.currentTimeMillis() + ".json_temp"));
-
+            output.getParentFile().mkdirs();
             try (JsonWriter jwriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(output)))) {
                 jwriter.beginArray();
                 for (DataRow datarow : data.getAttributes()) {

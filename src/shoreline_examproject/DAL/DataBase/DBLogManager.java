@@ -25,7 +25,6 @@ import shoreline_examproject.Utility.EventLogger;
  */
 public class DBLogManager {
 
-    private EventLogger logList;
     private ConnectionPool conpool = new ConnectionPool();
 
     public DBLogManager() {
@@ -42,16 +41,16 @@ public class DBLogManager {
             ps.setString(4, log.getDescription());
             int affected = ps.executeUpdate();
             if (affected < 1) {
-                EventLogger.log(EventLogger.Level.ERROR, "The log could be saved!");
+                EventLogger.log(EventLogger.Level.ERROR, "The log could not be saved!");
             }
         }
         catch (SQLException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.logIncognito(EventLogger.Level.ERROR, ex.getMessage());
         }
     }
 
     public List<EventLog> loadLog() {
-        List<EventLog> log = logList.getLogList();
+        List<EventLog> log = EventLogger.getLogList();
         try (Connection con = conpool.checkOut()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM Log");
             ResultSet rs = ps.executeQuery();
@@ -75,13 +74,15 @@ public class DBLogManager {
         EventLogger.getLogList().addListener(new ListChangeListener<EventLog>() {
             @Override
             public void onChanged(ListChangeListener.Change<? extends EventLog> c) {
-                if (EventLogger.isSetUp()) {
+                if (EventLogger.isSetUp() && EventLogger.isObservable()) {
                     while (c.next()) {
                         if (c.wasAdded()) {
                             List<EventLog> changes = new ArrayList<>();
                             changes.addAll(c.getAddedSubList());
                             for (EventLog change : changes) {
-                                saveLog(change);
+                                if (!change.getType().name().equals("NOTIFICATION")) {
+                                    saveLog(change);
+                                }
                             }
                         }
                     }

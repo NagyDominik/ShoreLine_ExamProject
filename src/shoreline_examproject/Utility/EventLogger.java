@@ -1,11 +1,9 @@
 package shoreline_examproject.Utility;
 
-import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import jdk.nashorn.internal.codegen.CompilerConstants;
 import shoreline_examproject.BE.EventLog;
 
 /**
@@ -18,18 +16,26 @@ public class EventLogger {
         ERROR,
         INFORMATION,
         ALERT,
-        SUCCESS;
+        SUCCESS,
+        NOTIFICATION;
     }
-    
+
     private static ObservableList<EventLog> logList = FXCollections.observableArrayList();
     private static StringProperty username = new SimpleStringProperty();
     private static Boolean isSetUp = false;
-    
+    private static Boolean isObservable = true;
+
     public EventLogger() {
     }
-    
+
     public static void log(Level level, String desc) {
         logList.add(new EventLog(EventLog.Type.valueOf(level.name()), desc));
+    }
+
+    public static void logIncognito(Level level, String desc) {
+        isObservable = false;
+        logList.add(new EventLog(EventLog.Type.valueOf(level.name()), desc));
+        isObservable = true;
     }
 
     public static ObservableList<EventLog> getLogList() {
@@ -47,7 +53,7 @@ public class EventLogger {
     public static String getUsername() {
         return username.get();
     }
-    
+
     public static ObservableList getLog() {
         return logList;
     }
@@ -59,8 +65,13 @@ public class EventLogger {
     public static void setIsSetUp(Boolean isSetUp) {
         EventLogger.isSetUp = isSetUp;
     }
-    
-    public static void loadLog(List<EventLog> list) {
-        //logList.addAll(list);
+
+    public static Boolean isObservable() {
+        return isObservable;
     }
+
+    public static void setIsObservable(Boolean isObservable) {
+        EventLogger.isObservable = isObservable;
+    }
+
 }

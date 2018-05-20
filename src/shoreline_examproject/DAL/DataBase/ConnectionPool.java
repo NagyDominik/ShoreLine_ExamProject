@@ -7,8 +7,6 @@ package shoreline_examproject.DAL.DataBase;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import shoreline_examproject.Utility.EventLogger;
 import shoreline_examproject.Utility.ObjectPool;
 

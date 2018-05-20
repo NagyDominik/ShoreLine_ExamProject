@@ -287,7 +287,7 @@ public class MainWindowController implements Initializable {
                 Scene s = userNameLbl.getScene();
                 s.setCursor(Cursor.WAIT);
                 model.loadFileData(path);
-                EventLogger.log(EventLogger.Level.INFORMATION, String.format("The file %s has been loaded: ", path));
+                EventLogger.log(EventLogger.Level.NOTIFICATION, String.format("The file %s has been loaded: ", path));
                 s.setCursor(Cursor.DEFAULT);
             };
 
