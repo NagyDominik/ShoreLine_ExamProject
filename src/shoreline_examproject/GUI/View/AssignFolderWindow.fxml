@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.AssignFolderWindowController">
+<AnchorPane id="AnchorPane" prefHeight="465.0" prefWidth="765.0" style="-fx-background-color: #5B93C4;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_examproject.GUI.Controller.AssignFolderWindowController">
    <children>
       <ImageView fitHeight="64.0" fitWidth="134.0" layoutY="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <image>
@@ -23,7 +23,7 @@
       </ImageView>
       <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="56.0" layoutY="410.0" onAction="#btnSelectFolderClicked" style="-fx-background-color: #d8d504;" text="Select folder">
          <font>
-            <Font name="Exo 2 Semi Bold" size="13.0" />
+            <Font name="Exo 2 Semi Bold" size="12.0" />
          </font>
          <graphic>
             <ImageView>
@@ -59,8 +59,18 @@
             <Font name="Exo 2 Semi Bold" size="13.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="btnMonitor" layoutX="408.0" layoutY="410.0" onAction="#btnStartClicked" prefHeight="34.0" prefWidth="134.0" style="-fx-background-color: green;" text="Start monitoring" />
-      <Circle fx:id="crclStatusIndicator" fill="#ff1f1f" layoutX="584.0" layoutY="427.0" radius="13.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-      <JFXButton layoutX="200.0" layoutY="412.0" onAction="#btnRemoveFolderClicked" prefHeight="34.0" prefWidth="134.0" text="Remove folder" />
+      <JFXButton fx:id="btnMonitor" layoutX="514.0" layoutY="32.0" onAction="#btnStartClicked" prefHeight="34.0" prefWidth="134.0" style="-fx-background-color: green;" text="Start monitoring">
+         <font>
+            <Font name="Exo 2 Semi Bold" size="12.0" />
+         </font></JFXButton>
+      <Circle fx:id="crclStatusIndicator" fill="#ff1f1f" layoutX="685.0" layoutY="49.0" radius="13.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <JFXButton buttonType="RAISED" layoutX="191.0" layoutY="410.0" onAction="#btnRemoveFolderClicked" prefHeight="32.0" prefWidth="125.0" style="-fx-background-color: red;" text="Remove folder">
+         <graphic>
+            <ImageView fitHeight="23.0" fitWidth="21.0">
+               <image>
+                  <Image url="@../../img/stop.png" />
+               </image>
+            </ImageView>
+         </graphic></JFXButton>
    </children>
 </AnchorPane>

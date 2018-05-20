@@ -155,11 +155,11 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
 
             newKey = usedConfig.getNewKey(oldKey);
 
-            if (usedConfig.isPlanning(oldKey)) {
+                /*if (usedConfig.isPlanning(oldKey)) {
                 convertedMap.setIsTreeRoot(true);
                 convertedMap.setKey(newKey);
                 convertedMap.addValue(value);
-            }
+            }*/
             convertedMap.setKey(newKey);
             convertedMap.addValue(value);
         } else {
