@@ -28,7 +28,7 @@
          </image>
       </ImageView>
       <JFXComboBox fx:id="configComboBox" layoutX="175.0" layoutY="460.0" prefHeight="25.0" prefWidth="118.0" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="460.0" />
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="43.0" layoutY="148.0" onAction="#importFileClicked" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #44bae6;" text="Import file ..." AnchorPane.leftAnchor="43.0" AnchorPane.topAnchor="148.0">
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="43.0" layoutY="113.0" onAction="#importFileClicked" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #44bae6;" text="Import file ..." AnchorPane.leftAnchor="43.0" AnchorPane.topAnchor="113.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
@@ -36,7 +36,7 @@
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
-      <Label fx:id="filePathLbl" layoutX="165.0" layoutY="147.0" prefHeight="25.0" prefWidth="156.0" text="filepath" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="147.0">
+      <Label fx:id="filePathLbl" layoutX="165.0" layoutY="112.0" prefHeight="25.0" prefWidth="324.0" text="filepath" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="112.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></Label>
@@ -118,7 +118,7 @@
             <Image url="@../../img/shortlogo.png" />
          </image>
       </ImageView>
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="598.0" layoutY="389.0" onAction="#moreDetailClicked" style="-fx-background-color: #B8B8BD;" text="More detail..." AnchorPane.bottomAnchor="51.0" AnchorPane.rightAnchor="75.0">
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="598.0" layoutY="389.0" onAction="#moreDetailClicked" style="-fx-background-color: #B8B8BD;" text="More details..." AnchorPane.bottomAnchor="51.0" AnchorPane.rightAnchor="75.0">
          <effect>
             <Glow level="0.0">
                <input>
@@ -131,12 +131,12 @@
          </font>
       </JFXButton>
       <JFXTextArea fx:id="txtAreaPreview" layoutX="43.0" layoutY="190.0" prefHeight="259.0" prefWidth="448.0" style="-fx-background-color: white;" />
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="411.0" layoutY="147.0" onAction="#btnAddTask" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: #6EE854;" text="Add task">
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="399.0" layoutY="148.0" onAction="#btnAddTask" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: #6EE854;" text="Add task">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="324.0" layoutY="148.0" onAction="#deleteTask" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: RED;" text="Delete task" />
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="43.0" layoutY="114.0" onAction="#export" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: lightgreen;" text="Export" />
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="281.0" layoutY="148.0" onAction="#deleteTask" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: RED;" text="Delete task" />
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="43.0" layoutY="148.0" onAction="#export" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: lightgreen;" text="Export" />
       <MenuButton contentDisplay="CENTER" layoutX="683.0" layoutY="28.0" mnemonicParsing="false" style="-fx-background-radius: 10; -fx-background-color: transparent;">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#optionsClicked" text="Change username " />

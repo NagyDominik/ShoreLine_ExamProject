@@ -77,7 +77,7 @@ public class MainWindowController implements Initializable {
             taskTV.setItems(model.getTasks());
             configComboBox.setItems(model.getConfList());
             userNameLbl.textProperty().bind(EventLogger.getUsernameProperty());
-
+            model.setCurrentUser(userNameLbl.getText());
             setUpConfigComboBox();
             setUpTaskTableView();
             setUpHandlersAndListeners();
@@ -339,11 +339,15 @@ public class MainWindowController implements Initializable {
         fileChooser.setTitle("Save export file");
 
         //Set extension 
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XLS files (*.xls)", "*.xls", "FXML files (*.fxml)", "*.fxml");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx, *.xml, *.xls )", "*.xlsx, *.xml, *.xls");
         fileChooser.getExtensionFilters().add(extFilter);
+        
 
         //Show save file dialog
         File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
+        System.out.println(file.getAbsolutePath());
+        
+        
 
     }
 }
