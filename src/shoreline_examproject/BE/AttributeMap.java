@@ -49,24 +49,21 @@ public class AttributeMap {
 
         return sb.toString();
     }
-
-    public void setValue(String value)
-    {
-        this.value = value;
-    }
  
     public void setKey(String key)
     {
         this.key = key;
     }
 
-    public void setIsTreeRoot(boolean isTreeRoot)
+    public void setIsTreeRoot(boolean isTR)
     {
-        if (!isTreeRoot) {
-            values = null;
+        if (!isTR) {
+            this.values = null;
+            this.isTreeRoot = isTR;
         } else {
-            value = null;
-            values = new ArrayList<>(10);
+            this.value = null;
+            this.values = new ArrayList<>(10);
+            this.isTreeRoot = isTR;
         }
     }
 
@@ -93,11 +90,21 @@ public class AttributeMap {
      * value is null.
      */
     public String getValue() throws NoSuchFieldException {
+//        if (isTreeRoot) {
+//            EventLogger.log(EventLogger.Level.ERROR, "Attempted to access the value of a tree root!");
+//            throw new NoSuchFieldException("This instance represents a tree-like structure. There is value associated with this key!");
+//        }
+//        return value;
         if (isTreeRoot) {
-            EventLogger.log(EventLogger.Level.ERROR, "Attempted to access the value of a tree root!");
-            throw new NoSuchFieldException("This instance represents a tree-like structure. There is value associated with this key!");
+            if (values.size() == 1) {
+                return values.get(0).getValue();
+            }
         }
-        return value;
+        else {
+            return value;
+        }
+        
+        return null;
     }
 
     /**

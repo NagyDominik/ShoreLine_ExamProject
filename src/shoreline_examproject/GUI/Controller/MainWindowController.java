@@ -338,8 +338,9 @@ public class MainWindowController implements Initializable {
                                     });
                                 }
                                 if (change.getType().name().equals("NOTIFICATION")) {
-                                    EventPopup.showInformationPopup(change.getDescription());
-                                }
+                                    Platform.runLater(() -> {
+                                        EventPopup.showAlertPopup(change.getDescription());
+                                    });                                }
                             }
                         }
                     }

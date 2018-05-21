@@ -70,20 +70,20 @@ public class ExcelReader extends FileReader {
                             //System.out.print(c.getStringCellValue() + "\t");
                             //current.addKeyValuePair(attributeCell.getStringCellValue(), c.getStringCellValue());
                             current = new AttributeMap(attributeCell.getStringCellValue(), false);
-                            current.setValue(c.getStringCellValue());
+                            current.addValue(c.getStringCellValue());
                             dataRow.addData(current);
                             break;
                         case NUMERIC:
                             //System.out.print(c.getNumericCellValue() + "\t");
                             //current.addKeyValuePair(attributeCell.getStringCellValue(), Double.toString(c.getNumericCellValue()));
                             current = new AttributeMap(attributeCell.getStringCellValue(), false);
-                            current.setValue(Double.toString(c.getNumericCellValue()));
+                            current.addValue(Double.toString(c.getNumericCellValue()));
                             dataRow.addData(current);
                             break;
                         default:
                             //current.addKeyValuePair(attributeCell.getStringCellValue(), "");
                             current = new AttributeMap(attributeCell.getStringCellValue(), false);
-                            current.setValue("");
+                            current.addValue("");
                             dataRow.addData(current);
                     }
                 }

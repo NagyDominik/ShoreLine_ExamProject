@@ -149,7 +149,7 @@ public class OptimizedExcelReader extends FileReader {
 
         private AttributeMap createAM(String key, String vslue) {
             AttributeMap celldata = new AttributeMap(key, false);
-            celldata.setValue(vslue);
+            celldata.addValue(vslue);
             return celldata;
         }
         

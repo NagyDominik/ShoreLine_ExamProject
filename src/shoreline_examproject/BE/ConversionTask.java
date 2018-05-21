@@ -20,7 +20,6 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     private final Object pauseLock = new Object();
     private Boolean isPaused = false;
     private Boolean isCanceled = false;
-    private String oldKey = "", newKey = "", value = "";
 
     public ConversionTask(Config usedConfig, AttributesCollection inputData) {
         this.usedConfig = usedConfig;
@@ -79,6 +78,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
             progress++;
             progressPercentage = (double) progress / count * 100;
             updateProgress(progressPercentage, count);
+            createPlannig(convertedRow);
             convertedData.addAttributeMap(convertedRow);
         }
     }
@@ -147,31 +147,46 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
      */
     private AttributeMap convertMap(AttributeMap attributeMap) throws IllegalAccessException, NoSuchFieldException {
         AttributeMap convertedMap = new AttributeMap();
-        if (!attributeMap.isIsTreeRoot()) {
-            oldKey = attributeMap.getKey();
-            value = attributeMap.getValue();
+        
 
-            newKey = usedConfig.getNewKey(oldKey);
-
-            if (usedConfig.isPlanning(oldKey)) { //no is Planning implemented
+            String oldKey = attributeMap.getKey();
+            String newKey = usedConfig.getNewKey(oldKey);
+            
+            String value = attributeMap.getValue();
+            
+            if (usedConfig.isPlanning(oldKey)) {
+                AttributeMap am = new AttributeMap(newKey, false);
                 convertedMap.setIsTreeRoot(true);
-                convertedMap.setKey(newKey);
-                convertedMap.addValue(value);
+                am.setKey(newKey);
+                am.addValue(value);
+                convertedMap.addValue(am);
             }
             else {
                 convertedMap.setKey(newKey);
                 convertedMap.addValue(value);
             }
-            
-//            convertedMap.setKey(newKey);
-//            convertedMap.addValue(value);
-        } else {
-            for (AttributeMap value1 : attributeMap.getValues()) {
-                AttributeMap nestedMap = convertMap(value1);
-                convertedMap.addValue(nestedMap);
+
+        return convertedMap;
+    }
+
+    private void createPlannig(DataRow convertedRow) throws NoSuchFieldException {
+        AttributeMap plannig = new AttributeMap();
+        plannig.setIsTreeRoot(true);
+        plannig.setKey("plannig");
+        for (AttributeMap attributeMap : convertedRow.getData()) {
+            if (attributeMap.isIsTreeRoot()) {
+                String key = attributeMap.getValues().get(0).getKey();
+                String value = attributeMap.getValues().get(0).getValue();
+                
+                AttributeMap am = new AttributeMap();
+                am.setKey(key);
+                am.addValue(value);
+                plannig.addValue(am);
+                convertedRow.addToRemoveList(attributeMap);
             }
         }
-        return convertedMap;
+        convertedRow.remove();
+        convertedRow.addData(plannig);
     }
 
 }
