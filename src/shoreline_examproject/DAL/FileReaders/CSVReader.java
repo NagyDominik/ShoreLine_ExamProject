@@ -8,7 +8,7 @@ import shoreline_examproject.BE.AttributesCollection;
  *
  * @author sebok
  */
-public class XMLReader extends FileReader {
+public class CSVReader extends FileReader {
 
     @Override
     public AttributesCollection getData(File file) {

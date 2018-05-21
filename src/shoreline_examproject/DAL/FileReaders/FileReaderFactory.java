@@ -12,7 +12,7 @@ public class FileReaderFactory {
         switch (extension) {
             case ".xlsx": return new OptimizedExcelReader();
             case ".xls": return new ExcelReader();
-            case ".xml": return new XMLReader();
+            case ".csv": return new CSVReader();
             default: throw new IllegalArgumentException("File type not recognised");
         }
     }

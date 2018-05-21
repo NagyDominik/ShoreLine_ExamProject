@@ -57,7 +57,7 @@ public class LogWindowController implements Initializable {
         try {
             model = Model.getInstance();
             setupTV();
-            logTV.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY); 
+            logTV.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
         } catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
             EventPopup.showAlertPopup(ex);
