@@ -11,6 +11,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -48,7 +49,6 @@ public class LogWindowController implements Initializable {
     private JFXButton closeButton;
 
     private Model model;
-
     /**
      * Initializes the controller class.
      */
@@ -57,6 +57,7 @@ public class LogWindowController implements Initializable {
         try {
             model = Model.getInstance();
             setupTV();
+            logTV.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
         } catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
             EventPopup.showAlertPopup(ex);
@@ -64,6 +65,7 @@ public class LogWindowController implements Initializable {
     }
 
     private void setupTV() {
+        
         logTV.setItems(EventLogger.getLog());
         dateCol.setCellValueFactory(getCustomDateCellFactory());
         userCol.setCellValueFactory(new PropertyValueFactory("user"));

@@ -110,7 +110,7 @@ public class NewConfigWindowController implements Initializable {
             btnRemove.setDisable(true);
             
         } catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
+            EventLogger.log(EventLogger.Level.NOTIFICATION, "An exception has occured: " + ex.getMessage());
         }
     }
 

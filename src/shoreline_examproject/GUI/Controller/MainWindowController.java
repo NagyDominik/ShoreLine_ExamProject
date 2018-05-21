@@ -78,7 +78,7 @@ public class MainWindowController implements Initializable {
             taskTV.setItems(model.getTasks());
             configComboBox.setItems(model.getConfList());
             userNameLbl.textProperty().bind(EventLogger.getUsernameProperty());
-
+            model.setCurrentUser(userNameLbl.getText());
             setUpConfigComboBox();
             setUpTaskTableView();
             setUpHandlersAndListeners();
@@ -296,7 +296,7 @@ public class MainWindowController implements Initializable {
                 Scene s = userNameLbl.getScene();
                 s.setCursor(Cursor.WAIT);
                 model.loadFileData(path);
-                EventLogger.log(EventLogger.Level.NOTIFICATION, String.format("The file %s has been loaded: ", path));
+                //EventLogger.log(EventLogger.Level.NOTIFICATION, String.format("The file %s has been loaded: ", path));
                 s.setCursor(Cursor.DEFAULT);
             };
 
@@ -323,7 +323,7 @@ public class MainWindowController implements Initializable {
             }
         });
 
-        EventLogger.getLogList().addListener(new ListChangeListener<EventLog>() {
+        EventLogger.getLog().addListener(new ListChangeListener<EventLog>() {
             @Override
             public void onChanged(ListChangeListener.Change<? extends EventLog> c) {
                 if (EventLogger.isSetUp()) {
@@ -350,4 +350,27 @@ public class MainWindowController implements Initializable {
 
     }
 
+    @FXML
+    private void deleteTasks(ActionEvent event) {
+        ConversionTask selectedItem = taskTV.getSelectionModel().getSelectedItem();
+        model.stopConversion(selectedItem);
+    }
+
+    @FXML
+    private void exportFile(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save export file");
+
+        //Set extension 
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx, *.xml, *.xls )", "*.xlsx, *.xml, *.xls");
+        fileChooser.getExtensionFilters().add(extFilter);
+        
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
+        System.out.println(file.getAbsolutePath());
+        
+        
+
+    }
 }

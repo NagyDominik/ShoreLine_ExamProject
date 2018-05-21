@@ -38,10 +38,6 @@ public class EventLogger {
         isObservable = true;
     }
 
-    public static ObservableList<EventLog> getLogList() {
-        return logList;
-    }
-
     public static StringProperty getUsernameProperty() {
         return username;
     }
@@ -54,7 +50,7 @@ public class EventLogger {
         return username.get();
     }
 
-    public static ObservableList getLog() {
+    public static ObservableList<EventLog> getLog() {
         return logList;
     }
 

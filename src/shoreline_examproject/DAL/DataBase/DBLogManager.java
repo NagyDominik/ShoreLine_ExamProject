@@ -50,7 +50,7 @@ public class DBLogManager {
     }
 
     public List<EventLog> loadLog() {
-        List<EventLog> log = EventLogger.getLogList();
+        List<EventLog> log = EventLogger.getLog();
         try (Connection con = conpool.checkOut()) {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM Log");
             ResultSet rs = ps.executeQuery();
@@ -71,7 +71,7 @@ public class DBLogManager {
     }
 
     private void setUpListener() {
-        EventLogger.getLogList().addListener(new ListChangeListener<EventLog>() {
+        EventLogger.getLog().addListener(new ListChangeListener<EventLog>() {
             @Override
             public void onChanged(ListChangeListener.Change<? extends EventLog> c) {
                 if (EventLogger.isSetUp() && EventLogger.isObservable()) {
