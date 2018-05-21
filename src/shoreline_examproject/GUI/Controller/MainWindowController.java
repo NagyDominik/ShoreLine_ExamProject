@@ -296,7 +296,7 @@ public class MainWindowController implements Initializable {
                 Scene s = userNameLbl.getScene();
                 s.setCursor(Cursor.WAIT);
                 model.loadFileData(path);
-                EventLogger.log(EventLogger.Level.NOTIFICATION, String.format("The file %s has been loaded: ", path));
+                //EventLogger.log(EventLogger.Level.NOTIFICATION, String.format("The file %s has been loaded: ", path));
                 s.setCursor(Cursor.DEFAULT);
             };
 
@@ -323,7 +323,7 @@ public class MainWindowController implements Initializable {
             }
         });
 
-        EventLogger.getLogList().addListener(new ListChangeListener<EventLog>() {
+        EventLogger.getLog().addListener(new ListChangeListener<EventLog>() {
             @Override
             public void onChanged(ListChangeListener.Change<? extends EventLog> c) {
                 if (EventLogger.isSetUp()) {

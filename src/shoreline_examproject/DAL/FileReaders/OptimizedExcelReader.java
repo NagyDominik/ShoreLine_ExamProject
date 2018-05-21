@@ -30,6 +30,7 @@ import shoreline_examproject.Utility.EventLogger;
 public class OptimizedExcelReader extends FileReader {
 
     private static AttributesCollection data = new AttributesCollection();
+    private SheetHandler sheethandler;
 
     @Override
     public AttributesCollection getData(File file) {
@@ -52,12 +53,14 @@ public class OptimizedExcelReader extends FileReader {
         InputSource sheetSource = new InputSource(sheet);
         parser.parse(sheetSource);
         sheet.close();
+        data.addAttributeMap(sheethandler.getLastRow());
         return data;
     }
 
     public XMLReader fetchSheetParser(SharedStringsTable stringtable) throws SAXException {
         XMLReader parser = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
-        ContentHandler handler = new SheetHandler(stringtable);
+        sheethandler = new SheetHandler(stringtable);
+        ContentHandler handler = sheethandler;
         parser.setContentHandler(handler);
         return parser;
     }
@@ -73,7 +76,7 @@ public class OptimizedExcelReader extends FileReader {
         private DataRow row = new DataRow();
         private List<String> attributes = new ArrayList();
         private int cellcount = -1;
-        private int currentRow = 1;
+        private int currentRow = 0;
         private int repeatcount = 2;
 
         private SheetHandler(SharedStringsTable stringtable) {
@@ -91,8 +94,8 @@ public class OptimizedExcelReader extends FileReader {
                     }
                     row = new DataRow();
                     cellcount = 0;
-                    currentRow = splitnumber(attributes.getValue("r"));
                 }
+                currentRow = splitnumber(attributes.getValue("r"));
 
                 String cellType = attributes.getValue("t"); // Figure out if the value is an index in the stringtable
                 if (cellType != null && cellType.equals("s")) {
@@ -152,16 +155,20 @@ public class OptimizedExcelReader extends FileReader {
             celldata.setValue(vslue);
             return celldata;
         }
-        
+
         private String checkIfExists(String attribute) {
             if (attributes.contains(attribute)) {
-                attribute += "(" +repeatcount++ + ")";
+                attribute += "(" + repeatcount++ + ")";
                 checkIfExists(attribute);
             } else {
                 return attribute;
             }
             repeatcount = 1;
             return attribute;
+        }
+        
+        public DataRow getLastRow() {
+            return row;
         }
 
     }
