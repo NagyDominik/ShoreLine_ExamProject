@@ -38,7 +38,7 @@ public class OptimizedExcelReader extends FileReader {
             return process(file.getPath());
         }
         catch (Exception ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
         return null;
     }

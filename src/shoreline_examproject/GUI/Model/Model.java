@@ -1,7 +1,5 @@
 package shoreline_examproject.GUI.Model;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -160,5 +158,10 @@ public class Model {
         } catch (BLLException ex) {
             throw new ModelException(ex);
         }
+    }
+
+    public void removeConfig(Config selected) {
+       this.bllManager.removeConfig(selected);
+       this.confList.remove(selected);
     }
 }

@@ -50,7 +50,7 @@ public class DetailWindowController implements Initializable {
             model = Model.getInstance();
             setUpDetails(model.getSelectedTask());
         } catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR,"An exception has occured: " + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
     }

@@ -1,5 +1,6 @@
 package shoreline_examproject.GUI.Controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import java.io.File;
@@ -66,6 +67,8 @@ public class MainWindowController implements Initializable {
     private Label startTimeLbl;
 
     private Model model;
+    @FXML
+    private JFXButton btnDeletConfig;
 
     /**
      * Initializes the controller class.
@@ -79,12 +82,13 @@ public class MainWindowController implements Initializable {
             configComboBox.setItems(model.getConfList());
             userNameLbl.textProperty().bind(EventLogger.getUsernameProperty());
             model.setCurrentUser(userNameLbl.getText());
+            btnDeletConfig.setDisable(true);
             setUpConfigComboBox();
             setUpTaskTableView();
             setUpHandlersAndListeners();
         }
         catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
     }
 
@@ -152,7 +156,7 @@ public class MainWindowController implements Initializable {
             model.createNewConversionTask(configComboBox.getValue());
         }
         catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR,"An exception has occured: " + ex.getMessage());
         }
         System.out.println(taskTV.getItems().size());
     }
@@ -282,10 +286,12 @@ public class MainWindowController implements Initializable {
                 Config selected = configComboBox.getSelectionModel().getSelectedItem();
 
                 if (selected == null) {
+                    btnDeletConfig.setDisable(true);
                     return;
                 }
 
                 txtAreaPreview.setText(selected.getAssociationMap());
+                btnDeletConfig.setDisable(false);
             }
         });
     }
@@ -351,13 +357,11 @@ public class MainWindowController implements Initializable {
 
     }
 
-    @FXML
     private void deleteTasks(ActionEvent event) {
         ConversionTask selectedItem = taskTV.getSelectionModel().getSelectedItem();
         model.stopConversion(selectedItem);
     }
 
-    @FXML
     private void exportFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save export file");
@@ -370,5 +374,16 @@ public class MainWindowController implements Initializable {
         File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
         System.out.println(file.getAbsolutePath());
 
+    }
+
+    @FXML
+    private void btnDeleteConfigPressed(ActionEvent event) {
+        Config selected = configComboBox.getSelectionModel().getSelectedItem();
+        
+        if (selected == null) {
+            return;
+        }
+        
+        model.removeConfig(selected);
     }
 }

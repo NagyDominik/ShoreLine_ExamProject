@@ -64,7 +64,7 @@ public class DBLogManager {
             }
         }
         catch (SQLException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
         EventLogger.setIsSetUp(Boolean.TRUE);
         return log;

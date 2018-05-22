@@ -77,7 +77,7 @@ public class AssignFolderWindowController implements Initializable {
             
             setUpTableView();
         } catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
 
@@ -122,7 +122,7 @@ public class AssignFolderWindowController implements Initializable {
             model.addFolderToList((new FolderInformation(selectedDir)));
             model.changeMonitoring();   // Restart monitoring
         } catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -154,7 +154,7 @@ public class AssignFolderWindowController implements Initializable {
             model.changeMonitoring();
             
         } catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
     }

@@ -49,7 +49,7 @@ public class OptionsWindowController implements Initializable {
             lblCurrentName.setText(model.getCurrentUser());
             System.out.println(model.getCurrentUser());
         } catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
             EventPopup.showAlertPopup(ex);       
         }
     }

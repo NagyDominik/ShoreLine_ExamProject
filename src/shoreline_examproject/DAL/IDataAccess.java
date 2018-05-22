@@ -24,4 +24,6 @@ public interface IDataAccess {
     public AttributesCollection loadFileData(String filePath);
 
     public AttributesCollection loadFileData(File file);
+
+    public void removeConfig(Config selected);
 }
