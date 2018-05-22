@@ -80,7 +80,7 @@ public class DBLogManager {
                             List<EventLog> changes = new ArrayList<>();
                             changes.addAll(c.getAddedSubList());
                             for (EventLog change : changes) {
-                                if (!change.getType().name().equals("NOTIFICATION")) {
+                                if (change.getType()!= EventLog.Type.NOTIFICATION) {
                                     saveLog(change);
                                 }
                             }

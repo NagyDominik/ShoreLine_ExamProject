@@ -18,6 +18,7 @@ public class Config implements Serializable {
         STRING, INT, DATE
     }
     private String name;
+    private int id;
 
     List<DataPair> data = new ArrayList<>(15);
 
@@ -83,6 +84,14 @@ public class Config implements Serializable {
         this.name = name;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return this.name;
@@ -143,5 +152,6 @@ public class Config implements Serializable {
         public void setIsPlanning(boolean isPlanning) {
             this.isPlanning = isPlanning;
         }
+        
     }
 }
