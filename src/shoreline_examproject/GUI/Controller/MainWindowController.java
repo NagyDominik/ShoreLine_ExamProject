@@ -32,7 +32,7 @@ import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
-import shoreline_examproject.BE.EventLog;
+import shoreline_examproject.Utility.EventLog;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
 import shoreline_examproject.Utility.EventLogger;

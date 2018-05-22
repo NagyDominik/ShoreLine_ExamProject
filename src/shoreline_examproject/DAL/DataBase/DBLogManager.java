@@ -16,7 +16,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.List;
 import javafx.collections.ListChangeListener;
-import shoreline_examproject.BE.EventLog;
+import shoreline_examproject.Utility.EventLog;
 import shoreline_examproject.Utility.EventLogger;
 
 /**

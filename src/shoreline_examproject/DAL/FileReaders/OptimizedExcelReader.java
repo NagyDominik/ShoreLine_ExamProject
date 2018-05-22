@@ -35,6 +35,7 @@ public class OptimizedExcelReader extends FileReader {
     @Override
     public AttributesCollection getData(File file) {
         try {
+            data.setImportPath(file.getPath());
             return process(file.getPath());
         }
         catch (Exception ex) {
