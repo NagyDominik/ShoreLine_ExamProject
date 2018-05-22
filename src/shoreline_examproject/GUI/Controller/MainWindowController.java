@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextArea;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -29,11 +30,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
+import shoreline_examproject.BE.FolderInformation;
+import shoreline_examproject.BLL.FolderHandler;
 import shoreline_examproject.Utility.EventLog;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
@@ -356,7 +360,6 @@ public class MainWindowController implements Initializable {
                 }
             }
         });
-
     }
 
     private void deleteTasks(ActionEvent event) {
@@ -382,7 +385,7 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void btnDeleteConfigPressed(ActionEvent event) {
+    private void btnDeleteConfigPressed(ActionEvent event) throws IOException {
         Config selected = configComboBox.getSelectionModel().getSelectedItem();
         
         if (selected == null) {

@@ -1,7 +1,10 @@
 package shoreline_examproject.BLL;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.BooleanProperty;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
@@ -9,6 +12,7 @@ import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.Utility.EventLog;
 import shoreline_examproject.BE.FolderInformation;
 import shoreline_examproject.BLL.Conversion.Converter;
+import shoreline_examproject.BLL.Conversion.FolderConverter;
 import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.DAL.IDataAccess;
 
@@ -17,13 +21,15 @@ public class BLLManager implements IBLLManager {
     private IDataAccess dalManager;
     private Converter converter;
     private FolderHandler folderHandler;
+    private FolderConverter folderConverter;
     
     public BLLManager() throws BLLException {
         try {
             this.dalManager = new DALManager();
             this.converter = new Converter(this);
             this.folderHandler = new FolderHandler(this);
-        } catch (IOException ex) {
+            this.folderConverter = new FolderConverter(this);
+        } catch (Exception ex) {
             throw new BLLException(ex);
         }
     }
@@ -75,40 +81,40 @@ public class BLLManager implements IBLLManager {
     }
 
     @Override
-    public void assignFolder(FolderInformation fi) throws BLLException{
-        try {
-            folderHandler.addFolderInformation(fi);
-        } catch (IOException ex) {
-            throw new BLLException(ex);
-        }
-    }
-
-    @Override
-    public void changeMonitoring() {
-        folderHandler.changeMonitoring();
-    }
-
-    @Override
-    public BooleanProperty isMonitoring() {
-        if (folderHandler == null) {
-            throw new NullPointerException("Folder Handler has not been initialized yet");
-        }
-        
-        return folderHandler.isMonitoringProperty();
-    }
-
-    @Override
-    public void removeFolder(FolderInformation selected) throws BLLException{
-        try {
-            folderHandler.removeFolder(selected);
-        } catch (IOException ex) {
-            throw new BLLException(ex);
-        }
-    }
-
-    @Override
     public void removeConfig(Config selected) {
         dalManager.removeConfig(selected);
     }
 
+    @Override
+    public void registerFolder(FolderInformation fi) throws BLLException {
+        try {
+            folderHandler.registerDirectory(fi);
+        } catch (IOException ex) {
+            throw new BLLException(ex);
+        }
+    }
+
+    @Override
+    public void startFolderWatch() throws BLLException{
+        try {
+            folderHandler.startMonitoring();
+        } catch (InterruptedException ex) {
+            throw new BLLException(ex);
+        }
+    }
+
+    @Override
+    public BooleanProperty isWatching() {
+        return folderHandler.isRunningProperty();
+    }
+
+    @Override
+    public void removeFolder(FolderInformation fi) {
+        folderHandler.removeFolder(fi);
+    }
+    
+    public void addNewFileToFolderConverter(Path p, Config c) {
+        folderConverter.addConversionTask(p, c);
+    }
+    
 }

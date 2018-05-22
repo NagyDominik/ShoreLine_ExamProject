@@ -33,13 +33,13 @@ public interface IBLLManager
 
     public void pauseConversion(ConversionTask selectedItem);
     
-    public void assignFolder(FolderInformation fi) throws BLLException;
+    public void registerFolder(FolderInformation fi) throws BLLException;
     
-    public void changeMonitoring();
+    public void removeFolder(FolderInformation fi);
     
-    public BooleanProperty isMonitoring();
-
-    public void removeFolder(FolderInformation selected) throws BLLException;
+    public void startFolderWatch() throws BLLException;
+    
+    public BooleanProperty isWatching();
     
     public void removeConfig(Config selected);
 }

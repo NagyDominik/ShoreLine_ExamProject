@@ -34,6 +34,10 @@ public class FolderInformation {
     }
 
     private void countNumberOfConvertibleFiles() {
+        if (selectedFolder == null) {
+           this.numberOfConvertibleFiles.set(0);
+           return;
+        }
         int n = 0;
         for (File listFile : selectedFolder.listFiles()) {
             if (listFile.getAbsolutePath().endsWith(".xlsx")) {

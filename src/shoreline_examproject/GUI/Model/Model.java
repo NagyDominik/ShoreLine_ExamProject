@@ -1,5 +1,7 @@
 package shoreline_examproject.GUI.Model;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -134,34 +136,32 @@ public class Model {
         return monitoredFolders;
     }
 
-    public void addFolderToList(FolderInformation fi) throws ModelException {
-        try {
-            this.monitoredFolders.add(fi);
-            bllManager.assignFolder(fi);
-        } catch (BLLException ex) {
-            throw new ModelException(ex);
-        }
-    }
-    
-    public void changeMonitoring() {
-        bllManager.changeMonitoring();
-    }
-    
-    public BooleanProperty isMonitoring() {
-        return bllManager.isMonitoring();
-    }
-
-    public void removeFolder(FolderInformation selected) throws ModelException{
-        try {
-            this.bllManager.removeFolder(selected);
-            this.monitoredFolders.remove(selected);
-        } catch (BLLException ex) {
-            throw new ModelException(ex);
-        }
-    }
-
     public void removeConfig(Config selected) {
        this.bllManager.removeConfig(selected);
        this.confList.remove(selected);
+    }
+
+    public void registerDirectory(FolderInformation fi) throws ModelException{
+        try {
+            this.bllManager.registerFolder(fi);
+        } catch (BLLException ex) {
+            throw new ModelException(ex);
+        }
+    }
+    
+    public void removeDirectory(FolderInformation fi) {
+        bllManager.removeFolder(fi);
+    }
+    
+    public void startWatch() throws ModelException{
+        try {
+            this.bllManager.startFolderWatch();
+        } catch (BLLException ex) {
+            throw new ModelException(ex);
+        }
+    }
+    
+    public BooleanProperty getIsWatching() {
+        return this.bllManager.isWatching();
     }
 }

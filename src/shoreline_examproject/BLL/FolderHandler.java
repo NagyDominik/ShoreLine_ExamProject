@@ -8,164 +8,137 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.FolderInformation;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
- * Handle folders, so that newly added files will be converted.
+ *
  * @author sebok
  */
 public class FolderHandler {
-    
-    private List<FolderInformation> folders;
-    private WatchService watcher;
-    
-    private List<WatchKey> keys;
-    
-    private Thread watcherThread;
-    private final BooleanProperty isMonitoring = new SimpleBooleanProperty();
-   
-    private BLLManager manager;
+    private final WatchService watcher;
+    private final HashMap<WatchKey, Path> keys; 
+    private final BooleanProperty isRunning = new SimpleBooleanProperty();    
+    private Thread watchThread;
+    private final Object lock;
+    private final BLLManager bLLManager;
+    private final List<FolderInformation> folders; 
     
     public FolderHandler(BLLManager manager) throws IOException {
-        this.manager = manager;
-        this.folders = new ArrayList<>();
         this.watcher = FileSystems.getDefault().newWatchService();
-        this.isMonitoring.setValue(false);
-        this.keys = new ArrayList<>();
+        this.keys = new HashMap<>();
+        this.lock = new Object();
+        this.bLLManager = manager;
+        this.folders = new ArrayList<>();
     }
     
-    public void changeMonitoring() {
-        if (folders.isEmpty()) {
-            isMonitoring.set(false);
-            return;
-        }
-        
-        if (isMonitoring.get()) {
-            watcherThread.interrupt();
-            isMonitoring.setValue(false);
-        } 
-        else {
-            Runnable r = () -> {
-                watch();
-            };
-
-            watcherThread = new Thread(r);
-            watcherThread.setDaemon(true);
-            watcherThread.start();
-            isMonitoring.setValue(true);
-        }
-    }
-    
-    public void addFolderInformation(FolderInformation fi) throws IOException {
-        if (folders == null) {
-            EventLogger.log(EventLogger.Level.ALERT, "The folders List have not been initialized yet!");
-            throw new NullPointerException("The folders List have not been initialized yet!");
-        }
-        
+    public void registerDirectory(FolderInformation fi) throws IOException {
+        WatchKey key = fi.getPath().register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE);
+        keys.put(key, fi.getPath());
         folders.add(fi);
-        getKeys();
     }
     
-    private void watch()
-    {
-        try {
-            while (true) {
-                for (WatchKey key : keys) {
-                    for (WatchEvent<?> pollEvent : key.pollEvents()) {
-                        WatchEvent.Kind<?> kind = pollEvent.kind();
-
-                        if (kind == StandardWatchEventKinds.OVERFLOW) {
-                            continue;
-                        }
-
-                        if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
-                            WatchEvent<Path> ev = (WatchEvent<Path>) pollEvent;
-                            Path filename = ev.context();
-                           
-                            Path f = (Path)key.watchable();
-                            Path full = f.resolve(filename);
-                            
-                            if (filename.toString().endsWith(".xlsx")) {
-                                for (FolderInformation folder : folders) {
-                                    if (folder.contains(full)) {
-                                        folder.increaseNumberOfConvertibleFiles();
-                                        AttributesCollection ac = manager.loadFileData(full.toString());
-                                        manager.createConversionTask(folder.getConfig(), ac);
-                                        break;
-                                    }
-                                }
+    public void startMonitoring() throws InterruptedException {
+        synchronized (lock) {
+            if (!isRunning.get()) {
+                if (watchThread == null) {
+                    Runnable r = () -> {
+                        runWatchLoop();
+                    };
+    
+                    watchThread = new Thread(r);
+                    watchThread.setDaemon(true);
+                    
+                    
+                    isRunning.setValue(true);
+                    System.out.println("Starting watch thread! " + Thread.currentThread().getName());
+                    watchThread.start();
+                }
+                else {
+                    isRunning.setValue(true);
+                    System.out.println("Continuig watch thread!" + Thread.currentThread().getName());
+                    lock.notify();
+                }
+            }
+            else {
+                isRunning.set(false);
+                System.out.println("Pausing watch thread!");
+                watchThread.interrupt();
+                watchThread = null;
+            }
+        }
+    }        
+    
+    /**
+     * Process events in the queued folders.
+     * Implemented using: https://howtodoinjava.com/java-8/java-8-watchservice-api-tutorial/
+     */
+    private void runWatchLoop() {
+        while (true) {
+            WatchKey key;
+            try {
+                key = watcher.take();
+            }
+            catch (InterruptedException ex) {
+                return;
+            }
+            
+            Path dir = keys.get(key);
+            
+            if (dir == null) {
+                EventLogger.log(EventLogger.Level.ALERT, "WatchKey not recognized!");
+                continue;
+            }
+            
+            for (WatchEvent<?> pollEvent : key.pollEvents()) {
+                WatchEvent.Kind kind = pollEvent.kind();
+                
+                Path name = ((WatchEvent<Path>)pollEvent).context();    
+                Path child = dir.resolve(name);
+                
+                System.out.format("%s: %s\n", pollEvent.kind().name(), child);
+                
+                if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
+                    if (child.toString().endsWith(".xlsx")) {
+                        for (FolderInformation folder : folders) {
+                            if (folder.contains(child)) {
+                                bLLManager.addNewFileToFolderConverter(child, folder.getConfig());
                             }
-
-                            System.out.println("File created: " + filename);
-                            //EventLogger.log(EventLogger.Level.INFORMATION, "File created: " + filename);
-                            continue;
-                        }
-                        
-                        if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
-                            WatchEvent<Path> ev = (WatchEvent<Path>) pollEvent;
-                            Path filename = ev.context();
-                           
-                            Path f = (Path)key.watchable();
-                            Path full = f.resolve(filename);
-
-                            if (filename.toString().endsWith(".xlsx")) {
-                                for (FolderInformation folder : folders) {
-                                    if (folder.contains(full)) {
-                                        folder.decreaseNumberOfConvertibleFiles();
-                                        break;
-                                    }
-                                }
-                            }
-                            
-                            System.out.println("File deleted: " + filename);
-                            //EventLogger.log(EventLogger.Level.INFORMATION, "File deleted: " + filename);
-                            continue;
                         }
                     }
                 }
-            }            
-        } catch (Exception ex) {
-            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
+                
+                boolean valid = key.reset();
+                if (!valid) {
+                    keys.remove(key);
+                    
+                    if (keys.isEmpty()) {
+                        break;
+                    }
+                }
+            }
         }
-    }
-
-    private void getKeys() throws IOException {        
-        if (keys == null) {
-            keys = new ArrayList<>();
-        }
-        else {
-            keys.clear();
-        }
-        
-        for (FolderInformation folder : folders) {
-            keys.add(folder.getPath().register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE));
-        }
-    }
+    } 
     
-    public boolean isIsMonitoring() {
-        return isMonitoring.get();
+    
+    public boolean isRunning() {
+        return isRunning.get();
     }
 
-    public void setIsMonitoring(boolean value) {
-        isMonitoring.set(value);
+    public void setIsRunning(boolean value) {
+        isRunning.set(value);
     }
 
-    public BooleanProperty isMonitoringProperty() {
-        return isMonitoring;
+    public BooleanProperty isRunningProperty() {
+        return isRunning;
     }
 
-    void removeFolder(FolderInformation selected) throws IOException {
-        if (folders == null) {
-            EventLogger.log(EventLogger.Level.ALERT, "The folders List have not been initialized yet!");
-            throw new NullPointerException("The folders List have not been initialized yet!");
-        }
-        
-        folders.remove(selected);
-        getKeys();
+    public void removeFolder(FolderInformation fi) {
+        Path p = fi.getPath();
+        keys.values().remove(p);
     }
 }
