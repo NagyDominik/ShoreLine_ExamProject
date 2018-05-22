@@ -136,7 +136,7 @@
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
       <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="281.0" layoutY="148.0" onAction="#deleteTask" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: RED;" text="Delete task" />
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="43.0" layoutY="148.0" onAction="#export" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: lightgreen;" text="Export" />
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="43.0" layoutY="148.0" onAction="#exportFile" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: lightgreen;" text="Export" />
       <MenuButton contentDisplay="CENTER" layoutX="683.0" layoutY="28.0" mnemonicParsing="false" style="-fx-background-radius: 10; -fx-background-color: transparent;">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#optionsClicked" text="Change username " />

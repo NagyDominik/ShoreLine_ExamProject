@@ -12,6 +12,7 @@ public class AttributesCollection {
 
     private List<DataRow> attributes;
     private String importPath;
+    private String exportPath;
 
     public AttributesCollection() {
         attributes = new ArrayList<>();
@@ -47,6 +48,14 @@ public class AttributesCollection {
 
     public void setImportPath(String importPath) {
         this.importPath = importPath;
+    }
+
+    public String getExportPath() {
+        return exportPath;
+    }
+
+    public void setExportPath(String exportPath) {
+        this.exportPath = exportPath;
     }
     
 }
