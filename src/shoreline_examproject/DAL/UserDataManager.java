@@ -63,7 +63,7 @@ public class UserDataManager {
             }
         }
         catch (Exception ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
         return name;
     }

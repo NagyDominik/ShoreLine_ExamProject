@@ -6,7 +6,7 @@ import javafx.beans.property.BooleanProperty;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
-import shoreline_examproject.BE.EventLog;
+import shoreline_examproject.Utility.EventLog;
 import shoreline_examproject.BE.FolderInformation;
 import shoreline_examproject.BLL.Conversion.Converter;
 import shoreline_examproject.DAL.DALManager;
@@ -104,6 +104,11 @@ public class BLLManager implements IBLLManager {
         } catch (IOException ex) {
             throw new BLLException(ex);
         }
+    }
+
+    @Override
+    public void removeConfig(Config selected) {
+        dalManager.removeConfig(selected);
     }
 
 }

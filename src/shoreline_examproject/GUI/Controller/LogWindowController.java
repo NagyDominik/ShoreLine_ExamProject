@@ -22,8 +22,8 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import shoreline_examproject.GUI.Model.Model;
-import shoreline_examproject.BE.EventLog;
-import shoreline_examproject.BE.EventLog.Type;
+import shoreline_examproject.Utility.EventLog;
+import shoreline_examproject.Utility.EventLog.Type;
 import shoreline_examproject.GUI.Model.ModelException;
 import shoreline_examproject.Utility.EventLogger;
 import shoreline_examproject.Utility.EventPopup;
@@ -59,7 +59,7 @@ public class LogWindowController implements Initializable {
             setupTV();
             logTV.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
         } catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
     }

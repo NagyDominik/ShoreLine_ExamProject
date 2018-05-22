@@ -5,7 +5,7 @@ import javafx.beans.property.BooleanProperty;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
-import shoreline_examproject.BE.EventLog;
+import shoreline_examproject.Utility.EventLog;
 import shoreline_examproject.BE.FolderInformation;
 
 /**
@@ -40,4 +40,6 @@ public interface IBLLManager
     public BooleanProperty isMonitoring();
 
     public void removeFolder(FolderInformation selected) throws BLLException;
+    
+    public void removeConfig(Config selected);
 }

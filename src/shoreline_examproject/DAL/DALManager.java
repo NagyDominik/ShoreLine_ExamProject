@@ -7,7 +7,7 @@ import java.util.List;
 
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.DAL.FileReaders.FileReaderFactory;
-import shoreline_examproject.BE.EventLog;
+import shoreline_examproject.Utility.EventLog;
 import shoreline_examproject.DAL.DataBase.DBConfigManager;
 import shoreline_examproject.DAL.DataBase.DBLogManager;
 import shoreline_examproject.DAL.FileWriters.IFileWriter;
@@ -62,5 +62,10 @@ public class DALManager implements IDataAccess {
     @Override
     public List<Config> loadConfigs() {
         return DBConfig.loadConfigs();
+    }
+
+    @Override
+    public void removeConfig(Config selected) {
+        DBConfig.deleteConfig(selected);
     }
 }

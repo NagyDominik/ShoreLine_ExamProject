@@ -1,4 +1,4 @@
-package shoreline_examproject.BE;
+package shoreline_examproject.Utility;
 
 import java.time.LocalDateTime;
 
