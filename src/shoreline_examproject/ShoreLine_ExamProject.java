@@ -12,7 +12,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import shoreline_examproject.BE.FolderInformation;
-import shoreline_examproject.BLL.Conversion.FolderHandler;
+import shoreline_examproject.BLL.FolderHandler;
 
 /**
  *

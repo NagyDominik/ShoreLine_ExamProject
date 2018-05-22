@@ -1,4 +1,4 @@
-package shoreline_examproject.BLL.Conversion;
+package shoreline_examproject.BLL;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -7,7 +7,9 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import shoreline_examproject.BE.FolderInformation;
@@ -23,27 +25,21 @@ public class FolderHandler {
     private final BooleanProperty isRunning = new SimpleBooleanProperty();    
     private Thread watchThread;
     private final Object lock;
+    private final BLLManager bLLManager;
+    private final List<FolderInformation> folders; 
     
-    public FolderHandler() throws IOException {
+    public FolderHandler(BLLManager manager) throws IOException {
         this.watcher = FileSystems.getDefault().newWatchService();
         this.keys = new HashMap<>();
         this.lock = new Object();
-        System.out.println("Thread: " + Thread.currentThread().getName());
+        this.bLLManager = manager;
+        this.folders = new ArrayList<>();
     }
- 
-    /**
-     * Register a given directory with the WatchService
-     * @param path The path that will be registered.
-     */
-    public void registerDirectory(Path path) throws IOException {
-        WatchKey key = path.register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE);
-        keys.put(key, path);
-    }
-    
     
     public void registerDirectory(FolderInformation fi) throws IOException {
         WatchKey key = fi.getPath().register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE);
         keys.put(key, fi.getPath());
+        folders.add(fi);
     }
     
     public void startMonitoring() throws InterruptedException {
@@ -107,7 +103,13 @@ public class FolderHandler {
                 System.out.format("%s: %s\n", pollEvent.kind().name(), child);
                 
                 if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
-
+                    if (child.toString().endsWith(".xlsx")) {
+                        for (FolderInformation folder : folders) {
+                            if (folder.contains(child)) {
+                                bLLManager.addNewFileToFolderConverter(child, folder.getConfig());
+                            }
+                        }
+                    }
                 }
                 
                 boolean valid = key.reset();

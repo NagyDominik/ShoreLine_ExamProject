@@ -37,7 +37,7 @@ import javafx.util.StringConverter;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.BE.FolderInformation;
-import shoreline_examproject.BLL.Conversion.FolderHandler;
+import shoreline_examproject.BLL.FolderHandler;
 import shoreline_examproject.Utility.EventLog;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
@@ -360,7 +360,6 @@ public class MainWindowController implements Initializable {
                 }
             }
         });
-
     }
 
     private void deleteTasks(ActionEvent event) {

@@ -1,6 +1,7 @@
 package shoreline_examproject.BLL;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,7 +12,7 @@ import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.Utility.EventLog;
 import shoreline_examproject.BE.FolderInformation;
 import shoreline_examproject.BLL.Conversion.Converter;
-import shoreline_examproject.BLL.Conversion.FolderHandler;
+import shoreline_examproject.BLL.Conversion.FolderConverter;
 import shoreline_examproject.DAL.DALManager;
 import shoreline_examproject.DAL.IDataAccess;
 
@@ -20,12 +21,14 @@ public class BLLManager implements IBLLManager {
     private IDataAccess dalManager;
     private Converter converter;
     private FolderHandler folderHandler;
+    private FolderConverter folderConverter;
     
     public BLLManager() throws BLLException {
         try {
             this.dalManager = new DALManager();
             this.converter = new Converter(this);
-            this.folderHandler = new FolderHandler();
+            this.folderHandler = new FolderHandler(this);
+            this.folderConverter = new FolderConverter(this);
         } catch (Exception ex) {
             throw new BLLException(ex);
         }
@@ -109,5 +112,9 @@ public class BLLManager implements IBLLManager {
     public void removeFolder(FolderInformation fi) {
         folderHandler.removeFolder(fi);
     }
-
+    
+    public void addNewFileToFolderConverter(Path p, Config c) {
+        folderConverter.addConversionTask(p, c);
+    }
+    
 }
