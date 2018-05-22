@@ -91,7 +91,7 @@ public class Converter {
             }
         }
         catch (Exception ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
     }
 
@@ -106,7 +106,7 @@ public class Converter {
             System.out.println("Task Stopped");
         }
         catch (Exception e) {
-            EventLogger.log(EventLogger.Level.NOTIFICATION, e.getMessage());
+            EventLogger.log(EventLogger.Level.NOTIFICATION, "Information: " + e.getMessage());
         }
     }
 
@@ -124,7 +124,7 @@ public class Converter {
             }
         }
         catch (Exception e) {
-            EventLogger.log(EventLogger.Level.NOTIFICATION, e.getMessage());
+            EventLogger.log(EventLogger.Level.NOTIFICATION, "Information: " + e.getMessage());
         }
     }
 

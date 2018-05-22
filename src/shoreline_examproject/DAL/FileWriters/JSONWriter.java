@@ -56,7 +56,7 @@ public class JSONWriter extends IFileWriter {
                 System.out.println("Writing was succesful.");
             }
             catch (Exception ex) {
-                EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+                EventLogger.log(EventLogger.Level.ERROR,"An exception has occured: " + ex.getMessage());
                 System.out.println(ex);
             }
 

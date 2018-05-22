@@ -43,7 +43,7 @@ public class DBConfigManager {
             }
         }
         catch (SQLException | IOException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
     }
 
@@ -60,7 +60,7 @@ public class DBConfigManager {
             }
         }
         catch (SQLException | IOException | ClassNotFoundException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
         return configList;
     }

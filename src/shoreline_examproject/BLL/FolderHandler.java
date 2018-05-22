@@ -36,10 +36,15 @@ public class FolderHandler {
         this.folders = new ArrayList<>();
         this.watcher = FileSystems.getDefault().newWatchService();
         this.isMonitoring.setValue(false);
-        
+        this.keys = new ArrayList<>();
     }
     
     public void changeMonitoring() {
+        if (folders.isEmpty()) {
+            isMonitoring.set(false);
+            return;
+        }
+        
         if (isMonitoring.get()) {
             watcherThread.interrupt();
             isMonitoring.setValue(false);
@@ -70,7 +75,6 @@ public class FolderHandler {
     {
         try {
             while (true) {
-                
                 for (WatchKey key : keys) {
                     for (WatchEvent<?> pollEvent : key.pollEvents()) {
                         WatchEvent.Kind<?> kind = pollEvent.kind();
@@ -122,13 +126,11 @@ public class FolderHandler {
                             //EventLogger.log(EventLogger.Level.INFORMATION, "File deleted: " + filename);
                             continue;
                         }
-
                     }
                 }
-            }
-            
+            }            
         } catch (Exception ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
     }
 

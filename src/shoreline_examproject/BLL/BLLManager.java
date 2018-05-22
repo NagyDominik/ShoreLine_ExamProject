@@ -106,4 +106,9 @@ public class BLLManager implements IBLLManager {
         }
     }
 
+    @Override
+    public void removeConfig(Config selected) {
+        dalManager.removeConfig(selected);
+    }
+
 }

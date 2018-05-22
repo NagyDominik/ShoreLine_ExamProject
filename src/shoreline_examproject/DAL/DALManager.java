@@ -63,4 +63,9 @@ public class DALManager implements IDataAccess {
     public List<Config> loadConfigs() {
         return DBConfig.loadConfigs();
     }
+
+    @Override
+    public void removeConfig(Config selected) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
