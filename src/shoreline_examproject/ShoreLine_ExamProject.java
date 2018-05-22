@@ -1,12 +1,18 @@
 package shoreline_examproject;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import shoreline_examproject.BE.FolderInformation;
+import shoreline_examproject.BLL.Conversion.FolderHandler;
 
 /**
  *
@@ -35,7 +41,7 @@ public class ShoreLine_ExamProject extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         launch(args);
     }
 
