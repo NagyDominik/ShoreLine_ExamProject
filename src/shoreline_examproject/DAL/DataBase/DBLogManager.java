@@ -16,7 +16,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.List;
 import javafx.collections.ListChangeListener;
-import shoreline_examproject.BE.EventLog;
+import shoreline_examproject.Utility.EventLog;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
@@ -80,7 +80,7 @@ public class DBLogManager {
                             List<EventLog> changes = new ArrayList<>();
                             changes.addAll(c.getAddedSubList());
                             for (EventLog change : changes) {
-                                if (!change.getType().name().equals("NOTIFICATION")) {
+                                if (change.getType()!= EventLog.Type.NOTIFICATION) {
                                     saveLog(change);
                                 }
                             }

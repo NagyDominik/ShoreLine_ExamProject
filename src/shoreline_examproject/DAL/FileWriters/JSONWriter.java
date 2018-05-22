@@ -60,10 +60,18 @@ public class JSONWriter extends IFileWriter {
                 System.out.println(ex);
             }
 
-            try {
+            try {//idekelll
                 Path temp = Paths.get(output.getPath());
+                if(data.getExportPath()!= null){
+                   Path saveExportLocation  = Paths.get(data.getExportPath());
+                   Files.move(temp, saveExportLocation, StandardCopyOption.ATOMIC_MOVE);
+                   System.out.println(saveExportLocation);
+                }
+                else{
                 Path done = Paths.get(output.getPath().substring(0, output.getPath().lastIndexOf("_")));
                 Files.move(temp, done, StandardCopyOption.ATOMIC_MOVE);
+                    System.out.println(done);
+                }
             }
             catch (IOException ex) {
                 Logger.getLogger(JSONWriter.class.getName()).log(Level.SEVERE, null, ex);

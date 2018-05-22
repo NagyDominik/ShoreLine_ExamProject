@@ -11,7 +11,6 @@ import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import shoreline_examproject.BE.EventLog;
 
 /**
  *

@@ -10,6 +10,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
@@ -34,9 +36,9 @@ import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
-import shoreline_examproject.BE.EventLog;
 import shoreline_examproject.BE.FolderInformation;
 import shoreline_examproject.BLL.Conversion.FolderHandler;
+import shoreline_examproject.Utility.EventLog;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
 import shoreline_examproject.Utility.EventLogger;
@@ -164,7 +166,7 @@ public class MainWindowController implements Initializable {
         }
         System.out.println(taskTV.getItems().size());
     }
-    
+
     @FXML
     private void deleteTask(ActionEvent event) {
         ConversionTask selectedItem = taskTV.getSelectionModel().getSelectedItem();
@@ -342,15 +344,16 @@ public class MainWindowController implements Initializable {
                             List<EventLog> changes = new ArrayList<>();
                             changes.addAll(c.getAddedSubList());
                             for (EventLog change : changes) {
-                                if (change.getType().name().equals("ERROR")) {
+                                if (change.getType() == EventLog.Type.ERROR) {
                                     Platform.runLater(() -> {
                                         EventPopup.showAlertPopup(change.getDescription());
                                     });
                                 }
-                                if (change.getType().name().equals("NOTIFICATION")) {
+                                if (change.getType() == EventLog.Type.NOTIFICATION) {
                                     Platform.runLater(() -> {
                                         EventPopup.showAlertPopup(change.getDescription());
-                                    });                                }
+                                    });
+                                }
                             }
                         }
                     }
@@ -365,19 +368,22 @@ public class MainWindowController implements Initializable {
         model.stopConversion(selectedItem);
     }
 
-    private void exportFile(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save export file");
-
-        //Set extension 
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx, *.xml, *.xls )", "*.xlsx, *.xml, *.xls");
-        fileChooser.getExtensionFilters().add(extFilter);
-        
-
-        //Show save file dialog
-        File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
-        System.out.println(file.getAbsolutePath());
-     }
+    @FXML
+    private void exportFile(ActionEvent event) throws ModelException {
+      
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save export file");
+            
+            //Set extension
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON file (*.json)", "*.json");
+            fileChooser.getExtensionFilters().add(extFilter);
+            
+            
+            //Show save file dialog
+            File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
+            System.out.println(file.getAbsolutePath());
+            model.getCurrentAttributes().setExportPath(file.getAbsolutePath());    
+    }
 
     @FXML
     private void btnDeleteConfigPressed(ActionEvent event) throws IOException {

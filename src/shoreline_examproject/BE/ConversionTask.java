@@ -53,7 +53,9 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         int count = inputData.getNumberOfDataEntries();
         double progressPercentage = 0;
         int progress = 0;
-
+        convertedData.setImportPath(inputData.getImportPath());
+        
+        convertedData.setExportPath(inputData.getExportPath());
         for (DataRow dataRow : inputData.getData()) {
             DataRow convertedRow = new DataRow();
             for (AttributeMap attributeMap : dataRow.getData()) {

@@ -107,7 +107,7 @@ public class FolderHandler {
                 System.out.format("%s: %s\n", pollEvent.kind().name(), child);
                 
                 if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
-                    System.out.println("File created!");
+
                 }
                 
                 boolean valid = key.reset();

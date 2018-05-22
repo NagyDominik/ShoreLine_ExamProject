@@ -4,7 +4,7 @@ import shoreline_examproject.BE.Config;
 import java.io.File;
 import java.util.List;
 import shoreline_examproject.BE.AttributesCollection;
-import shoreline_examproject.BE.EventLog;
+import shoreline_examproject.Utility.EventLog;
 
 /**
  * Defines an interface that can be used by the BLL to save and load data.
