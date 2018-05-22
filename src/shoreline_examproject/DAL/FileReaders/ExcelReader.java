@@ -22,7 +22,7 @@ import shoreline_examproject.BE.AttributeMap;
  *
  * @author sebok
  */
-public class ExcelReader extends FileReader {
+public class ExcelReader extends CustomFileReader {
 
     private Workbook workbook;
     private Sheet sheet;

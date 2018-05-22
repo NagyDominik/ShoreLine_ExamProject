@@ -27,8 +27,8 @@ public class FileReaderFactoryTest {
         String path1 = "Filename.xlsx";
         String path2 = "Filename.xls";
 
-        FileReader result1 = FileReaderFactory.CreateFileReader(path1);
-        FileReader result2 = FileReaderFactory.CreateFileReader(path2);
+        CustomFileReader result1 = FileReaderFactory.CreateFileReader(path1);
+        CustomFileReader result2 = FileReaderFactory.CreateFileReader(path2);
         assertTrue(result1 instanceof OptimizedExcelReader);
         assertTrue(result2 instanceof ExcelReader);
     }

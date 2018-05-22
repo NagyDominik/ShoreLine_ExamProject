@@ -27,7 +27,7 @@ import shoreline_examproject.Utility.EventLogger;
  *
  * @author Dominik
  */
-public class OptimizedExcelReader extends FileReader {
+public class OptimizedExcelReader extends CustomFileReader {
 
     private static AttributesCollection data = new AttributesCollection();
     private SheetHandler sheethandler;
@@ -79,6 +79,7 @@ public class OptimizedExcelReader extends FileReader {
         private int cellcount = -1;
         private int currentRow = 0;
         private int repeatcount = 2;
+        private String repeatingAttribute;
 
         private SheetHandler(SharedStringsTable stringtable) {
             this.stringtable = stringtable;
@@ -122,7 +123,8 @@ public class OptimizedExcelReader extends FileReader {
             // Output after we've seen the string contents
             if (name.equals("v")) {
                 if (currentRow == 1) {
-                    attributes.add(checkIfExists(lastContents));
+                    checkIfExists(lastContents);
+                    attributes.add(repeatingAttribute);
                 } else {
                     row.addData(createAM(attributes.get(cellcount), lastContents));
                     //System.out.println(lastContents);
@@ -157,17 +159,20 @@ public class OptimizedExcelReader extends FileReader {
             return celldata;
         }
 
-        private String checkIfExists(String attribute) {
+        private void checkIfExists(String attribute) {
+            if (repeatcount == 2) {
+                repeatingAttribute = attribute;
+            }
             if (attributes.contains(attribute)) {
-                attribute += "(" + repeatcount++ + ")";
+                attribute = repeatingAttribute + "(" + repeatcount + ")";
+                repeatcount++;
                 checkIfExists(attribute);
             } else {
-                return attribute;
+                repeatingAttribute = attribute;
             }
-            repeatcount = 1;
-            return attribute;
+            repeatcount = 2;
         }
-        
+
         public DataRow getLastRow() {
             return row;
         }

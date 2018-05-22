@@ -24,7 +24,7 @@ public class ExcelReaderTest {
     public void testGetData() throws Exception {
         System.out.println("getData");
         File file = new File("Import_data.xlsx");
-        FileReader instance = new ExcelReader();
+        CustomFileReader instance = new ExcelReader();
         AttributesCollection data = instance.getData(file);
         int expSize = 49;
         int expNumOfAttributes = 41;

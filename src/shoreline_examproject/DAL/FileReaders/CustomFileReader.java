@@ -7,7 +7,7 @@ import shoreline_examproject.BE.AttributesCollection;
  *
  * @author sebok
  */
-public abstract class FileReader {
+public abstract class CustomFileReader {
 
     public abstract AttributesCollection getData(File file);
 }

@@ -1,6 +1,6 @@
 package shoreline_examproject.DAL;
 
-import shoreline_examproject.DAL.FileReaders.FileReader;
+import shoreline_examproject.DAL.FileReaders.CustomFileReader;
 import shoreline_examproject.BE.Config;
 import java.io.File;
 import java.util.List;
@@ -22,7 +22,7 @@ import shoreline_examproject.Utility.EventLogger;
 public class DALManager implements IDataAccess {
 
     private IFileWriter writer = new JSONWriter();
-    private FileReader reader;
+    private CustomFileReader reader;
     private DBLogManager DBLog = new DBLogManager();
     private DBConfigManager DBConfig = new DBConfigManager();
     private UserDataManager udmanager = new UserDataManager();
