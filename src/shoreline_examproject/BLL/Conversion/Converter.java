@@ -60,19 +60,17 @@ public class Converter {
     public void convertAll() {
         try {
             for (ConversionTask task : tasks) {
-                CompletableFuture f = CompletableFuture.supplyAsync(new Supplier<AttributesCollection>() {
-                    @Override
-                    public AttributesCollection get() {
-                        try {
-                            return task.call();
-                        }
-                        catch (Exception ex) {
-                            Logger.getLogger(Converter.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        return null;
+                CompletableFuture f = CompletableFuture.supplyAsync(() -> {
+                    try {
+                        return task.call();
                     }
+                    catch (Exception ex) {
+                        Logger.getLogger(Converter.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    return null;
                 }, execService); //execService.<Callable<AttributesCollection>>submit(task);
-                CompletableFuture<AttributesCollection> future = f.thenAccept((Object t) -> {
+//                CompletableFuture<AttributesCollection> future = 
+                    f.thenAccept((Object t) -> {
                     if (t == null) {
                         if (task.getIsCanceled()) {
                             EventLogger.log(EventLogger.Level.ALERT, "Task " + task.getConfigName() + " has been canceled by " + "INSERT USERNAME HERE");

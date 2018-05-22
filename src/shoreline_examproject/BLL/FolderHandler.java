@@ -56,6 +56,7 @@ public class FolderHandler {
                     
                     isRunning.setValue(true);
                     System.out.println("Starting watch thread! " + Thread.currentThread().getName());
+                    EventLogger.log(EventLogger.Level.INFORMATION, "Started folder monitoring");
                     watchThread.start();
                 }
                 else {
@@ -67,6 +68,7 @@ public class FolderHandler {
             else {
                 isRunning.set(false);
                 System.out.println("Pausing watch thread!");
+                EventLogger.log(EventLogger.Level.INFORMATION, "Paused folder monitoring");
                 watchThread.interrupt();
                 watchThread = null;
             }
@@ -107,6 +109,7 @@ public class FolderHandler {
                         for (FolderInformation folder : folders) {
                             if (folder.contains(child)) {
                                 bLLManager.addNewFileToFolderConverter(child, folder.getConfig());
+                                break;
                             }
                         }
                     }

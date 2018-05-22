@@ -19,6 +19,7 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.FolderInformation;
 import shoreline_examproject.GUI.Model.Model;
@@ -86,6 +87,8 @@ public class AssignFolderWindowController implements Initializable {
 
     @FXML
     private void backClicked(ActionEvent event) {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
