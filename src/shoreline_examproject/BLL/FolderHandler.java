@@ -108,7 +108,8 @@ public class FolderHandler {
                     if (child.toString().endsWith(".xlsx")) {
                         for (FolderInformation folder : folders) {
                             if (folder.contains(child)) {
-                                bLLManager.addNewFileToFolderConverter(child, folder.getConfig());
+                                folder.setNumberOfConvertibleFiles(1);
+                                bLLManager.addNewFileToFolderConverter(child, folder);
                                 break;
                             }
                         }

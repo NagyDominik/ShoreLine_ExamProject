@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
+import shoreline_examproject.BE.FolderInformation;
 import shoreline_examproject.BLL.BLLManager;
 import shoreline_examproject.Utility.EventLogger;
 
@@ -37,16 +38,15 @@ public class FolderConverter {
         this.isRunning = false;
     }
     
-    public void addConversionTask(Path p, Config c) {
-        if (c == null) {
+    public void addConversionTask(Path p, FolderInformation fi) {
+        if (fi.getConfig() == null) {
             throw new NullPointerException("Config is null");
         }
         AttributesCollection ac = manager.loadFileData(p.toString());
-        String exportPath = p.getParent().toString();
-        ac.setExportPath(exportPath + "\\" + p.getFileName() + ".json");
+        ac.setExportPath(fi.getExportPath().toString() + "\\" + p.getFileName() + ".json");
         ConversionTask newTask = conversionTaskPool.checkOut();
         newTask.setInput(ac);
-        newTask.setConfig(c);
+        newTask.setConfig(fi.getConfig());
         conversionTasks.add(newTask);
         System.out.println("Conversion task added!");
         if (!isRunning) {
