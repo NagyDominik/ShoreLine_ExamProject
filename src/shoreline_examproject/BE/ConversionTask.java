@@ -89,7 +89,6 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
                 createPlannig(convertedRow);
                 convertedData.addAttributeMap(convertedRow);
             }
-            throw new Exception("Test cancel");
         } catch (Exception ex) {
             convertedData = null;
             cancelledProperty.set(true);

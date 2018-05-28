@@ -27,7 +27,7 @@
             <Image url="@../../img/bar.png" />
          </image>
       </ImageView>
-      <JFXComboBox fx:id="configComboBox" layoutX="175.0" layoutY="460.0" prefHeight="25.0" prefWidth="118.0" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="460.0" />
+      <JFXComboBox fx:id="configComboBox" layoutX="175.0" layoutY="460.0" prefHeight="31.0" prefWidth="168.0" promptText="Select configuration" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="460.0" />
       <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="43.0" layoutY="113.0" onAction="#importFileClicked" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #44bae6;" text="Import file ..." AnchorPane.leftAnchor="43.0" AnchorPane.topAnchor="113.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
@@ -151,6 +151,6 @@
             </ImageView>
          </graphic>
       </MenuButton>
-      <JFXButton fx:id="btnDeletConfig" layoutX="319.0" layoutY="466.0" onAction="#btnDeleteConfigPressed" prefHeight="26.0" prefWidth="109.0" style="-fx-background-color: RED;" text="Delete config" />
+      <JFXButton fx:id="btnDeletConfig" layoutX="358.0" layoutY="466.0" onAction="#btnDeleteConfigPressed" prefHeight="26.0" prefWidth="109.0" style="-fx-background-color: RED;" text="Delete config" />
    </children>
 </AnchorPane>

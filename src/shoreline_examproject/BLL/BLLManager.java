@@ -113,8 +113,8 @@ public class BLLManager implements IBLLManager {
         folderHandler.removeFolder(fi);
     }
     
-    public void addNewFileToFolderConverter(Path p, Config c) {
-        folderConverter.addConversionTask(p, c);
+    public void addNewFileToFolderConverter(Path p, FolderInformation fi) {
+        folderConverter.addConversionTask(p, fi);
     }
     
 }

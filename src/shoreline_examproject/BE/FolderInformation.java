@@ -15,7 +15,8 @@ public class FolderInformation {
     private File selectedFolder;
     private Config assignedConfig;
     private IntegerProperty numberOfConvertibleFiles = new SimpleIntegerProperty();
-
+    private Path exportPath;
+    
     public FolderInformation(File selectedFolder) {
         this.selectedFolder = selectedFolder;
         countNumberOfConvertibleFiles();
@@ -72,5 +73,17 @@ public class FolderInformation {
         }
         
         this.numberOfConvertibleFiles.set(numberOfConvertibleFiles.get() - 1);
+    }
+
+    public void setNumberOfConvertibleFiles(int i) {
+        this.numberOfConvertibleFiles.set(numberOfConvertibleFiles.get()+i);
+    }
+
+    public void setExportpath(File f) {
+        this.exportPath = f.toPath();
+    }
+
+    public Path getExportPath() {
+        return this.exportPath;
     }
 }

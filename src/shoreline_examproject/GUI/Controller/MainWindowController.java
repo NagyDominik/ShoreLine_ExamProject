@@ -395,6 +395,11 @@ public class MainWindowController implements Initializable {
             
             //Show save file dialog
             File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
+            
+            if (file == null) {
+                return;
+            }
+            
             System.out.println(file.getAbsolutePath());
             model.getCurrentAttributes().setExportPath(file.getAbsolutePath());    
     }
