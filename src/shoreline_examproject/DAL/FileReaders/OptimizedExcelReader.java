@@ -1,12 +1,16 @@
 package shoreline_examproject.DAL.FileReaders;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xssf.model.SharedStringsTable;
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -40,22 +44,27 @@ public class OptimizedExcelReader extends CustomFileReader {
         }
         catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
+            Logger.getGlobal().logp(Level.SEVERE, OptimizedExcelReader.class.getName(), "getData", "An exception has occured in the getData() method!", ex);
         }
-        return null;
+        return null; 
     }
 
     public AttributesCollection process(String filename) throws Exception {
-        OPCPackage pack = OPCPackage.open(filename);
-        XSSFReader reader = new XSSFReader(pack);
-        SharedStringsTable stringtable = reader.getSharedStringsTable();
-        XMLReader parser = fetchSheetParser(stringtable);
+        File f = new File(filename);
+        FileInputStream fis = new FileInputStream(f);
 
-        InputStream sheet = reader.getSheet("rId1"); // Look up the Sheet Name / Sheet Order / rID (rId# or rSheet#)
-        InputSource sheetSource = new InputSource(sheet);
-        parser.parse(sheetSource);
-        sheet.close();
-        data.addAttributeMap(sheethandler.getLastRow());
-        return data;
+        try (OPCPackage pack = OPCPackage.open(fis)) {
+            XSSFReader reader = new XSSFReader(pack);
+            SharedStringsTable stringtable = reader.getSharedStringsTable();
+            XMLReader parser = fetchSheetParser(stringtable);
+
+            InputStream sheet = reader.getSheet("rId1"); // Look up the Sheet Name / Sheet Order / rID (rId# or rSheet#)
+            InputSource sheetSource = new InputSource(sheet);
+            parser.parse(sheetSource);
+            sheet.close();
+            data.addAttributeMap(sheethandler.getLastRow());
+            return data;
+           }
     }
 
     public XMLReader fetchSheetParser(SharedStringsTable stringtable) throws SAXException {

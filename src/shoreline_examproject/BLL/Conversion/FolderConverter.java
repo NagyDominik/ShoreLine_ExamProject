@@ -1,14 +1,14 @@
 package shoreline_examproject.BLL.Conversion;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import shoreline_examproject.BE.AttributesCollection;
-import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.BE.FolderInformation;
 import shoreline_examproject.BLL.BLLManager;
@@ -20,7 +20,7 @@ import shoreline_examproject.Utility.EventLogger;
  */
 public class FolderConverter {
     private final ExecutorService executorService;
-    private final List<ConversionTask> conversionTasks;
+    private final ConcurrentLinkedQueue<ConversionTask> conversionTasks;
     private final BLLManager manager;
     private final ConversionTaskPool conversionTaskPool;
     private boolean isRunning;
@@ -29,10 +29,11 @@ public class FolderConverter {
         this.executorService = Executors.newFixedThreadPool(1, (Runnable r) -> {
             Thread t = Executors.defaultThreadFactory().newThread(r);
             t.setDaemon(true); // Do not allow converter threads in the background
+            t.setName("FolderConverterThread");
             return t;
         });
         
-        this.conversionTasks = new ArrayList<>();
+        this.conversionTasks = new ConcurrentLinkedQueue<>();
         this.conversionTaskPool = new ConversionTaskPool();
         this.manager = manager;
         this.isRunning = false;
@@ -48,7 +49,7 @@ public class FolderConverter {
         newTask.setInput(ac);
         newTask.setConfig(fi.getConfig());
         conversionTasks.add(newTask);
-        System.out.println("Conversion task added!");
+        System.out.println("Conversion task added! Size: " + conversionTasks.size());
         if (!isRunning) {
             changeState();
         }
@@ -56,7 +57,13 @@ public class FolderConverter {
     
     public void changeState() {
         if (!isRunning) {
-            Runnable r = (() -> convert());
+            Runnable r = (() -> {
+                try {
+                    convert();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(FolderConverter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
             
             isRunning = true;
             Thread t = new Thread(r);
@@ -68,10 +75,9 @@ public class FolderConverter {
         }
     }
     
-    private void convert() {
+    private void convert() throws InterruptedException {
         while (isRunning) {
             if (!conversionTasks.isEmpty()) {
-                //for (ConversionTask conversionTask : conversionTasks) {
                    for (Iterator<ConversionTask> iterator = conversionTasks.iterator(); iterator.hasNext();) {
                         ConversionTask conversionTask = iterator.next();
                         CompletableFuture<AttributesCollection> f = CompletableFuture.supplyAsync(() -> {

@@ -1,7 +1,6 @@
 package shoreline_examproject.GUI.Controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.sun.javafx.charts.ChartLayoutAnimator;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -12,7 +11,6 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -24,10 +22,7 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import javax.swing.JFileChooser;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.FolderInformation;
 import shoreline_examproject.GUI.Model.Model;

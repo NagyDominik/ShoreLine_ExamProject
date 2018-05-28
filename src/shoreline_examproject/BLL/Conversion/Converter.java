@@ -23,7 +23,7 @@ public class Converter {
 
     private List<ConversionTask> tasks = new ArrayList();
     private ConversionTaskPool pool = new ConversionTaskPool();
-    private ExecutorService execService;
+    private final ExecutorService execService;
     private IBLLManager manager;
 
     public Converter(IBLLManager manager) {

@@ -9,7 +9,7 @@ dist/
 nbdist/
 .nb-gradle/
 nbproject/jfx-impl.xml
-
+input_data/*
 
 ### Java ###
 *.class

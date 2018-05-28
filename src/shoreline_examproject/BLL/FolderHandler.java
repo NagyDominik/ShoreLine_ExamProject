@@ -1,6 +1,9 @@
 package shoreline_examproject.BLL;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.StandardWatchEventKinds;
@@ -10,6 +13,8 @@ import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import shoreline_examproject.BE.FolderInformation;
@@ -47,7 +52,11 @@ public class FolderHandler {
             if (!isRunning.get()) {
                 if (watchThread == null) {
                     Runnable r = () -> {
-                        runWatchLoop();
+                        try {
+                            runWatchLoop();
+                        } catch (Exception ex) {
+                            Logger.getLogger(FolderHandler.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     };
     
                     watchThread = new Thread(r);
@@ -79,7 +88,7 @@ public class FolderHandler {
      * Process events in the queued folders.
      * Implemented using: https://howtodoinjava.com/java-8/java-8-watchservice-api-tutorial/
      */
-    private void runWatchLoop() {
+    private void runWatchLoop() throws InterruptedException, IOException {
         while (true) {
             WatchKey key;
             try {
@@ -102,12 +111,38 @@ public class FolderHandler {
                 Path name = ((WatchEvent<Path>)pollEvent).context();    
                 Path child = dir.resolve(name);
                 
+                File f = child.toFile();
+                
                 System.out.format("%s: %s\n", pollEvent.kind().name(), child);
                 
                 if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
                     if (child.toString().endsWith(".xlsx")) {
                         for (FolderInformation folder : folders) {
                             if (folder.contains(child)) {
+                                boolean locked = true;
+                                while (locked) {    //Prevents a race condition when creating a new file. https://stackoverflow.com/questions/3369383/java-watching-a-directory-to-move-large-files
+                                    RandomAccessFile raf = null;
+                                    try {
+                                        raf = new RandomAccessFile(f, "r");
+                                        raf.seek(f.length());
+                                        locked = false;
+                                    } catch (IOException ex) {
+                                        locked = f.exists();
+                                        if (locked) {
+                                            System.out.println("File locked: " + f.getAbsolutePath() + "." );
+                                            Thread.sleep(500);
+                                        } 
+                                        else {
+                                            System.out.println("File was deleted while copying: " + f.getAbsolutePath() + ".");
+                                        }
+                                    }
+                                    finally {
+                                        if (raf != null) {
+                                            raf.close();
+                                        }
+                                    }
+                                }
+                                
                                 folder.setNumberOfConvertibleFiles(1);
                                 bLLManager.addNewFileToFolderConverter(child, folder);
                                 break;
