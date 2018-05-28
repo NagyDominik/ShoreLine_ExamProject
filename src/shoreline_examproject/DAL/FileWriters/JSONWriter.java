@@ -11,10 +11,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.util.converter.LocalDateTimeStringConverter;
 import org.apache.poi.ss.usermodel.DateUtil;
 import shoreline_examproject.BE.AttributeMap;
 import shoreline_examproject.BE.AttributesCollection;
@@ -31,6 +36,7 @@ public class JSONWriter extends IFileWriter {
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private int filecount = 1;
     private Object lock = new Object();
+    private String importPath;
 
     /**
      *
@@ -39,6 +45,7 @@ public class JSONWriter extends IFileWriter {
     @Override
     public void saveData(AttributesCollection data) {
         synchronized (lock) {
+            importPath = data.getImportPath();
             File output = new File(getNextFilePath("exporttest/ConvertedData_" + LocalDate.now() + "_" + System.currentTimeMillis() + ".json_temp"));
             output.getParentFile().mkdirs();
             try (JsonWriter jwriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(output)))) {
@@ -56,20 +63,19 @@ public class JSONWriter extends IFileWriter {
                 System.out.println("Writing was succesful.");
             }
             catch (Exception ex) {
-                EventLogger.log(EventLogger.Level.ERROR,"An exception has occured: " + ex.getMessage());
+                EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
                 System.out.println(ex);
             }
 
             try {//idekelll
                 Path temp = Paths.get(output.getPath());
-                if(data.getExportPath()!= null){
-                   Path saveExportLocation  = Paths.get(data.getExportPath());
-                   Files.move(temp, saveExportLocation, StandardCopyOption.ATOMIC_MOVE);
-                   System.out.println(saveExportLocation);
-                }
-                else{
-                Path done = Paths.get(output.getPath().substring(0, output.getPath().lastIndexOf("_")));
-                Files.move(temp, done, StandardCopyOption.ATOMIC_MOVE);
+                if (data.getExportPath() != null) {
+                    Path saveExportLocation = Paths.get(data.getExportPath());
+                    Files.move(temp, saveExportLocation, StandardCopyOption.ATOMIC_MOVE);
+                    System.out.println(saveExportLocation);
+                } else {
+                    Path done = Paths.get(output.getPath().substring(0, output.getPath().lastIndexOf("_")));
+                    Files.move(temp, done, StandardCopyOption.ATOMIC_MOVE);
                     System.out.println(done);
                 }
             }
@@ -90,12 +96,20 @@ public class JSONWriter extends IFileWriter {
             jwriter.endObject();
         } else {
             if ((data.getKey().endsWith("Date") || data.getKey().endsWith("Time")) && !data.getValue().isEmpty()) {
-                Date date = DateUtil.getJavaDate(Double.parseDouble(data.getValue()));
-                jwriter.name(data.getKey()).value(gson.toJson(date));
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                if (importPath.endsWith(".xlsx")) {
+                    Date date = DateUtil.getJavaDate(Double.parseDouble(data.getValue()), TimeZone.getTimeZone("UTC"));
+                    jwriter.name(data.getKey()).value(df.format(date));
+                } else {
+                    DateFormat pareseformat = new SimpleDateFormat("yyyy-MM-dd");
+                    pareseformat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    Date date = pareseformat.parse(data.getValue());
+                    jwriter.name(data.getKey()).value(df.format(date));
+                }
             } else {
                 jwriter.name(data.getKey()).value(data.getValue());
             }
-
         }
     }
 

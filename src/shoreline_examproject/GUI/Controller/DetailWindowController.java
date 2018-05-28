@@ -47,8 +47,9 @@ public class DetailWindowController implements Initializable {
         try {
             model = Model.getInstance();
             setUpDetails(model.getSelectedTask());
-        } catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR,"An exception has occured: " + ex.getMessage());
+        }
+        catch (ModelException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -63,7 +64,11 @@ public class DetailWindowController implements Initializable {
         taskNameLbl.setText(task.getConfigName());
         progressBar.progressProperty().bind(task.progressProperty());
         importLbl.setText(task.getInputData().getImportPath());
-        exportLbl.setText(task.getInputData().getExportPath());
+        if (task.getInputData().getExportPath() == null) {
+            exportLbl.setText("Not set");
+        } else {
+            exportLbl.setText(task.getInputData().getExportPath());
+        }
         startTimeLbl.setText(task.getStartTimeAsString());
     }
 

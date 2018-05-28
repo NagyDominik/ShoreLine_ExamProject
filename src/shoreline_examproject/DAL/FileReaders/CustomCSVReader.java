@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import shoreline_examproject.BE.AttributeMap;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.DataRow;
+import shoreline_examproject.Utility.EventLogger;
 
 /**
  * Reads data from an XML file
@@ -50,7 +51,7 @@ public class CustomCSVReader extends CustomFileReader {
             }
         }
         catch (IOException ex) {
-            Logger.getLogger(CustomCSVReader.class.getName()).log(Level.SEVERE, null, ex);
+            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
         }
         return loadedData;
     }
