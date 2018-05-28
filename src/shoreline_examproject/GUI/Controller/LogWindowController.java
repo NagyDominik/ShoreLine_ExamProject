@@ -4,14 +4,11 @@ import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -65,7 +62,6 @@ public class LogWindowController implements Initializable {
     }
 
     private void setupTV() {
-        
         logTV.setItems(EventLogger.getLog());
         dateCol.setCellValueFactory(getCustomDateCellFactory());
         userCol.setCellValueFactory(new PropertyValueFactory("user"));
@@ -115,6 +111,10 @@ public class LogWindowController implements Initializable {
                                 break;
                             case SUCCESS:
                                 row.setStyle("-fx-background-color: lightgreen");
+                                setFont(Font.font(getFont().getFamily(), FontWeight.BOLD, getFont().getSize()));
+                                break;
+                            case NOTIFICATION:
+                                row.setStyle("-fx-background-color: lightgray");
                                 setFont(Font.font(getFont().getFamily(), FontWeight.BOLD, getFont().getSize()));
                                 break;
                         }

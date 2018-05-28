@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -26,12 +25,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
@@ -109,18 +106,6 @@ public class MainWindowController implements Initializable {
             EventPopup.showAlertPopup(ex);
         }
     }
-    
-    @FXML
-    private void export(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save export file");
-        //Set extension 
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
-        fileChooser.getExtensionFilters().add(extFilter);
-        //Show save file dialog
-        File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
-
-    }
 
     @FXML
     private void newConfigClicked(ActionEvent event) throws IOException {
@@ -159,7 +144,7 @@ public class MainWindowController implements Initializable {
             model.createNewConversionTask(configComboBox.getValue());
         }
         catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR,"An exception has occured: " + ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
         System.out.println(taskTV.getItems().size());
     }
@@ -202,7 +187,9 @@ public class MainWindowController implements Initializable {
     private void moreDetailClicked(ActionEvent event) {
         try {
             model.setSelectedTask(taskTV.getSelectionModel().getSelectedItem());
-
+            if (model.getSelectedTask() == null) {
+                return;
+            }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/DetailWindow.fxml"));
             Parent root = (Parent) loader.load();
             Stage stage = new Stage();
@@ -251,17 +238,17 @@ public class MainWindowController implements Initializable {
     }
 
     private void setUpTaskTableView() {
-        
+
         taskCol.setCellValueFactory((TableColumn.CellDataFeatures<ConversionTask, String> param) -> {
             ConversionTask ct = param.getValue();
-            return new ReadOnlyStringWrapper(ct.getConfigName());    
+            return new ReadOnlyStringWrapper(ct.getConfigName());
         });
-        
+
         taskCol.setCellFactory((TableColumn<ConversionTask, String> param) -> new TableCell<ConversionTask, String>() {
             @Override
             public void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                
+
                 if (!isEmpty()) {
                     ConversionTask task = getTableView().getItems().get(getIndex());
                     setText(task.getConfigName());
@@ -273,15 +260,15 @@ public class MainWindowController implements Initializable {
                 }
             }
         });
-        
+
         progressCol.setCellValueFactory((TableColumn.CellDataFeatures<ConversionTask, Double> param) -> {
             ConversionTask ct = param.getValue();
 
             return ct.progressProperty().asObject();
-            
+
         });
 
-        progressCol.setCellFactory(ProgressBarTableCell.<ConversionTask>forTableColumn());       
+        progressCol.setCellFactory(ProgressBarTableCell.<ConversionTask>forTableColumn());
     }
 
     /**
@@ -323,7 +310,6 @@ public class MainWindowController implements Initializable {
                 Scene s = userNameLbl.getScene();
                 s.setCursor(Cursor.WAIT);
                 model.loadFileData(path);
-                //EventLogger.log(EventLogger.Level.NOTIFICATION, String.format("The file %s has been loaded: ", path));
                 s.setCursor(Cursor.DEFAULT);
             };
 
@@ -377,36 +363,35 @@ public class MainWindowController implements Initializable {
         });
     }
 
-    private void deleteTasks(ActionEvent event) {
-        ConversionTask selectedItem = taskTV.getSelectionModel().getSelectedItem();
-        model.stopConversion(selectedItem);
-    }
-
     @FXML
     private void exportFile(ActionEvent event) throws ModelException {
-      
+        try {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save export file");
-            
+            fileChooser.setTitle("Choose export location");
             //Set extension
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON file (*.json)", "*.json");
             fileChooser.getExtensionFilters().add(extFilter);
-            
-            
             //Show save file dialog
             File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
+            if (file == null) {
+                return;
+            }
             System.out.println(file.getAbsolutePath());
-            model.getCurrentAttributes().setExportPath(file.getAbsolutePath());    
+            model.getCurrentAttributes().setExportPath(file.getAbsolutePath());
+        }
+        catch (Exception e) {
+            EventPopup.showAlertPopup(e);
+        }
     }
 
     @FXML
     private void btnDeleteConfigPressed(ActionEvent event) throws IOException {
         Config selected = configComboBox.getSelectionModel().getSelectedItem();
-        
+
         if (selected == null) {
             return;
         }
-        
+
         model.removeConfig(selected);
     }
 }

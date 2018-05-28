@@ -21,7 +21,7 @@
             <Image url="@../../img/shortlogo.png" />
          </image>
       </ImageView>
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="56.0" layoutY="410.0" onAction="#btnSelectFolderClicked" style="-fx-background-color: #d8d504;" text="Select folder">
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="56.0" layoutY="410.0" onAction="#btnSelectFolderClicked" prefHeight="30.0" style="-fx-background-color: #B8B8BD;" text="Select folder" AnchorPane.bottomAnchor="25.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font>
@@ -59,12 +59,12 @@
             <Font name="Exo 2 Semi Bold" size="13.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="btnMonitorStatus" layoutX="497.0" layoutY="32.0" onAction="#btnStartClicked" prefHeight="34.0" prefWidth="134.0" style="-fx-background-color: green;" text="Start monitoring">
+      <JFXButton fx:id="btnMonitorStatus" buttonType="RAISED" layoutX="497.0" layoutY="32.0" onAction="#btnStartClicked" prefHeight="30.0" prefWidth="134.0" style="-fx-background-color: #6EE854;" text="Start monitoring" AnchorPane.topAnchor="30.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
-      <Circle fx:id="crclStatusIndicator" fill="#ff1f1f" layoutX="685.0" layoutY="49.0" radius="13.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-      <JFXButton buttonType="RAISED" layoutX="191.0" layoutY="410.0" onAction="#btnRemoveFolderClicked" prefHeight="33.0" prefWidth="159.0" style="-fx-background-color: red;" text="Remove folder">
+      <Circle fx:id="crclStatusIndicator" fill="#ff1f1f" layoutX="685.0" layoutY="47.0" radius="13.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+      <JFXButton buttonType="RAISED" layoutX="191.0" layoutY="410.0" onAction="#btnRemoveFolderClicked" prefHeight="30.0" prefWidth="150.0" style="-fx-background-color: red;" text="Remove folder" AnchorPane.bottomAnchor="25.0">
          <graphic>
             <ImageView fitHeight="23.0" fitWidth="21.0">
                <image>

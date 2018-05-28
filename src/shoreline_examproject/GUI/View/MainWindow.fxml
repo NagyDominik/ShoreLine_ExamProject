@@ -27,16 +27,16 @@
             <Image url="@../../img/bar.png" />
          </image>
       </ImageView>
-      <JFXComboBox fx:id="configComboBox" layoutX="175.0" layoutY="460.0" prefHeight="25.0" prefWidth="118.0" AnchorPane.leftAnchor="175.0" AnchorPane.topAnchor="460.0" />
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="43.0" layoutY="113.0" onAction="#importFileClicked" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #44bae6;" text="Import file ..." AnchorPane.leftAnchor="43.0" AnchorPane.topAnchor="113.0">
+      <JFXComboBox fx:id="configComboBox" layoutX="175.0" layoutY="465.0" prefHeight="25.0" prefWidth="118.0" promptText="Select Config" AnchorPane.bottomAnchor="20.0" />
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="45.0" layoutY="90.0" onAction="#importFileClicked" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #44bae6;" text="Import file ..." AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="90.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="43.0" layoutY="468.0" onAction="#newConfigClicked" prefHeight="26.0" prefWidth="118.0" style="-fx-background-color: #B8B8BD;" text="Create/edit config" AnchorPane.leftAnchor="43.0" AnchorPane.topAnchor="468.0">
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="45.0" layoutY="465.0" onAction="#newConfigClicked" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #B8B8BD;" text="Create/edit config" AnchorPane.bottomAnchor="20.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
-      <Label fx:id="filePathLbl" layoutX="165.0" layoutY="112.0" prefHeight="25.0" prefWidth="324.0" text="filepath" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="112.0">
+      <Label fx:id="filePathLbl" layoutX="170.0" layoutY="90.0" prefHeight="25.0" prefWidth="324.0" textFill="WHITE" AnchorPane.leftAnchor="170.0" AnchorPane.topAnchor="90.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></Label>
@@ -109,7 +109,7 @@
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></Label>
-      <Label fx:id="userNameLbl" layoutX="562.0" layoutY="36.0" prefHeight="17.0" prefWidth="106.0" text="Name of the user" textFill="WHITE" AnchorPane.rightAnchor="97.0" AnchorPane.topAnchor="36.0">
+      <Label fx:id="userNameLbl" layoutX="562.0" layoutY="36.0" prefHeight="17.0" prefWidth="106.0" text="Name of the user" textFill="WHITE" AnchorPane.rightAnchor="85.0" AnchorPane.topAnchor="31.0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Label>
@@ -118,7 +118,7 @@
             <Image url="@../../img/shortlogo.png" />
          </image>
       </ImageView>
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="598.0" layoutY="389.0" onAction="#moreDetailClicked" style="-fx-background-color: #B8B8BD;" text="More details..." AnchorPane.bottomAnchor="51.0" AnchorPane.rightAnchor="75.0">
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="598.0" layoutY="389.0" onAction="#moreDetailClicked" prefHeight="25.0" style="-fx-background-color: #B8B8BD;" text="More details..." AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="75.0">
          <effect>
             <Glow level="0.0">
                <input>
@@ -130,14 +130,14 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </JFXButton>
-      <JFXTextArea fx:id="txtAreaPreview" layoutX="43.0" layoutY="190.0" prefHeight="259.0" prefWidth="448.0" style="-fx-background-color: white;" />
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="399.0" layoutY="148.0" onAction="#btnAddTask" prefHeight="31.0" prefWidth="92.0" style="-fx-background-color: #6EE854;" text="Add task">
+      <JFXTextArea fx:id="txtAreaPreview" layoutX="43.0" layoutY="190.0" prefHeight="259.0" prefWidth="448.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="270.0" AnchorPane.topAnchor="170.0" />
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="399.0" layoutY="125.0" onAction="#btnAddTask" prefHeight="30.0" prefWidth="92.0" style="-fx-background-color: #6EE854;" text="Add task" AnchorPane.topAnchor="125.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="281.0" layoutY="148.0" onAction="#deleteTask" prefHeight="25.0" prefWidth="92.0" style="-fx-background-color: RED;" text="Delete task" />
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="43.0" layoutY="148.0" onAction="#exportFile" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: lightgreen;" text="Export" />
-      <MenuButton contentDisplay="CENTER" layoutX="683.0" layoutY="28.0" mnemonicParsing="false" style="-fx-background-radius: 10; -fx-background-color: transparent;">
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="281.0" layoutY="125.0" onAction="#deleteTask" prefHeight="30.0" prefWidth="92.0" style="-fx-background-color: RED;" text="Delete task" AnchorPane.topAnchor="125.0" />
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="43.0" layoutY="128.0" onAction="#exportFile" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: lightgreen;" text="Export" />
+      <MenuButton contentDisplay="CENTER" layoutX="683.0" layoutY="28.0" mnemonicParsing="false" style="-fx-background-radius: 10; -fx-background-color: transparent;" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#optionsClicked" text="Change username " />
             <MenuItem mnemonicParsing="false" onAction="#btnAssignFolderClicked" text="Assign folder " />
@@ -151,6 +151,6 @@
             </ImageView>
          </graphic>
       </MenuButton>
-      <JFXButton fx:id="btnDeletConfig" layoutX="319.0" layoutY="466.0" onAction="#btnDeleteConfigPressed" prefHeight="26.0" prefWidth="109.0" style="-fx-background-color: RED;" text="Delete config" />
+      <JFXButton fx:id="btnDeletConfig" buttonType="RAISED" layoutX="305.0" layoutY="465.0" onAction="#btnDeleteConfigPressed" prefHeight="25.0" prefWidth="109.0" style="-fx-background-color: RED;" text="Delete config" AnchorPane.bottomAnchor="20.0" />
    </children>
 </AnchorPane>

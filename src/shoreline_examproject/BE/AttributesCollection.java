@@ -51,6 +51,9 @@ public class AttributesCollection {
     }
 
     public String getExportPath() {
+        if (exportPath == null) {
+            return "Not set";
+        }
         return exportPath;
     }
 

@@ -8,8 +8,6 @@ package shoreline_examproject.GUI.Controller;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -65,7 +63,7 @@ public class DetailWindowController implements Initializable {
         taskNameLbl.setText(task.getConfigName());
         progressBar.progressProperty().bind(task.progressProperty());
         importLbl.setText(task.getInputData().getImportPath());
-        exportLbl.setText("TO BE IMPLEMENTED!");
+        exportLbl.setText(task.getInputData().getExportPath());
         startTimeLbl.setText(task.getStartTimeAsString());
     }
 
