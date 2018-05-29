@@ -30,7 +30,6 @@ public class Model {
     private ConversionTask currentConversionTask;
 
     private Config selected;
-    private boolean configEdit;
 
     private ObservableList<FolderInformation> monitoredFolders = FXCollections.observableArrayList();
 
@@ -122,14 +121,6 @@ public class Model {
 
     public Config getSelectedConfig() {
         return selected;
-    }
-
-    public void setConfigEdit(boolean b) {
-        this.configEdit = b;
-    }
-
-    public boolean isConfigEdit() {
-        return configEdit;
     }
 
     public ObservableList<FolderInformation> getMonitoredFolders() {

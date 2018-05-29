@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Callable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.concurrent.Task;
 import shoreline_examproject.Utility.EventLogger;
 
@@ -23,6 +24,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     private Boolean isPaused = false;
     private Boolean isCanceled = false;
     private final BooleanProperty cancelledProperty = new ReadOnlyBooleanWrapper();
+    private final BooleanProperty done = new SimpleBooleanProperty(false);
 
     public ConversionTask(Config usedConfig, AttributesCollection inputData) {
         this.usedConfig = usedConfig;
@@ -41,8 +43,14 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     @Override
     public AttributesCollection call() throws Exception {
         try {
-            convert();
-            return convertedData;
+            if (!done.get() || !cancelledProperty.get()) {
+                convert();
+                done.set(true);
+                return convertedData;
+            }
+            else {
+                return null;
+            }
         } catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, String.format("Exception: %s", ex.getMessage()));
             throw ex;
@@ -64,6 +72,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         try {
             for (DataRow dataRow : inputData.getData()) {
                 DataRow convertedRow = new DataRow();
+                usedConfig.addDefaultValuesToDataRow(convertedRow);
                 for (AttributeMap attributeMap : dataRow.getData()) {
                     if (isCanceled) {
                         this.cancelled();
@@ -177,7 +186,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
             convertedMap.setKey(newKey);
             convertedMap.addValue(value);
         }
-
+                
         return convertedMap;
     }
 
@@ -201,10 +210,6 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         convertedRow.addData(plannig);
     }
     
-    public boolean isCancelledProperty() {
-        return cancelledProperty.get();
-    }
-
     public void setCancelledProperty(boolean value) {
         cancelledProperty.set(value);
     }
@@ -212,5 +217,16 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     public BooleanProperty cancelledPropertyProperty() {
         return cancelledProperty;
     }
+    
+    public boolean isDone() {
+        return done.get();
+    }
 
+    public void setDone(boolean value) {
+        done.set(value);
+    }
+
+    public BooleanProperty doneProperty() {
+        return done;
+    }
 }

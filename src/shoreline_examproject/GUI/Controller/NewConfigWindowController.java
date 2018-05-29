@@ -7,8 +7,6 @@ import java.util.ResourceBundle;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -17,7 +15,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -29,7 +26,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
@@ -93,24 +89,14 @@ public class NewConfigWindowController implements Initializable {
                 }
             });
             
-            
-            if (model.isConfigEdit()) {
-                currentConfig = model.getSelectedConfig();
-                //TODO: make it possible to edit a config.
-                keyValuePairList = FXCollections.observableArrayList();
 
-                filteredAttributeList = new FilteredList<>(attributeList);
-                filteredKeyValuePairList = new FilteredList<>(keyValuePairList);
-            }
-            else {
-                currentConfig = new Config();
+            currentConfig = new Config();
 
-                keyValuePairList = FXCollections.observableArrayList();
+            keyValuePairList = FXCollections.observableArrayList();
 
-                filteredAttributeList = new FilteredList<>(attributeList);
-                filteredKeyValuePairList = new FilteredList<>(keyValuePairList);
-            }
-            
+            filteredAttributeList = new FilteredList<>(attributeList);
+            filteredKeyValuePairList = new FilteredList<>(keyValuePairList);
+           
             setUpViews();
             setUpSearch();
             btnRemove.setDisable(true);
@@ -279,7 +265,7 @@ public class NewConfigWindowController implements Initializable {
             KeyValuePair kvp = new KeyValuePair(normalAttribute, "");
             
             if (normalAttribute.equals("siteName")) {
-                kvp.setValue("test");
+                kvp.setValue("");
                 kvp.setEditable(false);
                 kvp.setHasDefault(true);
             }
@@ -291,7 +277,7 @@ public class NewConfigWindowController implements Initializable {
             }
             
             keyValuePairList.add(kvp);
-            currentConfig.addRelation(normalAttribute, "", false);
+            currentConfig.addRelation(normalAttribute, kvp.getValue(), false, kvp.hasDefault.get());
              
         }
         
@@ -301,13 +287,13 @@ public class NewConfigWindowController implements Initializable {
             KeyValuePair kvp = new KeyValuePair("\t" + planningAttribute, "");
             
             if (planningAttribute.equals("estimatedTime")) {
-                kvp.setValue("");
+                kvp.setValue(" ");
                 kvp.setEditable(true);
                 kvp.setHasDefault(true);
             }
             
             keyValuePairList.add(kvp);
-            currentConfig.addRelation(planningAttribute, "", true);
+            currentConfig.addRelation(planningAttribute, kvp.getValue(), true, kvp.hasDefault.get());
         }
     }
 

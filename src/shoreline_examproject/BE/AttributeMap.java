@@ -142,5 +142,4 @@ public class AttributeMap {
             throw new IllegalArgumentException("Could not add attribute map to this instance!");
         }
     }
-
 }

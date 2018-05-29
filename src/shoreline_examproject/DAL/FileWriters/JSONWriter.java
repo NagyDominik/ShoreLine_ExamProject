@@ -63,6 +63,7 @@ public class JSONWriter extends IFileWriter {
             catch (Exception ex) {
                 EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
                 System.out.println(ex);
+                return;
             }
 
             try {//idekelll
@@ -96,18 +97,24 @@ public class JSONWriter extends IFileWriter {
             }
             jwriter.endObject();
         } else {
-            if ((data.getKey().endsWith("Date") || data.getKey().endsWith("Time")) && !data.getValue().isEmpty()) {
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
-                df.setTimeZone(TimeZone.getTimeZone("UTC"));
-                if (importPath.endsWith(".xlsx")) {
-                    Date date = DateUtil.getJavaDate(Double.parseDouble(data.getValue()), TimeZone.getTimeZone("UTC"));
-                    jwriter.name(data.getKey()).value(df.format(date));
-                } else {
-                    DateFormat pareseformat = new SimpleDateFormat("yyyy-MM-dd");
-                    pareseformat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    Date date = pareseformat.parse(data.getValue());
-                    jwriter.name(data.getKey()).value(df.format(date));
+            if ((data.getKey().endsWith("Date") || data.getKey().endsWith("Time")) && !data.getValue().trim().isEmpty()) {
+                if (data.getValue().isEmpty()) {
+                    jwriter.name(data.getKey()).value("");
                 }
+                else {
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+                    df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    if (importPath.endsWith(".xlsx")) {
+                        Date date = DateUtil.getJavaDate(Double.parseDouble(data.getValue()), TimeZone.getTimeZone("UTC"));
+                        jwriter.name(data.getKey()).value(df.format(date));
+                    } else {
+                        DateFormat pareseformat = new SimpleDateFormat("yyyy-MM-dd");
+                        pareseformat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        Date date = pareseformat.parse(data.getValue());
+                        jwriter.name(data.getKey()).value(df.format(date));
+                    }
+                }
+
             } else {
                 jwriter.name(data.getKey()).value(data.getValue());
             }
