@@ -43,7 +43,7 @@ public class OptimizedExcelReader extends CustomFileReader {
             return process(file.getPath());
         }
         catch (Exception ex) {
-            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured in the getData() method: " + ex.getMessage());
             Logger.getGlobal().logp(Level.SEVERE, OptimizedExcelReader.class.getName(), "getData", "An exception has occured in the getData() method!", ex);
         }
         return null; 

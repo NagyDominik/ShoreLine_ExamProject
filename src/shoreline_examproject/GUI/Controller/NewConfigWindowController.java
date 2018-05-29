@@ -4,7 +4,11 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -13,6 +17,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -24,6 +29,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
@@ -129,17 +135,22 @@ public class NewConfigWindowController implements Initializable {
             
             exportTblView.setRowFactory((TableView<KeyValuePair> param) -> {
                 TableRow<KeyValuePair> tr = new TableRow();
-
+                
                 tr.setOnDragEntered((DragEvent event) -> {
                     if (event.getSource() != exportTblView) {
-                        tr.setStyle("-fx-background-color: green"); // If the source is valid, indicate it to the user, by changing the color of the row
+                        if (!tr.getItem().editable) {
+                            tr.setStyle("-fx-background-color: red");
+                        }
+                        else {
+                            tr.setStyle("-fx-background-color: green"); // If the source is valid, indicate it to the user, by changing the color of the row   
+                        }
                     }
                     
                     event.consume();
                 });
                 
                 tr.setOnDragExited((DragEvent event) -> {
-                    tr.setStyle("");    // Reset the stylo upon exitin from the row
+                    tr.setStyle("");    // Reset the stylo upon exiting from the row
                     
                     event.consume();
                 });
@@ -159,6 +170,10 @@ public class NewConfigWindowController implements Initializable {
                     if (db.hasString()) {
                         KeyValuePair kvp = tr.getItem();
                         if (kvp.getKey().equals("planning")) {
+                            return;
+                        }
+                        
+                        if (!kvp.isEditable()) {
                             return;
                         }
                         
@@ -185,13 +200,9 @@ public class NewConfigWindowController implements Initializable {
             exportTblView.setEditable(true);
             exportTblView.setItems(filteredKeyValuePairList);
             
-            
-            
             originalExportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey()));            
             exportTblCol.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getValue()));
             
-            
-
             lstViewImportAttributes.setOnMouseClicked((MouseEvent event) -> {
                 if (lstViewImportAttributes.getSelectionModel().getSelectedItem() != null) {   // Disable the remove button if an imported attribute is selected.
                     btnRemove.setDisable(true);
@@ -265,14 +276,37 @@ public class NewConfigWindowController implements Initializable {
     private void addAttributes()
     {
         for (String normalAttribute : normalAttributes) {
-                keyValuePairList.add(new KeyValuePair(normalAttribute, ""));
-                currentConfig.addRelation(normalAttribute, "", false);
+            KeyValuePair kvp = new KeyValuePair(normalAttribute, "");
+            
+            if (normalAttribute.equals("siteName")) {
+                kvp.setValue("test");
+                kvp.setEditable(false);
+                kvp.setHasDefault(true);
             }
+            
+            if (normalAttribute.equals("status")) {
+                kvp.setValue("NEW");
+                kvp.setEditable(true);
+                kvp.setHasDefault(true);
+            }
+            
+            keyValuePairList.add(kvp);
+            currentConfig.addRelation(normalAttribute, "", false);
+             
+        }
         
         keyValuePairList.add(new KeyValuePair("planning", "-----------------"));
         
         for (String planningAttribute : planningAttributes) {
-            keyValuePairList.add(new KeyValuePair("\t" + planningAttribute, ""));
+            KeyValuePair kvp = new KeyValuePair("\t" + planningAttribute, "");
+            
+            if (planningAttribute.equals("estimatedTime")) {
+                kvp.setValue("");
+                kvp.setEditable(true);
+                kvp.setHasDefault(true);
+            }
+            
+            keyValuePairList.add(kvp);
             currentConfig.addRelation(planningAttribute, "", true);
         }
     }
@@ -303,7 +337,7 @@ public class NewConfigWindowController implements Initializable {
     {
         KeyValuePair selected = exportTblView.getSelectionModel().getSelectedItem();
         
-        if (selected == null && selected.getKey().equals("planning")) {
+        if (selected == null && selected.getKey().equals("planning") || !selected.editable || selected.isHasDefault()) {
             return;
         }
         
@@ -323,10 +357,13 @@ public class NewConfigWindowController implements Initializable {
 
         private String key;
         private String value;
-
+        private boolean editable;
+        private final BooleanProperty hasDefault = new SimpleBooleanProperty(false);
+        
         public KeyValuePair(String key, String value) {
             this.key = key;
             this.value = value;
+            this.editable = true;            
         }
 
         public String getKey() {
@@ -339,6 +376,26 @@ public class NewConfigWindowController implements Initializable {
 
         public void setValue(String value) {
             this.value = value;
+        }
+
+        private void setEditable(boolean b) {
+            this.editable = b;
+        }
+
+        public boolean isEditable() {
+            return editable;
+        }
+        
+        public boolean isHasDefault() {
+            return hasDefault.get();
+        }
+
+        public void setHasDefault(boolean value) {
+            hasDefault.set(value);
+        }
+
+        public BooleanProperty hasDefaultProperty() {
+            return hasDefault;
         }
     }
 }

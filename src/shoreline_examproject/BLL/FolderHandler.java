@@ -112,9 +112,7 @@ public class FolderHandler {
                 Path child = dir.resolve(name);
                 
                 File f = child.toFile();
-                
-                System.out.format("%s: %s\n", pollEvent.kind().name(), child);
-                
+                                
                 if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
                     if (child.toString().endsWith(".xlsx")) {
                         for (FolderInformation folder : folders) {
@@ -145,6 +143,17 @@ public class FolderHandler {
                                 
                                 folder.setNumberOfConvertibleFiles(1);
                                 bLLManager.addNewFileToFolderConverter(child, folder);
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
+                    if (child.toString().endsWith(".xlsx")) {
+                        for (FolderInformation folder : folders) {
+                            if (folder.contains(child)) {
+                                folder.decreaseNumberOfConvertibleFiles();
                                 break;
                             }
                         }
