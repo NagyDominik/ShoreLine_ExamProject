@@ -1,7 +1,6 @@
 package shoreline_examproject.BLL;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.file.FileSystems;
@@ -117,29 +116,7 @@ public class FolderHandler {
                     if (child.toString().endsWith(".xlsx")) {
                         for (FolderInformation folder : folders) {
                             if (folder.contains(child)) {
-                                boolean locked = true;
-                                while (locked) {    //Prevents a race condition when creating a new file. https://stackoverflow.com/questions/3369383/java-watching-a-directory-to-move-large-files
-                                    RandomAccessFile raf = null;
-                                    try {
-                                        raf = new RandomAccessFile(f, "r");
-                                        raf.seek(f.length());
-                                        locked = false;
-                                    } catch (IOException ex) {
-                                        locked = f.exists();
-                                        if (locked) {
-                                            System.out.println("File locked: " + f.getAbsolutePath() + "." );
-                                            Thread.sleep(500);
-                                        } 
-                                        else {
-                                            System.out.println("File was deleted while copying: " + f.getAbsolutePath() + ".");
-                                        }
-                                    }
-                                    finally {
-                                        if (raf != null) {
-                                            raf.close();
-                                        }
-                                    }
-                                }
+                                waitForLock(f);
                                 
                                 folder.setNumberOfConvertibleFiles(1);
                                 bLLManager.addNewFileToFolderConverter(child, folder);
@@ -188,5 +165,29 @@ public class FolderHandler {
     public void removeFolder(FolderInformation fi) {
         Path p = fi.getPath();
         keys.values().remove(p);
+    }
+
+    private void waitForLock(File f) throws IOException, InterruptedException {
+        boolean locked = true;
+        while (locked) {    //Prevents a race condition when creating a new file. https://stackoverflow.com/questions/3369383/java-watching-a-directory-to-move-large-files
+            RandomAccessFile raf = null;
+            try {
+                raf = new RandomAccessFile(f, "r");
+                raf.seek(f.length());
+                locked = false;
+            } catch (IOException ex) {
+                locked = f.exists();
+                if (locked) {
+                    //System.out.println("File locked: " + f.getAbsolutePath() + ".");
+                    Thread.sleep(500);
+                } else {
+                    //System.out.println("File was deleted while copying: " + f.getAbsolutePath() + ".");
+                }
+            } finally {
+                if (raf != null) {
+                    raf.close();
+                }
+            }
+        }
     }
 }

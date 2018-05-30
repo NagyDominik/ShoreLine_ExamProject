@@ -71,15 +71,16 @@ public class JSONWriter extends IFileWriter {
                 if (data.getExportPath() != null) {
                     Path saveExportLocation = Paths.get(data.getExportPath());
                     Files.move(temp, saveExportLocation, StandardCopyOption.ATOMIC_MOVE);
+                    System.out.println("File written to: " + saveExportLocation);
                     //System.out.println(saveExportLocation);
                 } else {
                     Path done = Paths.get(output.getPath().substring(0, output.getPath().lastIndexOf("_")));
                     Files.move(temp, done, StandardCopyOption.ATOMIC_MOVE);
-                    System.out.println(done);
+                    System.out.println("File written to: " + done);
                 }
                 
                 EventLogger.log(EventLogger.Level.SUCCESS, "JSON writing was successful.");
-                System.out.println("Writing was succesful.");
+                
             }
             catch (IOException ex) {
                 Logger.getLogger(JSONWriter.class.getName()).log(Level.SEVERE, null, ex);

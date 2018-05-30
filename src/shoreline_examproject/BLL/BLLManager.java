@@ -113,7 +113,7 @@ public class BLLManager implements IBLLManager {
         folderHandler.removeFolder(fi);
     }
     
-    public void addNewFileToFolderConverter(Path p, FolderInformation fi) {
+    public void addNewFileToFolderConverter(Path p, FolderInformation fi) throws InterruptedException {
         folderConverter.addConversionTask(p, fi);
     }
     
