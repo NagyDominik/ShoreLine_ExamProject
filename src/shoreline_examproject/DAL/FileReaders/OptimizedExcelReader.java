@@ -35,10 +35,12 @@ public class OptimizedExcelReader extends CustomFileReader {
 
     private static AttributesCollection data = new AttributesCollection();
     private SheetHandler sheethandler;
+    private  static List<String> attributes;
 
     @Override
     public AttributesCollection getData(File file) {
         try {
+            attributes = new ArrayList<>();
             data.setImportPath(file.getPath());
             return process(file.getPath());
         }
@@ -84,7 +86,6 @@ public class OptimizedExcelReader extends CustomFileReader {
         private String lastContents;
         private boolean nextIsString;
         private DataRow row = new DataRow();
-        private List<String> attributes = new ArrayList();
         private int cellcount = -1;
         private int currentRow = 0;
         private int repeatcount = 2;
