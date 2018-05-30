@@ -113,7 +113,8 @@ public class FolderHandler {
                 File f = child.toFile();
                                 
                 if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
-                    if (child.toString().endsWith(".xlsx")) {
+                    String path = child.toString();
+                    if (path.endsWith(".xlsx") || path.endsWith(".csv") || path.endsWith(".xls")) {
                         for (FolderInformation folder : folders) {
                             if (folder.contains(child)) {
                                 waitForLock(f);
