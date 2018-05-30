@@ -34,6 +34,8 @@ public interface IBLLManager
     public void pauseConversion(ConversionTask selectedItem);
     
     public void registerFolder(FolderInformation fi) throws BLLException;
+        
+    public void updateFolderInformation(FolderInformation fi) throws BLLException;
     
     public void removeFolder(FolderInformation fi);
     
@@ -42,4 +44,5 @@ public interface IBLLManager
     public BooleanProperty isWatching();
     
     public void removeConfig(Config selected);
+
 }

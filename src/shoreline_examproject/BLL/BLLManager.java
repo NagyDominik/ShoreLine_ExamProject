@@ -89,7 +89,7 @@ public class BLLManager implements IBLLManager {
     public void registerFolder(FolderInformation fi) throws BLLException {
         try {
             folderHandler.registerDirectory(fi);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             throw new BLLException(ex);
         }
     }
@@ -115,6 +115,11 @@ public class BLLManager implements IBLLManager {
     
     public void addNewFileToFolderConverter(Path p, FolderInformation fi) throws InterruptedException {
         folderConverter.addConversionTask(p, fi);
+    }
+
+    @Override
+    public void updateFolderInformation(FolderInformation fi) throws BLLException{
+        folderHandler.updateFolderInformation(fi);
     }
     
 }

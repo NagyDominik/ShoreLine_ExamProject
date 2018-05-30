@@ -155,4 +155,12 @@ public class Model {
     public BooleanProperty getIsWatching() {
         return this.bllManager.isWatching();
     }
+
+    public void updateFolderInformation(FolderInformation fi) throws ModelException{
+        try {
+            bllManager.updateFolderInformation(fi);
+        } catch (BLLException ex) {
+            throw new ModelException(ex);
+        }
+    }
 }
