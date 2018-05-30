@@ -32,7 +32,7 @@
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="45.0" layoutY="465.0" onAction="#newConfigClicked" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #B8B8BD;" text="Create/edit config" AnchorPane.bottomAnchor="20.0">
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="45.0" layoutY="465.0" onAction="#newConfigClicked" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #B8B8BD;" text="Create config" AnchorPane.bottomAnchor="20.0">
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
@@ -135,7 +135,7 @@
          <font>
             <Font name="Exo 2 Semi Bold" size="12.0" />
          </font></JFXButton>
-      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="281.0" layoutY="125.0" onAction="#deleteTask" prefHeight="30.0" prefWidth="92.0" style="-fx-background-color: RED;" text="Delete task" AnchorPane.topAnchor="125.0" />
+      <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="267.0" layoutY="125.0" onAction="#deleteTask" prefHeight="31.0" prefWidth="106.0" style="-fx-background-color: RED;" text="Delete task" AnchorPane.topAnchor="125.0" />
       <JFXButton buttonType="RAISED" focusTraversable="false" layoutX="43.0" layoutY="128.0" onAction="#exportFile" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: lightgreen;" text="Export" />
       <MenuButton contentDisplay="CENTER" layoutX="683.0" layoutY="28.0" mnemonicParsing="false" style="-fx-background-radius: 10; -fx-background-color: transparent;" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
         <items>
