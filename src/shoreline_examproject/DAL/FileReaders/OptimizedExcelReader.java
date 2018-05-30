@@ -33,7 +33,7 @@ import shoreline_examproject.Utility.EventLogger;
  */
 public class OptimizedExcelReader extends CustomFileReader {
 
-    private static AttributesCollection data = new AttributesCollection();
+    private static AttributesCollection data;
     private SheetHandler sheethandler;
     private  static List<String> attributes;
 
@@ -41,6 +41,7 @@ public class OptimizedExcelReader extends CustomFileReader {
     public AttributesCollection getData(File file) {
         try {
             attributes = new ArrayList<>();
+            data = new AttributesCollection();
             data.setImportPath(file.getPath());
             return process(file.getPath());
         }
