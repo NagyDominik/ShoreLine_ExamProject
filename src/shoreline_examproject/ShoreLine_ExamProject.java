@@ -1,18 +1,14 @@
 package shoreline_examproject;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.DirectoryChooser;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import shoreline_examproject.BE.FolderInformation;
-import shoreline_examproject.BLL.FolderHandler;
 
 /**
  *
@@ -28,6 +24,7 @@ public class ShoreLine_ExamProject extends Application {
 
         stage.setScene(scene);
         stage.setTitle("ShoreLine Exam Project");
+        stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
         stage.setResizable(false);
         stage.show();
         

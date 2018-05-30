@@ -27,6 +27,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
@@ -86,8 +87,7 @@ public class MainWindowController implements Initializable {
             setUpConfigComboBox();
             setUpTaskTableView();
             setUpHandlersAndListeners();
-        }
-        catch (ModelException ex) {
+        } catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
     }
@@ -101,8 +101,7 @@ public class MainWindowController implements Initializable {
                 return;
             }
             loadFile(f.getPath());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -115,6 +114,8 @@ public class MainWindowController implements Initializable {
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("New Config");
+        stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
+
         stage.setResizable(false);
         stage.show();
     }
@@ -123,8 +124,7 @@ public class MainWindowController implements Initializable {
     private void startClicked(ActionEvent event) {
         try {
             model.startConversion();
-        }
-        catch (ModelException ex) {
+        } catch (ModelException ex) {
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -137,8 +137,7 @@ public class MainWindowController implements Initializable {
         }
         try {
             model.createNewConversionTask(configComboBox.getValue());
-        }
-        catch (ModelException ex) {
+        } catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
         System.out.println(taskTV.getItems().size());
@@ -169,10 +168,10 @@ public class MainWindowController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Options");
+            stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
             stage.setResizable(false);
             stage.show();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window OptionsWindow! \n" + ex.getMessage());
         }
 
@@ -190,10 +189,10 @@ public class MainWindowController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Details");
+            stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
             stage.setResizable(false);
             stage.show();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window DetailWindow! \n" + ex.getMessage());
         }
     }
@@ -207,10 +206,10 @@ public class MainWindowController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Log");
+            stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
             stage.setResizable(false);
             stage.show();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window LogWindow! \n" + ex.getMessage());
         }
     }
@@ -224,10 +223,10 @@ public class MainWindowController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Folders");
+            stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
             stage.setResizable(false);
             stage.show();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window AssignFolderWindow! \n" + ex.getMessage());
         }
     }
@@ -311,8 +310,7 @@ public class MainWindowController implements Initializable {
             Thread t1 = new Thread(r1);
             t1.start();
             filePathLbl.setText(path);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             EventLogger.log(EventLogger.Level.NOTIFICATION, String.format("An error occured while attempting to load the given file: %s \nException message: %s", path, ex.getMessage()));
         }
     }
@@ -373,8 +371,7 @@ public class MainWindowController implements Initializable {
             }
             System.out.println(file.getAbsolutePath());
             model.getCurrentAttributes().setExportPath(file.getAbsolutePath());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             EventPopup.showAlertPopup(e);
         }
     }
