@@ -30,7 +30,7 @@ public class ExcelReaderTest {
         int expNumOfAttributes = 41;
 
         int resSize = data.getNumberOfDataEntries();
-        int resNumOfAttributes = data.getAttributes().get(0).getAttributesAsString().size();
+        int resNumOfAttributes = data.getAttributes().peek().getAttributesAsString().size();
 
         assertEquals(expSize, resSize);
         assertEquals(expNumOfAttributes, resNumOfAttributes);

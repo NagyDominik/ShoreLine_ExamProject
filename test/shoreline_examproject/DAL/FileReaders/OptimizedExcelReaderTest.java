@@ -29,7 +29,7 @@ public class OptimizedExcelReaderTest {
         int expNumOfAttributes2 = 41;
 
         int resSize = data.getNumberOfDataEntries();
-        int resNumOfAttributes = data.getAttributes().get(0).getAttributesAsString().size();
+        int resNumOfAttributes = data.getAttributes().peek().getAttributesAsString().size();
 
         assertEquals(expSize, resSize);
         assertTrue(resNumOfAttributes == expNumOfAttributes1 || resNumOfAttributes == expNumOfAttributes2);
