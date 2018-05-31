@@ -120,7 +120,7 @@ public class BLLManager implements IBLLManager {
 
     @Override
     public void updateFolderInformation(FolderInformation fi) throws BLLException {
-        folderHandler.updateFolderInformation(fi);
+        folderHandler.checkExisting(fi);
     }
 
 }
