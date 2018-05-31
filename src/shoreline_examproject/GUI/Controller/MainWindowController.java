@@ -66,10 +66,10 @@ public class MainWindowController implements Initializable {
     private TableColumn<ConversionTask, Double> progressCol;
     @FXML
     private Label startTimeLbl;
-
-    private Model model;
     @FXML
     private JFXButton btnDeletConfig;
+
+    private Model model;
 
     /**
      * Initializes the controller class.
@@ -87,7 +87,8 @@ public class MainWindowController implements Initializable {
             setUpConfigComboBox();
             setUpTaskTableView();
             setUpHandlersAndListeners();
-        } catch (ModelException ex) {
+        }
+        catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
     }
@@ -101,7 +102,8 @@ public class MainWindowController implements Initializable {
                 return;
             }
             loadFile(f.getPath());
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -124,7 +126,8 @@ public class MainWindowController implements Initializable {
     private void startClicked(ActionEvent event) {
         try {
             model.startConversion();
-        } catch (ModelException ex) {
+        }
+        catch (ModelException ex) {
             EventPopup.showAlertPopup(ex);
         }
     }
@@ -137,10 +140,11 @@ public class MainWindowController implements Initializable {
         }
         try {
             model.createNewConversionTask(configComboBox.getValue());
-        } catch (ModelException ex) {
+        }
+        catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
-        System.out.println(taskTV.getItems().size());
+        //System.out.println(taskTV.getItems().size());
     }
 
     @FXML
@@ -171,10 +175,10 @@ public class MainWindowController implements Initializable {
             stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
             stage.setResizable(false);
             stage.show();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window OptionsWindow! \n" + ex.getMessage());
         }
-
     }
 
     @FXML
@@ -192,7 +196,8 @@ public class MainWindowController implements Initializable {
             stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
             stage.setResizable(false);
             stage.show();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window DetailWindow! \n" + ex.getMessage());
         }
     }
@@ -209,7 +214,8 @@ public class MainWindowController implements Initializable {
             stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
             stage.setResizable(false);
             stage.show();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window LogWindow! \n" + ex.getMessage());
         }
     }
@@ -226,9 +232,42 @@ public class MainWindowController implements Initializable {
             stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
             stage.setResizable(false);
             stage.show();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window AssignFolderWindow! \n" + ex.getMessage());
         }
+    }
+
+    @FXML
+    private void exportFile(ActionEvent event) throws ModelException {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Choose export location");
+            //Set extension
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON file (*.json)", "*.json");
+            fileChooser.getExtensionFilters().add(extFilter);
+            //Show save file dialog
+            File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
+            if (file == null) {
+                return;
+            }
+            System.out.println(file.getAbsolutePath());
+            model.getCurrentAttributes().setExportPath(file.getAbsolutePath());
+        }
+        catch (Exception e) {
+            EventPopup.showAlertPopup(e);
+        }
+    }
+
+    @FXML
+    private void btnDeleteConfigPressed(ActionEvent event) throws IOException {
+        Config selected = configComboBox.getSelectionModel().getSelectedItem();
+
+        if (selected == null) {
+            return;
+        }
+
+        model.removeConfig(selected);
     }
 
     private void setUpTaskTableView() {
@@ -310,7 +349,8 @@ public class MainWindowController implements Initializable {
             Thread t1 = new Thread(r1);
             t1.start();
             filePathLbl.setText(path);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             EventLogger.log(EventLogger.Level.NOTIFICATION, String.format("An error occured while attempting to load the given file: %s \nException message: %s", path, ex.getMessage()));
         }
     }
@@ -356,34 +396,4 @@ public class MainWindowController implements Initializable {
         });
     }
 
-    @FXML
-    private void exportFile(ActionEvent event) throws ModelException {
-        try {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Choose export location");
-            //Set extension
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON file (*.json)", "*.json");
-            fileChooser.getExtensionFilters().add(extFilter);
-            //Show save file dialog
-            File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
-            if (file == null) {
-                return;
-            }
-            System.out.println(file.getAbsolutePath());
-            model.getCurrentAttributes().setExportPath(file.getAbsolutePath());
-        } catch (Exception e) {
-            EventPopup.showAlertPopup(e);
-        }
-    }
-
-    @FXML
-    private void btnDeleteConfigPressed(ActionEvent event) throws IOException {
-        Config selected = configComboBox.getSelectionModel().getSelectedItem();
-
-        if (selected == null) {
-            return;
-        }
-
-        model.removeConfig(selected);
-    }
 }

@@ -17,7 +17,7 @@ public class FolderInformation {
     private IntegerProperty numberOfConvertibleFiles = new SimpleIntegerProperty();
     private Path exportPath;
     private boolean hadDefaultFiles;
-    
+
     public FolderInformation(File selectedFolder) {
         this.selectedFolder = selectedFolder;
         countNumberOfConvertibleFiles();
@@ -38,8 +38,8 @@ public class FolderInformation {
 
     private void countNumberOfConvertibleFiles() {
         if (selectedFolder == null) {
-           this.numberOfConvertibleFiles.set(0);
-           return;
+            this.numberOfConvertibleFiles.set(0);
+            return;
         }
         int n = 0;
         for (File listFile : selectedFolder.listFiles()) {
@@ -54,13 +54,13 @@ public class FolderInformation {
     public Path getPath() {
         return this.selectedFolder.toPath();
     }
-    
+
     public Config getConfig() {
         return this.assignedConfig;
     }
-    
+
     public void increaseNumberOfConvertibleFiles() {
-        this.numberOfConvertibleFiles.set(numberOfConvertibleFiles.get()+1);
+        this.numberOfConvertibleFiles.set(numberOfConvertibleFiles.get() + 1);
     }
 
     public boolean contains(Path filename) {
@@ -73,12 +73,12 @@ public class FolderInformation {
             EventLogger.log(EventLogger.Level.ALERT, "Cannot delete from empty folder!");
             return;
         }
-        
+
         this.numberOfConvertibleFiles.set(numberOfConvertibleFiles.get() - 1);
     }
 
     public void setNumberOfConvertibleFiles(int i) {
-        this.numberOfConvertibleFiles.set(numberOfConvertibleFiles.get()+i);
+        this.numberOfConvertibleFiles.set(numberOfConvertibleFiles.get() + i);
     }
 
     public void setExportpath(File f) {
@@ -96,5 +96,5 @@ public class FolderInformation {
     public void setHadDefaultFiles(boolean hadDefaultFiles) {
         this.hadDefaultFiles = hadDefaultFiles;
     }
-    
+
 }

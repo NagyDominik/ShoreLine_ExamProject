@@ -63,7 +63,8 @@ public class FolderConverter {
         CompletableFuture<AttributesCollection> f = CompletableFuture.supplyAsync(() -> {
             try {
                 return task.call();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
                 Logger.getLogger(FolderConverter.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -82,4 +83,5 @@ public class FolderConverter {
             manager.saveToJSON(ac);
         }
     }
+    
 }

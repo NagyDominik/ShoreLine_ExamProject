@@ -12,7 +12,6 @@ public class DataRow {
 
     //private HashSet<AttributeMap> data;
     private List<AttributeMap> data;
-    
     private List<AttributeMap> removeList;
     
     public DataRow() {
@@ -55,4 +54,5 @@ public class DataRow {
         }
         removeList.clear();
     }
+    
 }

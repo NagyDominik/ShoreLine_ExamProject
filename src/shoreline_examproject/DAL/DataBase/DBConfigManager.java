@@ -21,6 +21,7 @@ import shoreline_examproject.BE.Config;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
+ * Manages the conversion config saving and loading database functions
  *
  * @author Dominik
  */
@@ -28,6 +29,11 @@ public class DBConfigManager {
 
     private ConnectionPool conpool = new ConnectionPool();
 
+    /**
+     * Attempts to save the provided config to the database.
+     *
+     * @param config new config added
+     */
     public void saveConfig(Config config) {
         try (Connection con = conpool.checkOut()) {
             PreparedStatement ps = con.prepareStatement("INSERT INTO Config(configBinary) VALUES(?)", Statement.RETURN_GENERATED_KEYS);
@@ -36,15 +42,15 @@ public class DBConfigManager {
             oos.writeObject(config);
             oos.flush();
             oos.close();
-            
+
             byte[] data = baos.toByteArray();
             ps.setObject(1, data);
-            
+
             int affected = ps.executeUpdate();
             if (affected < 1) {
                 EventLogger.log(EventLogger.Level.ERROR, "The config could not be saved!");
             }
-            
+
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 config.setId(rs.getInt(1));
@@ -55,6 +61,11 @@ public class DBConfigManager {
         }
     }
 
+    /**
+     * Attempts to load back configs from the database
+     *
+     * @return List of configs
+     */
     public List<Config> loadConfigs() {
         List<Config> configList = new ArrayList();
         try (Connection con = conpool.checkOut()) {
@@ -74,11 +85,14 @@ public class DBConfigManager {
         return configList;
     }
 
+    /**
+     * Attempts to remove the provided config from the database
+     */
     public void deleteConfig(Config config) {
         try (Connection con = conpool.checkOut()) {
             PreparedStatement ps = con.prepareStatement("DELETE FROM Config WHERE id = ?");
             ps.setInt(1, config.getId());
-            
+
             int affected = ps.executeUpdate();
             if (affected < 1) {
                 EventLogger.log(EventLogger.Level.ERROR, "The config could not be deleted!");

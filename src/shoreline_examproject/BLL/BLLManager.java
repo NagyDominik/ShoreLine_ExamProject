@@ -3,8 +3,6 @@ package shoreline_examproject.BLL;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.BooleanProperty;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.Config;
@@ -22,14 +20,15 @@ public class BLLManager implements IBLLManager {
     private Converter converter;
     private FolderHandler folderHandler;
     private FolderConverter folderConverter;
-    
+
     public BLLManager() throws BLLException {
         try {
             this.dalManager = new DALManager();
             this.converter = new Converter(this);
             this.folderHandler = new FolderHandler(this);
             this.folderConverter = new FolderConverter(this);
-        } catch (Exception ex) {
+        }
+        catch (IOException ex) {
             throw new BLLException(ex);
         }
     }
@@ -43,7 +42,7 @@ public class BLLManager implements IBLLManager {
     public void saveConfig(Config config) {
         dalManager.saveConfig(config);
     }
-    
+
     @Override
     public List<Config> loadConfigs() {
         return dalManager.loadConfigs();
@@ -65,8 +64,7 @@ public class BLLManager implements IBLLManager {
     }
 
     @Override
-    public ConversionTask createConversionTask(Config c, AttributesCollection ac)
-    {
+    public ConversionTask createConversionTask(Config c, AttributesCollection ac) {
         return converter.createConversionTask(c, ac);
     }
 
@@ -89,16 +87,19 @@ public class BLLManager implements IBLLManager {
     public void registerFolder(FolderInformation fi) throws BLLException {
         try {
             folderHandler.registerDirectory(fi);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
+
             throw new BLLException(ex);
         }
     }
 
     @Override
-    public void startFolderWatch() throws BLLException{
+    public void startFolderWatch() throws BLLException {
         try {
             folderHandler.startMonitoring();
-        } catch (InterruptedException ex) {
+        }
+        catch (InterruptedException ex) {
             throw new BLLException(ex);
         }
     }
@@ -112,14 +113,14 @@ public class BLLManager implements IBLLManager {
     public void removeFolder(FolderInformation fi) {
         folderHandler.removeFolder(fi);
     }
-    
+
     public void addNewFileToFolderConverter(Path p, FolderInformation fi) throws InterruptedException {
         folderConverter.addConversionTask(p, fi);
     }
 
     @Override
-    public void updateFolderInformation(FolderInformation fi) throws BLLException{
+    public void updateFolderInformation(FolderInformation fi) throws BLLException {
         folderHandler.updateFolderInformation(fi);
     }
-    
+
 }

@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
+ * Responsible for managing the event logs in the application
  *
  * @author Dominik
  */
@@ -27,10 +28,23 @@ public class EventLogger {
     public EventLogger() {
     }
 
+    /**
+     * Creates a new EventLog entry
+     *
+     * @param level The type of the entry
+     * @param desc Description of the entry
+     */
     public static void log(Level level, String desc) {
         logList.add(new EventLog(EventLog.Type.valueOf(level.name()), desc));
     }
 
+    /**
+     * Provides the same functionality as the log() function, but without saving
+     * the created log to the database
+     *
+     * @param level The type of the entry
+     * @param desc Description of the entry
+     */
     public static void logIncognito(Level level, String desc) {
         isObservable = false;
         logList.add(new EventLog(EventLog.Type.valueOf(level.name()), desc));

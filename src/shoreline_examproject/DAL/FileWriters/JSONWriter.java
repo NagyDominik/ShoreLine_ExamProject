@@ -14,12 +14,8 @@ import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.util.converter.LocalDateTimeStringConverter;
 import org.apache.poi.ss.usermodel.DateUtil;
 import shoreline_examproject.BE.AttributeMap;
 import shoreline_examproject.BE.AttributesCollection;
@@ -66,27 +62,25 @@ public class JSONWriter extends IFileWriter {
                 return;
             }
 
-            try {//idekelll
+            try {
                 Path temp = Paths.get(output.getPath());
+
                 if (data.getExportPath() != null) {
                     Path saveExportLocation = Paths.get(data.getExportPath());
                     Files.move(temp, saveExportLocation, StandardCopyOption.ATOMIC_MOVE);
                     System.out.println("File written to: " + saveExportLocation);
-                    //System.out.println(saveExportLocation);
                 } else {
                     Path done = Paths.get(output.getPath().substring(0, output.getPath().lastIndexOf("_")));
                     Files.move(temp, done, StandardCopyOption.ATOMIC_MOVE);
                     System.out.println("File written to: " + done);
                 }
-                
+
                 EventLogger.log(EventLogger.Level.SUCCESS, "JSON writing was successful.");
-                
             }
             catch (IOException ex) {
-                Logger.getLogger(JSONWriter.class.getName()).log(Level.SEVERE, null, ex);
+                EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
             }
         }
-
     }
 
     private void writeObject(JsonWriter jwriter, AttributeMap data) throws Exception {
@@ -101,10 +95,10 @@ public class JSONWriter extends IFileWriter {
             if ((data.getKey().endsWith("Date") || data.getKey().endsWith("Time")) && !data.getValue().trim().isEmpty()) {
                 if (data.getValue().isEmpty()) {
                     jwriter.name(data.getKey()).value("");
-                }
-                else {
+                } else {
                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
                     df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    
                     if (importPath.endsWith(".xlsx")) {
                         Date date = DateUtil.getJavaDate(Double.parseDouble(data.getValue()), TimeZone.getTimeZone("UTC"));
                         jwriter.name(data.getKey()).value(df.format(date));
@@ -115,7 +109,6 @@ public class JSONWriter extends IFileWriter {
                         jwriter.name(data.getKey()).value(df.format(date));
                     }
                 }
-
             } else {
                 jwriter.name(data.getKey()).value(data.getValue());
             }
@@ -134,4 +127,5 @@ public class JSONWriter extends IFileWriter {
         }
         return output.getPath();
     }
+    
 }

@@ -60,21 +60,18 @@ public class NewConfigWindowController implements Initializable {
     private JFXTextField txtFieldExportSearch;
     @FXML
     private TableColumn<KeyValuePair, String> exportTblCol;
-        
+
     private Config currentConfig;
     private Model model;
-    
-    
+
     private FilteredList<String> filteredAttributeList;
     private FilteredList<KeyValuePair> filteredKeyValuePairList;
     private ObservableList<String> attributeList;
     private ObservableList<KeyValuePair> keyValuePairList;
 
-    
     private final String[] normalAttributes = new String[]{"siteName", "assetSerialNumber", "type", "externalWorkOrderId", "systemStatus", "userStatus", "createdOn", "createdBy", "name", "priority", "status"};
     private final String[] planningAttributes = new String[]{"latestFinishDate", "earliestStartDate", "latestStartDate", "estimatedTime"};
 
-    
     /**
      * Initializes the controller class.
      */
@@ -91,7 +88,6 @@ public class NewConfigWindowController implements Initializable {
                     }
                 }
             });
-            
 
             currentConfig = new Config();
 
@@ -99,12 +95,13 @@ public class NewConfigWindowController implements Initializable {
 
             filteredAttributeList = new FilteredList<>(attributeList);
             filteredKeyValuePairList = new FilteredList<>(keyValuePairList);
-           
+
             setUpViews();
             setUpSearch();
             btnRemove.setDisable(true);
-            
-        } catch (ModelException ex) {
+
+        }
+        catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.NOTIFICATION, "An exception has occured: " + ex.getMessage());
         }
     }
@@ -115,35 +112,61 @@ public class NewConfigWindowController implements Initializable {
         stage.close();
     }
 
+    @FXML
+    private void btnRemoveClicked(ActionEvent event) {
+        KeyValuePair selected = exportTblView.getSelectionModel().getSelectedItem();
+
+        if (selected == null && selected.getKey().equals("planning") || !selected.editable || selected.isHasDefault()) {
+            return;
+        }
+
+        attributeList.add(0, selected.getValue());
+        currentConfig.updateOutputName(selected.getKey(), "");
+        exportTblView.refresh();
+        selected.setValue("");
+    }
+
+    @FXML
+    private void btnSaveClicked(ActionEvent event) {
+        String name = txtFieldConfName.getText();
+        if (name == null || name.isEmpty()) {
+            EventPopup.showInformationPopup("Please enter a name!");
+            return;
+        }
+        currentConfig.setName(name);
+        model.saveConfig(currentConfig);
+        Stage s = (Stage) btnRemove.getScene().getWindow();
+        s.close();
+    }
+
     private void setUpViews() {
-        try {           
+        try {
             setUpDragAndDrop();
             addAttributes();
-            
+
             lstViewImportAttributes.setItems(filteredAttributeList);
-            
+
             exportTblView.setRowFactory((TableView<KeyValuePair> param) -> {
                 TableRow<KeyValuePair> tr = new TableRow();
-                
+
                 tr.setOnDragEntered((DragEvent event) -> {
                     if (event.getSource() != exportTblView) {
                         if (!tr.getItem().editable) {
                             tr.setStyle("-fx-background-color: red");
-                        }
-                        else {
+                        } else {
                             tr.setStyle("-fx-background-color: green"); // If the source is valid, indicate it to the user, by changing the color of the row   
                         }
                     }
-                    
+
                     event.consume();
                 });
-                
+
                 tr.setOnDragExited((DragEvent event) -> {
                     tr.setStyle("");    // Reset the stylo upon exiting from the row
-                    
+
                     event.consume();
                 });
-                
+
                 tr.setOnDragOver((DragEvent event) -> {
                     if (event.getGestureSource() != exportTblView && event.getDragboard().hasString()) {
                         event.acceptTransferModes(TransferMode.COPY);
@@ -151,47 +174,47 @@ public class NewConfigWindowController implements Initializable {
 
                     event.consume();
                 });
-                
+
                 tr.setOnDragDropped((DragEvent event) -> {
                     Dragboard db = event.getDragboard();
                     boolean success = false;
-                    
+
                     if (db.hasString()) {
                         KeyValuePair kvp = tr.getItem();
                         if (kvp.getKey().equals("planning")) {
                             return;
                         }
-                        
+
                         if (!kvp.isEditable()) {
                             return;
                         }
-                        
+
                         if (!kvp.getValue().isEmpty()) {    // If the row already contains a value, return it to the left table.
                             attributeList.add(0, kvp.getValue());
                         }
-                        
+
                         kvp.setValue(db.getString());
                         currentConfig.updateOutputName(kvp.getKey().trim(), kvp.getValue());
-                        
+
                         attributeList.remove(kvp.getValue());
-                        
+
                         exportTblView.refresh();
                         success = true;
                     }
-                    
+
                     event.setDropCompleted(success);
-                    
+
                     event.consume();
                 });
                 return tr;
             });
-            
+
             exportTblView.setEditable(true);
             exportTblView.setItems(filteredKeyValuePairList);
-            
-            originalExportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey()));            
+
+            originalExportTblCol.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue().getKey()));
             exportTblCol.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getValue()));
-            
+
             lstViewImportAttributes.setOnMouseClicked((MouseEvent event) -> {
                 if (lstViewImportAttributes.getSelectionModel().getSelectedItem() != null) {   // Disable the remove button if an imported attribute is selected.
                     btnRemove.setDisable(true);
@@ -212,147 +235,121 @@ public class NewConfigWindowController implements Initializable {
         }
     }
 
-
-    @FXML
-    private void btnSaveClicked(ActionEvent event)
-    {
-        String name = txtFieldConfName.getText();
-        if (name == null || name.isEmpty()) {
-            EventPopup.showInformationPopup("Please enter a name!");
-            return;
-        }
-        currentConfig.setName(name);
-        model.saveConfig(currentConfig);
-        Stage s = (Stage) btnRemove.getScene().getWindow();
-        s.close();
-    }
-
     /**
      * Set up events so the table and list view can be filtered interactively.
      */
-    private void setUpSearch()
-    {
+    private void setUpSearch() {
         txtFieldImportSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            {filteredAttributeList.setPredicate((attribute) -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-                
-                return attribute.toLowerCase().contains(newValue.toLowerCase());
-            });
-        }}); 
-        
+            {
+                filteredAttributeList.setPredicate((attribute) -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    return attribute.toLowerCase().contains(newValue.toLowerCase());
+                });
+            }
+        });
+
         txtFieldExportSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            {filteredKeyValuePairList.setPredicate((kvp) -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-                
-                if (kvp.getKey().toLowerCase().contains(newValue.toLowerCase())) {
-                    return true;
-                }
-                
-                if (kvp.getKey().toLowerCase().contains(newValue.toLowerCase())) {
-                    return true;
-                }
-                
-                return false;
-                
-            });
-        }});
+            {
+                filteredKeyValuePairList.setPredicate((kvp) -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    if (kvp.getKey().toLowerCase().contains(newValue.toLowerCase())) {
+                        return true;
+                    }
+
+                    if (kvp.getKey().toLowerCase().contains(newValue.toLowerCase())) {
+                        return true;
+                    }
+
+                    return false;
+
+                });
+            }
+        });
     }
 
-    private void addAttributes()
-    {
+    private void addAttributes() {
         for (String normalAttribute : normalAttributes) {
             KeyValuePair kvp = new KeyValuePair(normalAttribute, "");
-            
+
             if (normalAttribute.equals("siteName")) {
                 kvp.setValue("");
                 kvp.setEditable(false);
                 kvp.setHasDefault(true);
             }
-            
+
+            if (normalAttribute.equals("status")) {
+                kvp.setValue("NEW");
+                kvp.setEditable(true);
+                kvp.setHasDefault(true);
+            }
+
             if (normalAttribute.equals("createdOn")) {
                 kvp.setValue(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
                 kvp.setEditable(false);
                 kvp.setHasDefault(true);
             }
-            
-             if (normalAttribute.equals("priority")) {
+
+            if (normalAttribute.equals("priority")) {
                 kvp.setValue("Low");
                 kvp.setEditable(true);
                 kvp.setHasDefault(true);
             }
-            
+
             if (normalAttribute.equals("createdBy")) {
                 kvp.setValue("SAP");
                 kvp.setEditable(false);
                 kvp.setHasDefault(true);
             }
-            
+
             keyValuePairList.add(kvp);
             currentConfig.addRelation(normalAttribute, kvp.getValue(), false, kvp.hasDefault.get());
-             
+
         }
-        
+
         keyValuePairList.add(new KeyValuePair("planning", "-----------------"));
-        
+
         for (String planningAttribute : planningAttributes) {
             KeyValuePair kvp = new KeyValuePair("\t" + planningAttribute, "");
-            
+
             if (planningAttribute.equals("estimatedTime")) {
                 kvp.setValue(" ");
                 kvp.setEditable(true);
                 kvp.setHasDefault(true);
             }
-            
+
             keyValuePairList.add(kvp);
             currentConfig.addRelation(planningAttribute, kvp.getValue(), true, kvp.hasDefault.get());
         }
     }
 
-    private void setUpDragAndDrop()
-    {
+    private void setUpDragAndDrop() {
         lstViewImportAttributes.setOnDragDetected((MouseEvent event) -> {
             Dragboard db = lstViewImportAttributes.startDragAndDrop(TransferMode.COPY_OR_MOVE);
             ClipboardContent cc = new ClipboardContent();
             cc.putString(lstViewImportAttributes.getSelectionModel().getSelectedItem());
             db.setContent(cc);
-            
+
             event.consume();
         });
-        
+
         lstViewImportAttributes.setOnDragDone((DragEvent event) -> {
             if (event.isDropCompleted() && event.getTransferMode() == TransferMode.MOVE) {
                 lstViewImportAttributes.getItems().remove(event.getDragboard().getString());
             }
-            
+
             event.consume();
         });
     }
 
-
-    @FXML
-    private void btnRemoveClicked(ActionEvent event)
-    {
-        KeyValuePair selected = exportTblView.getSelectionModel().getSelectedItem();
-        
-        if (selected == null && selected.getKey().equals("planning") || !selected.editable || selected.isHasDefault()) {
-            return;
-        }
-        
-        attributeList.add(0, selected.getValue());
-        currentConfig.updateOutputName(selected.getKey(), "");
-        exportTblView.refresh();
-        selected.setValue("");
-    }
-
-    
-
     /**
-     * Nested class, used to store key-value pairs in the export attributes, to make displaying them easier.
-     * table view.
+     * Nested class, used to store key-value pairs in the export attributes, to
+     * make displaying them easier. table view.
      */
     class KeyValuePair {
 
@@ -360,11 +357,11 @@ public class NewConfigWindowController implements Initializable {
         private String value;
         private boolean editable;
         private final BooleanProperty hasDefault = new SimpleBooleanProperty(false);
-        
+
         public KeyValuePair(String key, String value) {
             this.key = key;
             this.value = value;
-            this.editable = true;            
+            this.editable = true;
         }
 
         public String getKey() {
@@ -386,7 +383,7 @@ public class NewConfigWindowController implements Initializable {
         public boolean isEditable() {
             return editable;
         }
-        
+
         public boolean isHasDefault() {
             return hasDefault.get();
         }
@@ -399,4 +396,5 @@ public class NewConfigWindowController implements Initializable {
             return hasDefault;
         }
     }
+
 }

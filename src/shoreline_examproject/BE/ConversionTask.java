@@ -47,11 +47,11 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
                 convert();
                 done.set(true);
                 return convertedData;
-            }
-            else {
+            } else {
                 return null;
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, String.format("Exception: %s", ex.getMessage()));
             throw ex;
         }
@@ -84,7 +84,8 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
                             try {
                                 System.out.println("PAUSED");
                                 pauseLock.wait();
-                            } catch (InterruptedException e) {
+                            }
+                            catch (InterruptedException e) {
                             }
                         }
                     }
@@ -98,7 +99,8 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
                 createPlannig(convertedRow);
                 convertedData.addAttributeMap(convertedRow);
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             convertedData = null;
             cancelledProperty.set(true);
             cancel();
@@ -186,7 +188,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
             convertedMap.setKey(newKey);
             convertedMap.addValue(value);
         }
-                
+
         return convertedMap;
     }
 
@@ -209,7 +211,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         convertedRow.remove();
         convertedRow.addData(plannig);
     }
-    
+
     public void setCancelledProperty(boolean value) {
         cancelledProperty.set(value);
     }
@@ -217,7 +219,7 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     public BooleanProperty cancelledPropertyProperty() {
         return cancelledProperty;
     }
-    
+
     public boolean isDone() {
         return done.get();
     }
@@ -229,4 +231,5 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     public BooleanProperty doneProperty() {
         return done;
     }
+    
 }

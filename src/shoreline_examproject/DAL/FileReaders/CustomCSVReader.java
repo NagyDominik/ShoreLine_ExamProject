@@ -6,17 +6,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import shoreline_examproject.BE.AttributeMap;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.DataRow;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
- * Reads data from an XML file
+ * Reads data from an CSV file
  *
- * @author sebok
+ * @author Dominik
  */
 public class CustomCSVReader extends CustomFileReader {
 

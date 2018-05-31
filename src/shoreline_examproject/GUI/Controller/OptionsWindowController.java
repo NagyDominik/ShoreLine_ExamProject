@@ -9,8 +9,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,7 +16,6 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
-import shoreline_examproject.Utility.EventLogger;
 import shoreline_examproject.Utility.EventPopup;
 import shoreline_examproject.Utility.EventLogger;
 
@@ -35,10 +32,10 @@ public class OptionsWindowController implements Initializable {
     private Label lblCurrentName;
     @FXML
     private JFXTextField txtFieldNewName;
-    
-    private String newName;
 
+    private String newName;
     private Model model;
+
     /**
      * Initializes the controller class.
      */
@@ -48,12 +45,13 @@ public class OptionsWindowController implements Initializable {
             model = Model.getInstance();
             lblCurrentName.setText(model.getCurrentUser());
             System.out.println(model.getCurrentUser());
-        } catch (ModelException ex) {
+        }
+        catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
-            EventPopup.showAlertPopup(ex);       
+            EventPopup.showAlertPopup(ex);
         }
     }
-    
+
     @FXML
     private void backClicked(ActionEvent event) {
         Stage stage = (Stage) closeButton.getScene().getWindow();
@@ -71,7 +69,7 @@ public class OptionsWindowController implements Initializable {
             EventLogger.setUsername(newName);
             lblCurrentName.setText(newName);
         }
-            lblCurrentName.setText(EventLogger.getUsername());
+        lblCurrentName.setText(EventLogger.getUsername());
     }
-    
+
 }

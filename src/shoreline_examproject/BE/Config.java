@@ -47,7 +47,7 @@ public class Config implements Serializable {
         dataPair.setDefault(isDef);
         this.data.add(dataPair);
     }
-    
+
     boolean isPlanning(String oldKey) {
         for (DataPair dataPair : data) {
             if (dataPair.containsKey(oldKey)) {
@@ -56,7 +56,6 @@ public class Config implements Serializable {
         }
         return false;
     }
-    
 
     public void updateOutputName(String value, String key) {
         for (DataPair dataPair : data) {
@@ -66,7 +65,6 @@ public class Config implements Serializable {
             }
         }
     }
-    
 
     public String getName() {
         return name;
@@ -94,16 +92,14 @@ public class Config implements Serializable {
         for (DataPair dataPair : data) {
             if (!dataPair.isPlanning) {
                 sb.append(dataPair.outputName).append("->> ").append(dataPair.inputName).append("\n");
-            }
-            else {
+            } else {
                 sb.append("\t");
                 sb.append(dataPair.outputName).append("->> ").append(dataPair.inputName).append("\n");
             }
         }
-
         return sb.toString();
     }
-    
+
     void addDefaultValuesToDataRow(DataRow convertedRow) {
         for (DataPair dataPair : data) {
             if (dataPair.isDefault) {
@@ -113,9 +109,8 @@ public class Config implements Serializable {
                     AttributeMap ac = new AttributeMap(dataPair.outputName, false);
                     ac.addValue(dataPair.inputName);
                     map.addValue(ac);
-                }
-                else {
-                    map= new AttributeMap(dataPair.outputName, false);
+                } else {
+                    map = new AttributeMap(dataPair.outputName, false);
                     map.addValue(dataPair.inputName);
                 }
                 convertedRow.addData(map);
@@ -123,8 +118,7 @@ public class Config implements Serializable {
         }
     }
 
-
-    private class DataPair implements Serializable{
+    private class DataPair implements Serializable {
 
         private final Type outputType;
 
@@ -132,13 +126,13 @@ public class Config implements Serializable {
         private String outputName;
         private boolean isPlanning;
         private boolean isDefault;
-        
+
         public DataPair(Type outputType, String oldName, String newName, boolean isPlanning) {
             this.outputType = outputType;
             this.inputName = newName;
             this.outputName = oldName;
             this.isPlanning = isPlanning;
-            this.isDefault =false;
+            this.isDefault = false;
         }
 
         public boolean containsKey(String key) {
@@ -176,9 +170,10 @@ public class Config implements Serializable {
         public boolean isDefault() {
             return this.isDefault;
         }
-        
+
         public void setDefault(boolean def) {
             this.isDefault = def;
         }
     }
+
 }
