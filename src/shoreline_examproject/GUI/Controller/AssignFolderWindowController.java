@@ -165,7 +165,13 @@ public class AssignFolderWindowController implements Initializable {
                         setGraphic(null);
                         return;
                     }
-
+                    FolderInformation fi = param.getTableView().getItems().get(getIndex());
+                    if (fi.getExportPath() != null) {
+                        Label label = new Label(fi.getExportPath().getFileName().toString());
+                        setGraphic(label);
+                        return;
+                    }
+                    
                     Button b = new Button("Select destination");
                     b.setOnAction((ActionEvent event) -> {
                         System.out.println("Selecting destination");
@@ -176,7 +182,6 @@ public class AssignFolderWindowController implements Initializable {
                             return;
                         }
 
-                        FolderInformation fi = param.getTableView().getItems().get(getIndex());
                         fi.setExportpath(destination);
                         if (fi.getConfig() != null) {
                             try {
@@ -187,7 +192,7 @@ public class AssignFolderWindowController implements Initializable {
                             }
                         }
                         System.out.println(destination.toPath().toString());
-                        Label label = new Label(destination.toPath().toString());
+                        Label label = new Label(destination.toPath().getFileName().toString());
                         setGraphic(label);
                     });
                     setGraphic(b);

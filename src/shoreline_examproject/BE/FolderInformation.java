@@ -18,6 +18,7 @@ public class FolderInformation {
     private Path exportPath;
     private boolean hadDefaultFiles;
 
+    
     public FolderInformation(File selectedFolder) {
         this.selectedFolder = selectedFolder;
         countNumberOfConvertibleFiles();
