@@ -3,6 +3,9 @@ package shoreline_examproject.GUI.Controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -270,9 +273,21 @@ public class NewConfigWindowController implements Initializable {
                 kvp.setHasDefault(true);
             }
             
-            if (normalAttribute.equals("status")) {
-                kvp.setValue("NEW");
-                kvp.setEditable(true);
+            if (normalAttribute.equals("createdOn")) {
+                kvp.setValue(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+                kvp.setEditable(false);
+                kvp.setHasDefault(true);
+            }
+            
+             if (normalAttribute.equals("priority")) {
+                kvp.setValue("Low");
+                kvp.setEditable(false);
+                kvp.setHasDefault(true);
+            }
+            
+            if (normalAttribute.equals("createdBy")) {
+                kvp.setValue("SAP");
+                kvp.setEditable(false);
                 kvp.setHasDefault(true);
             }
             
