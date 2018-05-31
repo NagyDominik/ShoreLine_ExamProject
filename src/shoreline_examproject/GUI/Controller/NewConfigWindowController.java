@@ -281,7 +281,7 @@ public class NewConfigWindowController implements Initializable {
             
              if (normalAttribute.equals("priority")) {
                 kvp.setValue("Low");
-                kvp.setEditable(false);
+                kvp.setEditable(true);
                 kvp.setHasDefault(true);
             }
             
