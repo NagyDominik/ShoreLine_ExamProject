@@ -18,7 +18,6 @@ public class ExcelReaderTest {
 
     /**
      * Test of getData method, of class ExcelReader.
-     * @param file
      */
     @Test
     public void testGetData() throws Exception {

@@ -67,8 +67,7 @@ public class Converter {
                         Logger.getLogger(Converter.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     return null;
-                }, execService); //execService.<Callable<AttributesCollection>>submit(task);
-//                CompletableFuture<AttributesCollection> future = 
+                }, execService); 
                 f.thenAccept((Object t) -> {
                     if (t == null) {
                         if (task.getIsCanceled()) {
@@ -82,8 +81,6 @@ public class Converter {
                         manager.saveToJSON(ac);
                     }
                 });
-
-//                futures.add(f);
             }
         }
         catch (Exception ex) {
