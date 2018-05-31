@@ -208,6 +208,9 @@ public class FolderHandler {
 
     void updateFolderInformation(FolderInformation fi) throws BLLException {
         for (FolderInformation folder : folders) {
+            if (folder.getConfig() == null || folder.getExportPath() == null) {
+                continue;
+            }
             if (folder.equals(fi)) {
                 try {
                     if (fi.isHadDefaultFiles()) {
