@@ -6,6 +6,17 @@ import com.google.gson.stream.JsonWriter;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.TimeZone;
+import org.apache.poi.ss.usermodel.DateUtil;
 import shoreline_examproject.BE.AttributeMap;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.DataRow;
@@ -19,6 +30,9 @@ import shoreline_examproject.Utility.EventLogger;
 public class JSONWriter extends IFileWriter {
 
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private int filecount = 1;
+    private Object lock = new Object();
+    private String importPath;
 
     /**
      *
@@ -26,24 +40,47 @@ public class JSONWriter extends IFileWriter {
      */
     @Override
     public void saveData(AttributesCollection data) {
-        try (JsonWriter jwriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(new File("output.json"))))) {
-            jwriter.beginArray();
-            for (DataRow datarow : data.getAttributes()) {
-                jwriter.beginObject();
-                for (AttributeMap attribute : datarow.getData()) {
-                    writeObject(jwriter, attribute);
+        synchronized (lock) {
+            importPath = data.getImportPath();
+            File output = new File(getNextFilePath("exporttest/ConvertedData_" + LocalDate.now() + "_" + System.currentTimeMillis() + ".json_temp"));
+            output.getParentFile().mkdirs();
+            try (JsonWriter jwriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(output)))) {
+                jwriter.beginArray();
+                for (DataRow datarow : data.getAttributes()) {
+                    jwriter.beginObject();
+                    for (AttributeMap attribute : datarow.getData()) {
+                        writeObject(jwriter, attribute);
+                    }
+                    jwriter.endObject();
                 }
-                jwriter.endObject();
+                jwriter.endArray();
+
             }
-            jwriter.endArray();
+            catch (Exception ex) {
+                EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
+                System.out.println(ex);
+                return;
+            }
 
-            EventLogger.log(EventLogger.Level.SUCCESS, "JSON writing was successful.");
-            System.out.println("Writing was succesfully");
-        }
-        catch (Exception ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
-        }
+            try {
+                Path temp = Paths.get(output.getPath());
 
+                if (data.getExportPath() != null) {
+                    Path saveExportLocation = Paths.get(data.getExportPath());
+                    Files.move(temp, saveExportLocation, StandardCopyOption.ATOMIC_MOVE);
+                    System.out.println("File written to: " + saveExportLocation);
+                } else {
+                    Path done = Paths.get(output.getPath().substring(0, output.getPath().lastIndexOf("_")));
+                    Files.move(temp, done, StandardCopyOption.ATOMIC_MOVE);
+                    System.out.println("File written to: " + done);
+                }
+
+                EventLogger.log(EventLogger.Level.SUCCESS, "JSON writing was successful.");
+            }
+            catch (IOException ex) {
+                EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            }
+        }
     }
 
     private void writeObject(JsonWriter jwriter, AttributeMap data) throws Exception {
@@ -55,8 +92,40 @@ public class JSONWriter extends IFileWriter {
             }
             jwriter.endObject();
         } else {
-            jwriter.name(data.getKey()).value(data.getValue());
+            if ((data.getKey().endsWith("Date") || data.getKey().endsWith("Time")) && !data.getValue().trim().isEmpty()) {
+                if (data.getValue().isEmpty()) {
+                    jwriter.name(data.getKey()).value("");
+                } else {
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+                    df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    
+                    if (importPath.endsWith(".xlsx")) {
+                        Date date = DateUtil.getJavaDate(Double.parseDouble(data.getValue()), TimeZone.getTimeZone("UTC"));
+                        jwriter.name(data.getKey()).value(df.format(date));
+                    } else {
+                        DateFormat pareseformat = new SimpleDateFormat("yyyy-MM-dd");
+                        pareseformat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        Date date = pareseformat.parse(data.getValue());
+                        jwriter.name(data.getKey()).value(df.format(date));
+                    }
+                }
+            } else {
+                jwriter.name(data.getKey()).value(data.getValue());
+            }
         }
     }
 
+    private String getFileName(String path) {
+        return path.substring(path.lastIndexOf("\\"));
+    }
+
+    private String getNextFilePath(String path) {
+        File output = new File(path);
+        if (output.exists()) {
+            getNextFilePath("exporttest/ConvertedData_" + LocalDate.now() + "_" + System.currentTimeMillis() + filecount + ".json_temp");
+            filecount++;
+        }
+        return output.getPath();
+    }
+    
 }

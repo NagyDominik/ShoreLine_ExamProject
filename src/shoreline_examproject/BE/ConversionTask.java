@@ -3,6 +3,9 @@ package shoreline_examproject.BE;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.Callable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.concurrent.Task;
 import shoreline_examproject.Utility.EventLogger;
 
@@ -19,25 +22,34 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
     private LocalDateTime startTime;
     private final Object pauseLock = new Object();
     private Boolean isPaused = false;
-    private String oldKey = "", newKey = "", value = "";
+    private Boolean isCanceled = false;
+    private final BooleanProperty cancelledProperty = new ReadOnlyBooleanWrapper();
+    private final BooleanProperty done = new SimpleBooleanProperty(false);
 
     public ConversionTask(Config usedConfig, AttributesCollection inputData) {
         this.usedConfig = usedConfig;
         this.inputData = inputData;
         this.startTime = LocalDateTime.now();
         this.updateProgress(0, 100);
+        this.cancelledProperty.set(false);
     }
 
     public ConversionTask() {
         this.startTime = LocalDateTime.now();
         this.updateProgress(0, 100);
+        this.cancelledProperty.set(false);
     }
 
     @Override
     public AttributesCollection call() throws Exception {
         try {
-            convert();
-            return convertedData;
+            if (!done.get() || !cancelledProperty.get()) {
+                convert();
+                done.set(true);
+                return convertedData;
+            } else {
+                return null;
+            }
         }
         catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, String.format("Exception: %s", ex.getMessage()));
@@ -49,35 +61,50 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
      * Use the data stored inside the provided configuration to convert the
      * input data row-by row.
      */
-    private void convert() throws NoSuchFieldException, InterruptedException, IllegalAccessException {
-
+    private void convert() throws NoSuchFieldException, InterruptedException, IllegalAccessException, Exception {
         convertedData = new AttributesCollection();
         int count = inputData.getNumberOfDataEntries();
         double progressPercentage = 0;
-
         int progress = 0;
-        for (DataRow dataRow : inputData.getData()) {
-            DataRow convertedRow = new DataRow();
-            for (AttributeMap attributeMap : dataRow.getData()) {
-                if (isPaused) {
-                    synchronized (pauseLock) {
-                        try {
-                            System.out.println("PAUSED");
-                            pauseLock.wait();
-                        }
-                        catch (InterruptedException e) {
+        convertedData.setImportPath(inputData.getImportPath());
+
+        convertedData.setExportPath(inputData.getExportPath());
+        try {
+            for (DataRow dataRow : inputData.getData()) {
+                DataRow convertedRow = new DataRow();
+                usedConfig.addDefaultValuesToDataRow(convertedRow);
+                for (AttributeMap attributeMap : dataRow.getData()) {
+                    if (isCanceled) {
+                        this.cancelled();
+                        convertedData = null;
+                        return;
+                    }
+                    if (isPaused) {
+                        synchronized (pauseLock) {
+                            try {
+                                System.out.println("PAUSED");
+                                pauseLock.wait();
+                            }
+                            catch (InterruptedException e) {
+                            }
                         }
                     }
-                }
-                if (usedConfig.containsKey(attributeMap.getKey())) {
+                    if (usedConfig.containsKey(attributeMap.getKey())) {
                         convertedRow.addData(convertMap(attributeMap));
+                    }
                 }
+                progress++;
+                progressPercentage = (double) progress / count * 100;
+                updateProgress(progressPercentage, count);
+                createPlannig(convertedRow);
+                convertedData.addAttributeMap(convertedRow);
             }
-            progress++;
-            progressPercentage = (double) progress / count * 100;
-            updateProgress(progressPercentage, count);
-            convertedData.addAttributeMap(convertedRow);
-            //Thread.sleep(500);
+        }
+        catch (Exception ex) {
+            convertedData = null;
+            cancelledProperty.set(true);
+            cancel();
+            throw ex;
         }
     }
 
@@ -110,6 +137,10 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         return startTime.format(format);
     }
 
+    public void stop() {
+        isCanceled = true;
+    }
+
     public void pause() {
         isPaused = true;
     }
@@ -125,6 +156,10 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
         return isPaused;
     }
 
+    public Boolean getIsCanceled() {
+        return isCanceled;
+    }
+
     /**
      * Convert the provided attribute map using the configuration.
      *
@@ -137,20 +172,64 @@ public class ConversionTask extends Task implements Callable<AttributesCollectio
      */
     private AttributeMap convertMap(AttributeMap attributeMap) throws IllegalAccessException, NoSuchFieldException {
         AttributeMap convertedMap = new AttributeMap();
-        if (!attributeMap.isIsTreeRoot()) {
-            oldKey = attributeMap.getKey();
-            value = attributeMap.getValue();
 
-            newKey = usedConfig.getNewKey(oldKey);
+        String oldKey = attributeMap.getKey();
+        String newKey = usedConfig.getNewKey(oldKey);
 
+        String value = attributeMap.getValue();
+
+        if (usedConfig.isPlanning(oldKey)) {
+            AttributeMap am = new AttributeMap(newKey, false);
+            convertedMap.setIsTreeRoot(true);
+            am.setKey(newKey);
+            am.addValue(value);
+            convertedMap.addValue(am);
+        } else {
             convertedMap.setKey(newKey);
             convertedMap.addValue(value);
-        } else {
-            for (AttributeMap value1 : attributeMap.getValues()) {
-                AttributeMap nestedMap = convertMap(value1);
-                convertedMap.addValue(nestedMap);
-            }
         }
+
         return convertedMap;
     }
+
+    private void createPlannig(DataRow convertedRow) throws NoSuchFieldException {
+        AttributeMap plannig = new AttributeMap();
+        plannig.setIsTreeRoot(true);
+        plannig.setKey("plannig");
+        for (AttributeMap attributeMap : convertedRow.getData()) {
+            if (attributeMap.isIsTreeRoot()) {
+                String key = attributeMap.getValues().get(0).getKey();
+                String value = attributeMap.getValues().get(0).getValue();
+
+                AttributeMap am = new AttributeMap();
+                am.setKey(key);
+                am.addValue(value);
+                plannig.addValue(am);
+                convertedRow.addToRemoveList(attributeMap);
+            }
+        }
+        convertedRow.remove();
+        convertedRow.addData(plannig);
+    }
+
+    public void setCancelledProperty(boolean value) {
+        cancelledProperty.set(value);
+    }
+
+    public BooleanProperty cancelledPropertyProperty() {
+        return cancelledProperty;
+    }
+
+    public boolean isDone() {
+        return done.get();
+    }
+
+    public void setDone(boolean value) {
+        done.set(value);
+    }
+
+    public BooleanProperty doneProperty() {
+        return done;
+    }
+    
 }

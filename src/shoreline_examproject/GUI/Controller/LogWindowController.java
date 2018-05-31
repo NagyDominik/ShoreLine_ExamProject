@@ -18,9 +18,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import shoreline_examproject.GUI.Model.Model;
-import shoreline_examproject.BE.EventLog;
-import shoreline_examproject.BE.EventLog.Type;
+import shoreline_examproject.Utility.EventLog;
+import shoreline_examproject.Utility.EventLog.Type;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
@@ -43,18 +42,19 @@ public class LogWindowController implements Initializable {
     @FXML
     private JFXButton closeButton;
 
-    private Model model = Model.getInstance();
-
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        EventLogger.log(EventLogger.Level.ALERT, "Alert test");
-        EventLogger.log(EventLogger.Level.ERROR, "Error test");
-        EventLogger.log(EventLogger.Level.INFORMATION, "Information test");
-        EventLogger.log(EventLogger.Level.SUCCESS, "Success test");
         setupTV();
+        logTV.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    }
+
+    @FXML
+    private void backClicked(ActionEvent event) {
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
     }
 
     private void setupTV() {
@@ -66,18 +66,12 @@ public class LogWindowController implements Initializable {
         descCol.setCellValueFactory(new PropertyValueFactory("description"));
     }
 
-    @FXML
-    private void backClicked(ActionEvent event) {
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
-    }
-    
     private Callback<TableColumn.CellDataFeatures<EventLog, String>, ObservableValue<String>> getCustomDateCellFactory() {
-           return (TableColumn.CellDataFeatures<EventLog, String> param) -> {
-               DateTimeFormatter formater = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-               SimpleStringProperty formated = new SimpleStringProperty(param.getValue().getDate().format(formater));
-               return formated;
-           };
+        return (TableColumn.CellDataFeatures<EventLog, String> param) -> {
+            DateTimeFormatter formater = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            SimpleStringProperty formated = new SimpleStringProperty(param.getValue().getLocalDateTime().format(formater));
+            return formated;
+        };
     }
 
     private Callback<TableColumn<EventLog, Type>, TableCell<EventLog, Type>> getCustomRowFactory() {
@@ -107,6 +101,10 @@ public class LogWindowController implements Initializable {
                                 break;
                             case SUCCESS:
                                 row.setStyle("-fx-background-color: lightgreen");
+                                setFont(Font.font(getFont().getFamily(), FontWeight.BOLD, getFont().getSize()));
+                                break;
+                            case NOTIFICATION:
+                                row.setStyle("-fx-background-color: lightgray");
                                 setFont(Font.font(getFont().getFamily(), FontWeight.BOLD, getFont().getSize()));
                                 break;
                         }

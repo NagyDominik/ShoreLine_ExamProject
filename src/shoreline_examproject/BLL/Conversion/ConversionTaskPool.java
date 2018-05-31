@@ -5,40 +5,35 @@ import shoreline_examproject.BE.ConversionTask;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
+ * An ObjectPool of ConversionTasks
  *
  * @author sebok
  */
-public class ConversionTaskPool extends ObjectPool<ConversionTask>
-{
+public class ConversionTaskPool extends ObjectPool<ConversionTask> {
 
-    public ConversionTaskPool()
-    {
+    public ConversionTaskPool() {
         super();
     }
- 
+
     @Override
-    protected ConversionTask create()
-    {
+    protected ConversionTask create() {
         try {
             return new ConversionTask();
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             EventLogger.log(EventLogger.Level.ERROR, "An exception occured while attempting to create a ConversionTask. Message: \n" + ex.getMessage());
             throw ex;
         }
     }
 
     @Override
-    protected boolean validate(ConversionTask o)
-    {
+    protected boolean validate(ConversionTask o) {
         return o != null;
     }
 
     @Override
-    public void expire(ConversionTask o)
-    {
+    public void expire(ConversionTask o) {
         o = null;
     }
-    
+
 }

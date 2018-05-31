@@ -1,20 +1,21 @@
 package shoreline_examproject.BE;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Represents a collection of kex-value pairs.
+ * Represents a collection of key-value pairs.
  *
  * @author sebok
  */
 public class AttributesCollection {
 
-    private List<DataRow> attributes;
+    private ConcurrentLinkedQueue<DataRow> attributes;
     private String importPath;
+    private String exportPath;
 
     public AttributesCollection() {
-        attributes = new ArrayList<>();
+        attributes = new ConcurrentLinkedQueue<>();
     }
 
     public void addAttributeMap(DataRow newData) {
@@ -30,14 +31,14 @@ public class AttributesCollection {
             throw new NullPointerException("Attributes list is empty or null!");
         }
 
-        return attributes.get(0).getAttributesAsString();
+        return attributes.peek().getAttributesAsString();
     }
 
-    public List<DataRow> getAttributes() {
+    public ConcurrentLinkedQueue<DataRow> getAttributes() {
         return attributes;
     }
 
-    public List<DataRow> getData() {
+    public ConcurrentLinkedQueue<DataRow> getData() {
         return this.attributes;
     }
 
@@ -47,6 +48,14 @@ public class AttributesCollection {
 
     public void setImportPath(String importPath) {
         this.importPath = importPath;
+    }
+
+    public String getExportPath() {
+        return exportPath;
+    }
+
+    public void setExportPath(String exportPath) {
+        this.exportPath = exportPath;
     }
     
 }

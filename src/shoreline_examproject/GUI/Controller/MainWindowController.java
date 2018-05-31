@@ -1,13 +1,18 @@
 package shoreline_examproject.GUI.Controller;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,15 +23,17 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import shoreline_examproject.BE.Config;
 import shoreline_examproject.BE.ConversionTask;
+import shoreline_examproject.Utility.EventLog;
 import shoreline_examproject.GUI.Model.Model;
 import shoreline_examproject.GUI.Model.ModelException;
 import shoreline_examproject.Utility.EventLogger;
@@ -59,6 +66,8 @@ public class MainWindowController implements Initializable {
     private TableColumn<ConversionTask, Double> progressCol;
     @FXML
     private Label startTimeLbl;
+    @FXML
+    private JFXButton btnDeletConfig;
 
     private Model model;
 
@@ -67,46 +76,48 @@ public class MainWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        userNameLbl.setText(System.getProperty("user.name"));
-        userNameLbl.setAlignment(Pos.CENTER_RIGHT);
-        model = Model.getInstance();
-        model.setCurrentUser(userNameLbl.getText());
-        taskTV.setItems(model.getTasks());
-        configComboBox.setItems(model.getConfList());
-        
-        setUpConfigComboBox();
-        setUpTaskTableView();
-        setUpHandlersAndListeners();
+        try {
+            userNameLbl.setAlignment(Pos.CENTER_RIGHT);
+            model = Model.getInstance();
+            taskTV.setItems(model.getTasks());
+            configComboBox.setItems(model.getConfList());
+            userNameLbl.textProperty().bind(EventLogger.getUsernameProperty());
+            model.setCurrentUser(userNameLbl.getText());
+            btnDeletConfig.setDisable(true);
+            setUpConfigComboBox();
+            setUpTaskTableView();
+            setUpHandlersAndListeners();
+        }
+        catch (ModelException ex) {
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
+        }
     }
 
     @FXML
     private void importFileClicked(ActionEvent event) {
         try {
             FileChooser fc = new FileChooser();
-            String path = fc.showOpenDialog(this.userNameLbl.getScene().getWindow()).getPath();
-            loadFile(path);
+            File f = fc.showOpenDialog(this.userNameLbl.getScene().getWindow());
+            if (f == null) {
+                return;
+            }
+            loadFile(f.getPath());
         }
         catch (Exception ex) {
             EventPopup.showAlertPopup(ex);
         }
-
     }
 
     @FXML
     private void newConfigClicked(ActionEvent event) throws IOException {
-        
-        Config selected = configComboBox.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            model.setSelectedConfig(selected);
-            model.setConfigEdit(true);
-        }
-        
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/NewConfigWindow.fxml"));
         Parent root = (Parent) loader.load();
 
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("New Config");
+        stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
+
         stage.setResizable(false);
         stage.show();
     }
@@ -131,10 +142,15 @@ public class MainWindowController implements Initializable {
             model.createNewConversionTask(configComboBox.getValue());
         }
         catch (ModelException ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
-            EventPopup.showAlertPopup(ex);
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
-        System.out.println(taskTV.getItems().size());
+        //System.out.println(taskTV.getItems().size());
+    }
+
+    @FXML
+    private void deleteTask(ActionEvent event) {
+        ConversionTask selectedItem = taskTV.getSelectionModel().getSelectedItem();
+        model.stopConversion(selectedItem);
     }
 
     @FXML
@@ -148,57 +164,144 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void optionsClicked(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/OptionsWindow.fxml"));
-        Parent root = (Parent) loader.load();
+    private void optionsClicked(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/OptionsWindow.fxml"));
+            Parent root = (Parent) loader.load();
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Options");
-        stage.setResizable(false);
-        stage.show();
-
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Options");
+            stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
+            stage.setResizable(false);
+            stage.show();
+        }
+        catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window OptionsWindow! \n" + ex.getMessage());
+        }
     }
 
     @FXML
-    private void moreDetailClicked(ActionEvent event) throws IOException {
-        model.setSelectedTask(taskTV.getSelectionModel().getSelectedItem());
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/DetailWindow.fxml"));
-        Parent root = (Parent) loader.load();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Details");
-        stage.setResizable(false);
-        stage.show();
+    private void moreDetailClicked(ActionEvent event) {
+        try {
+            model.setSelectedTask(taskTV.getSelectionModel().getSelectedItem());
+            if (model.getSelectedTask() == null) {
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/DetailWindow.fxml"));
+            Parent root = (Parent) loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Details");
+            stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
+            stage.setResizable(false);
+            stage.show();
+        }
+        catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window DetailWindow! \n" + ex.getMessage());
+        }
     }
 
     @FXML
-    private void logClicked(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/LogWindow.fxml"));
-        Parent root = (Parent) loader.load();
+    private void logClicked(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/LogWindow.fxml"));
+            Parent root = (Parent) loader.load();
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setTitle("Log");
-        stage.setResizable(false);
-        stage.show();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Log");
+            stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
+            stage.setResizable(false);
+            stage.show();
+        }
+        catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window LogWindow! \n" + ex.getMessage());
+        }
+    }
+
+    @FXML
+    private void btnAssignFolderClicked(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/shoreline_examproject/GUI/View/AssignFolderWindow.fxml"));
+            Parent root = (Parent) loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Folders");
+            stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
+            stage.setResizable(false);
+            stage.show();
+        }
+        catch (IOException ex) {
+            EventLogger.log(EventLogger.Level.NOTIFICATION, "Failed to open window AssignFolderWindow! \n" + ex.getMessage());
+        }
+    }
+
+    @FXML
+    private void exportFile(ActionEvent event) throws ModelException {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Choose export location");
+            //Set extension
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON file (*.json)", "*.json");
+            fileChooser.getExtensionFilters().add(extFilter);
+            //Show save file dialog
+            File file = fileChooser.showSaveDialog(this.userNameLbl.getScene().getWindow());
+            if (file == null) {
+                return;
+            }
+            System.out.println(file.getAbsolutePath());
+            model.getCurrentAttributes().setExportPath(file.getAbsolutePath());
+        }
+        catch (Exception e) {
+            EventPopup.showAlertPopup(e);
+        }
+    }
+
+    @FXML
+    private void btnDeleteConfigPressed(ActionEvent event) throws IOException {
+        Config selected = configComboBox.getSelectionModel().getSelectedItem();
+
+        if (selected == null) {
+            return;
+        }
+
+        model.removeConfig(selected);
     }
 
     private void setUpTaskTableView() {
+
         taskCol.setCellValueFactory((TableColumn.CellDataFeatures<ConversionTask, String> param) -> {
             ConversionTask ct = param.getValue();
             return new ReadOnlyStringWrapper(ct.getConfigName());
+        });
+
+        taskCol.setCellFactory((TableColumn<ConversionTask, String> param) -> new TableCell<ConversionTask, String>() {
+            @Override
+            public void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (!isEmpty()) {
+                    ConversionTask task = getTableView().getItems().get(getIndex());
+                    setText(task.getConfigName());
+                    task.cancelledPropertyProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                        if (newValue) {
+                            setStyle("-fx-background-color: red");
+                        }
+                    });
+                }
+            }
         });
 
         progressCol.setCellValueFactory((TableColumn.CellDataFeatures<ConversionTask, Double> param) -> {
             ConversionTask ct = param.getValue();
 
             return ct.progressProperty().asObject();
+
         });
 
         progressCol.setCellFactory(ProgressBarTableCell.<ConversionTask>forTableColumn());
-
     }
 
     /**
@@ -217,19 +320,19 @@ public class MainWindowController implements Initializable {
                 return configComboBox.getItems().stream().filter(c -> c.getName().equals(string)).findFirst().orElse(null); // Curtesy of StackOverflow
             }
         });
-        
-        configComboBox.setOnAction(new EventHandler<ActionEvent>()
-        {
+
+        configComboBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 Config selected = configComboBox.getSelectionModel().getSelectedItem();
-                
+
                 if (selected == null) {
+                    btnDeletConfig.setDisable(true);
                     return;
                 }
-                
-                txtAreaPreview.setText(selected.toString());
+
+                txtAreaPreview.setText(selected.getAssociationMap());
+                btnDeletConfig.setDisable(false);
             }
         });
     }
@@ -240,7 +343,6 @@ public class MainWindowController implements Initializable {
                 Scene s = userNameLbl.getScene();
                 s.setCursor(Cursor.WAIT);
                 model.loadFileData(path);
-                EventLogger.log(EventLogger.Level.INFORMATION, String.format("The file %s has been loaded: ", path));
                 s.setCursor(Cursor.DEFAULT);
             };
 
@@ -249,8 +351,7 @@ public class MainWindowController implements Initializable {
             filePathLbl.setText(path);
         }
         catch (Exception ex) {
-            EventLogger.log(EventLogger.Level.ERROR, String.format("An error occured while attempting to load the given file: %s \nException message: %s", path, ex.getMessage()));
-            EventPopup.showAlertPopup(ex);
+            EventLogger.log(EventLogger.Level.NOTIFICATION, String.format("An error occured while attempting to load the given file: %s \nException message: %s", path, ex.getMessage()));
         }
     }
 
@@ -260,15 +361,39 @@ public class MainWindowController implements Initializable {
                 taskNameLbl.setText(newV.getConfigName());
                 progressLbl.textProperty().bind(newV.progressProperty().multiply(100).asString("%.0f %%"));
                 startTimeLbl.setText(newV.getStartTimeAsString());
+            } else {
+                taskNameLbl.setText("");
+                progressLbl.textProperty().unbind();
+                progressLbl.setText("");
+                startTimeLbl.setText("");
             }
         });
 
+        EventLogger.getLog().addListener(new ListChangeListener<EventLog>() {
+            @Override
+            public void onChanged(ListChangeListener.Change<? extends EventLog> c) {
+                if (EventLogger.isSetUp()) {
+                    while (c.next()) {
+                        if (c.wasAdded()) {
+                            List<EventLog> changes = new ArrayList<>();
+                            changes.addAll(c.getAddedSubList());
+                            for (EventLog change : changes) {
+                                if (change.getType() == EventLog.Type.ERROR) {
+                                    Platform.runLater(() -> {
+                                        EventPopup.showAlertPopup(change.getDescription());
+                                    });
+                                }
+                                if (change.getType() == EventLog.Type.NOTIFICATION) {
+                                    Platform.runLater(() -> {
+                                        EventPopup.showAlertPopup(change.getDescription());
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
-    @FXML
-    private void deleteTask(ActionEvent event) {
-        ConversionTask selectedItem = taskTV.getSelectionModel().getSelectedItem();
-        taskTV.getItems().remove(selectedItem);
-        model.stopConversion(selectedItem);
-    }
 }

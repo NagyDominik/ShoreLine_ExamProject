@@ -4,25 +4,19 @@ package shoreline_examproject.BLL;
  *
  * @author sebok
  */
-public class BLLException extends Exception
-{
+public class BLLException extends Exception {
 
-    public BLLException(Exception ex)
-    {
+    public BLLException(Exception ex) {
         super(ex.getMessage());
     }
 
-    public BLLException(String message)
-    {
+    public BLLException(String message) {
         super(message);
     }
 
     @Override
-    public String getMessage()
-    {
+    public String getMessage() {
         return super.getMessage();
     }
-    
-    
-    
+
 }

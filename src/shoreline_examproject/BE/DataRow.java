@@ -1,7 +1,6 @@
 package shoreline_examproject.BE;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -11,10 +10,14 @@ import java.util.List;
  */
 public class DataRow {
 
-    private HashSet<AttributeMap> data;
-
+    //private HashSet<AttributeMap> data;
+    private List<AttributeMap> data;
+    private List<AttributeMap> removeList;
+    
     public DataRow() {
-        data = new HashSet<>();
+        //data = new HashSet<>();
+        data = new ArrayList<>();
+        removeList = new ArrayList<>();
     }
 
     public void addData(AttributeMap data) {
@@ -37,6 +40,19 @@ public class DataRow {
 
     public List<AttributeMap> getData()
     {
-        return new ArrayList<>(this.data);
+        //return new ArrayList<>(this.data);
+        return data;
     }
+    
+    public void addToRemoveList(AttributeMap am) {
+        this.removeList.add(am);
+    }
+    
+    public void remove() {
+        for (AttributeMap attributeMap : removeList) {
+            data.remove(attributeMap);
+        }
+        removeList.clear();
+    }
+    
 }

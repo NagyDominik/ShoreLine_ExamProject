@@ -2,13 +2,9 @@ package shoreline_examproject.BLL.Conversion;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import shoreline_examproject.BE.ConversionTask;
@@ -26,21 +22,20 @@ public class Converter {
 
     private List<ConversionTask> tasks = new ArrayList();
     private ConversionTaskPool pool = new ConversionTaskPool();
-    private List<Future> futures = new ArrayList();
-    private ExecutorService execService;
+    private final ExecutorService execService;
     private IBLLManager manager;
-    
+
     public Converter(IBLLManager manager) {
         this.manager = manager;
         int procCount = Runtime.getRuntime().availableProcessors();
-        
+
         execService = Executors.newFixedThreadPool(procCount, (Runnable r) -> {
             Thread t = Executors.defaultThreadFactory().newThread(r);
             t.setDaemon(true); // Do not allow converter threads in the background
             return t;
         });
     }
-    
+
     /**
      * Retrieve a ConversionTask object from the object pool, and store it so it
      * can be started later.
@@ -64,33 +59,35 @@ public class Converter {
     public void convertAll() {
         try {
             for (ConversionTask task : tasks) {
-                CompletableFuture f =  CompletableFuture.supplyAsync(new Supplier<AttributesCollection>() {
-                    @Override
-                    public AttributesCollection get()
-                    {
-                        try {
-                            return task.call();
-                        } catch (Exception ex) {
-                            Logger.getLogger(Converter.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        return null;
+                CompletableFuture f = CompletableFuture.supplyAsync(() -> {
+                    try {
+                        return task.call();
                     }
+                    catch (Exception ex) {
+                        Logger.getLogger(Converter.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    return null;
                 }, execService); //execService.<Callable<AttributesCollection>>submit(task);
-                
-                CompletableFuture<AttributesCollection> future = f.thenAccept((Object t) -> {
+//                CompletableFuture<AttributesCollection> future = 
+                f.thenAccept((Object t) -> {
                     if (t == null) {
-                        System.out.println("NULL");
-                    }
-                    else {
+                        if (task.getIsCanceled()) {
+                            EventLogger.log(EventLogger.Level.ALERT, "Task " + task.getConfigName() + " has been canceled by " + "INSERT USERNAME HERE");
+                            System.out.println("CANCELED");
+                        } else {
+                            System.out.println("NULL");
+                        }
+                    } else {
                         AttributesCollection ac = (AttributesCollection) t;
                         manager.saveToJSON(ac);
                     }
                 });
+
 //                futures.add(f);
             }
         }
         catch (Exception ex) {
-            EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+            EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
         }
     }
 
@@ -100,12 +97,12 @@ public class Converter {
             if (id == -1) {
                 throw new Exception("Could not find task!");
             }
-            tasks.get(id).pause();
+            tasks.get(id).stop();
             tasks.remove(id);
             System.out.println("Task Stopped");
         }
         catch (Exception e) {
-            EventLogger.log(EventLogger.Level.ERROR, e.getMessage());
+            EventLogger.log(EventLogger.Level.NOTIFICATION, "Information: " + e.getMessage());
         }
     }
 
@@ -123,6 +120,7 @@ public class Converter {
             }
         }
         catch (Exception e) {
+            EventLogger.log(EventLogger.Level.NOTIFICATION, "Information: " + e.getMessage());
         }
     }
 

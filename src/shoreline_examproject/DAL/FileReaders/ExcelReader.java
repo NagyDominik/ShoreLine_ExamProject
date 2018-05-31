@@ -4,8 +4,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
@@ -16,13 +14,14 @@ import org.apache.poi.ss.usermodel.Workbook;
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.BE.DataRow;
 import shoreline_examproject.BE.AttributeMap;
+import shoreline_examproject.Utility.EventLogger;
 
 /**
- * Read in data from an XLSX file.
+ * Read in data from an Excel file.
  *
  * @author sebok
  */
-public class ExcelReader extends FileReader {
+public class ExcelReader extends CustomFileReader {
 
     private Workbook workbook;
     private Sheet sheet;
@@ -70,20 +69,20 @@ public class ExcelReader extends FileReader {
                             //System.out.print(c.getStringCellValue() + "\t");
                             //current.addKeyValuePair(attributeCell.getStringCellValue(), c.getStringCellValue());
                             current = new AttributeMap(attributeCell.getStringCellValue(), false);
-                            current.setValue(c.getStringCellValue());
+                            current.addValue(c.getStringCellValue());
                             dataRow.addData(current);
                             break;
                         case NUMERIC:
                             //System.out.print(c.getNumericCellValue() + "\t");
                             //current.addKeyValuePair(attributeCell.getStringCellValue(), Double.toString(c.getNumericCellValue()));
                             current = new AttributeMap(attributeCell.getStringCellValue(), false);
-                            current.setValue(Double.toString(c.getNumericCellValue()));
+                            current.addValue(Double.toString(c.getNumericCellValue()));
                             dataRow.addData(current);
                             break;
                         default:
                             //current.addKeyValuePair(attributeCell.getStringCellValue(), "");
                             current = new AttributeMap(attributeCell.getStringCellValue(), false);
-                            current.setValue("");
+                            current.addValue("");
                             dataRow.addData(current);
                     }
                 }
@@ -91,11 +90,10 @@ public class ExcelReader extends FileReader {
             }
             return loadedAttributes;
         }
-        catch (IOException ex) {
-            Logger.getLogger(ExcelReader.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch (InvalidFormatException ex) {
+        catch (IOException | InvalidFormatException ex) {
+            EventLogger.log(EventLogger.Level.ALERT, ex.getMessage());
         }
         return null;
     }
+
 }

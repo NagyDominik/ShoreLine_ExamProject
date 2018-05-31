@@ -1,196 +1,179 @@
 package shoreline_examproject.BE;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import shoreline_examproject.Utility.EventLogger;
 
 /**
- * Maps relations between input and output data.
- *  Works similarly as an AtttributeMap to allow saving multi-layered objects.
+ * Maps relations between input and output data. Works similarly as an
+ * AtttributeMap to allow saving multi-layered objects.
+ *
  * @author sebok
  */
-public class Config {
-    protected static enum DataType {NUMBER, STRING, DATE}
-    
+public class Config implements Serializable {
+
+    private static final long serialVersionUID = 123L;
+
+    private enum Type {
+        STRING, INT, DATE
+    }
     private String name;
     private int id;
-    private boolean isTreeRoot;
-    private HashMap<String, ConversionData> relations; // A map of the conversion data
-    
-    public Config(String name) {
-        this.name = name;
-        this.relations = new HashMap<>(40);
-    }
-    
-    public Config() {
-        this.relations = new HashMap<>(40);
+
+    private List<DataPair> data = new ArrayList<>(15);
+
+    public boolean containsKey(String key) {
+        for (DataPair dataPair : data) {
+            if (dataPair.containsKey(key)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public String getName()
-    {
+    public String getNewKey(String oldKey) {
+        for (DataPair dataPair : data) {
+            if (dataPair.containsKey(oldKey)) {
+                return dataPair.getNewValue();
+            }
+        }
+
+        throw new IllegalArgumentException("This object does not contain the data associated with the provided key!");
+    }
+
+    public void addRelation(String key, String value, boolean isPlanning, boolean isDef) {
+        // TODO: dummy method, finish this (optimize?).
+        DataPair dataPair = new DataPair(Type.STRING, key, value, isPlanning);
+        dataPair.setDefault(isDef);
+        this.data.add(dataPair);
+    }
+
+    boolean isPlanning(String oldKey) {
+        for (DataPair dataPair : data) {
+            if (dataPair.containsKey(oldKey)) {
+                return dataPair.isPlanning;
+            }
+        }
+        return false;
+    }
+
+    public void updateOutputName(String value, String key) {
+        for (DataPair dataPair : data) {
+            if (dataPair.hasValue(value)) {
+                dataPair.updateKey(key);
+                return;
+            }
+        }
+    }
+
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public int getId()
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId(int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getNewKey(String oldKey) throws IllegalAccessException
-    {
-        ConversionData cd = relations.get(oldKey);
-        if (cd == null) {
-            EventLogger.log(EventLogger.Level.ERROR, "Invalid key!");
-            throw new IllegalAccessException("Invalid key");
-        }
-        
-        return cd.getValue();
-    }
-    
-    public void addRelation(String key, String value)
-    {
-        ConversionData cd = new ConversionData(value, DataType.STRING);
-        
-        relations.put(key, cd);
-    }
-    
-    public void addRelation(String key, String value, DataType outputType)
-    {
-        ConversionData cd = new ConversionData(value, outputType);
-        
-        relations.put(key, cd);
-    }
-    
-    public void removeRelation(String key)
-    {
-        relations.remove(key);
+    @Override
+    public String toString() {
+        return this.name;
     }
 
-    public void updateValue(String key, String newValue) throws IllegalAccessException {
-        ConversionData cd  = relations.get(key);
-        if (cd == null) {
-            EventLogger.log(EventLogger.Level.ERROR, "Invalid key!");
-            throw new IllegalAccessException("Invalid key");
-        }
-        
-        cd.setValue(newValue);
-    }
-    
-    public int getNumberOfConversions() {
-        return relations.size();
-    }
-    
-    public boolean containsKey(String key)
-    {
-        return this.relations.containsKey(key);
-    }
-        
-    @Override
-    public String toString()
-    {
+    public String getAssociationMap() {
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, ConversionData> entry : relations.entrySet()) {
-            if (!entry.getValue().isTreeRoot()) {
-                sb.append(String.format("%s ->> %s\n", entry.getKey(), entry.getValue().getValue()));
-            }
-            else {
-                sb.append(entry.getKey());
-                sb.append("\n");
-                for (Config innerConfig : entry.getValue().getInnerConfigs()) {
-                    sb.append("\t");    // Only indents the first entry.
-                    sb.append(innerConfig.toString());
-                }
+        for (DataPair dataPair : data) {
+            if (!dataPair.isPlanning) {
+                sb.append(dataPair.outputName).append("->> ").append(dataPair.inputName).append("\n");
+            } else {
+                sb.append("\t");
+                sb.append(dataPair.outputName).append("->> ").append(dataPair.inputName).append("\n");
             }
         }
         return sb.toString();
     }
-    
-    /**
-     * Designate the ConversionData with the provided key as a tree root.
-     * @param key The provided key.
-     */
-    public void designateAsRoot(String key) throws IllegalAccessException
-    {
-        ConversionData cd  = relations.get(key);
-        if (cd == null) {
-            EventLogger.log(EventLogger.Level.ERROR, "Invalid key!");
-            throw new IllegalAccessException("Invalid key");
-        }   
-        
-        cd.designateAsRoot();
-        
-    }
-    
-    /**
-     * Contains data about the desired format of the output data after conversion;
-     */
-    class ConversionData {
-        
-        private String value; // The value of the output field
-        
-        private boolean isTreeRoot;
-        
-        private List<Config> innerConfigs; 
-        
-        private final DataType outputType;
 
-        public ConversionData(String value, DataType outputType)
-        {
-            this.value = value;
-            this.outputType = outputType;
-        }
-
-        public String getValue()
-        {
-            return value;
-        }
-
-        public void setValue(String value)
-        {
-            this.value = value;
-        }
-
-        public boolean isTreeRoot()
-        {
-            return isTreeRoot;
-        }        
-
-        public List<Config> getInnerConfigs()
-        {
-            return innerConfigs;
-        }
-        
-        /**
-         * Designate this instance as a tree root.
-         */
-        public void designateAsRoot()
-        {
-            this.isTreeRoot = true;
-            this.innerConfigs = new ArrayList<>(5);
-            this.value = null;
-        }
-
-        /**
-         * If this instance is a tree rot, make it a non-tree root.
-         */
-        public void disableTreeRoot()
-        {
-            if (isTreeRoot) {
-                this.isTreeRoot = false;
-                this.innerConfigs = null;
+    void addDefaultValuesToDataRow(DataRow convertedRow) {
+        for (DataPair dataPair : data) {
+            if (dataPair.isDefault) {
+                AttributeMap map;
+                if (dataPair.isPlanning) {
+                    map = new AttributeMap(null, true);
+                    AttributeMap ac = new AttributeMap(dataPair.outputName, false);
+                    ac.addValue(dataPair.inputName);
+                    map.addValue(ac);
+                } else {
+                    map = new AttributeMap(dataPair.outputName, false);
+                    map.addValue(dataPair.inputName);
+                }
+                convertedRow.addData(map);
             }
         }
     }
+
+    private class DataPair implements Serializable {
+
+        private final Type outputType;
+
+        private String inputName;
+        private String outputName;
+        private boolean isPlanning;
+        private boolean isDefault;
+
+        public DataPair(Type outputType, String oldName, String newName, boolean isPlanning) {
+            this.outputType = outputType;
+            this.inputName = newName;
+            this.outputName = oldName;
+            this.isPlanning = isPlanning;
+            this.isDefault = false;
+        }
+
+        public boolean containsKey(String key) {
+            return this.inputName.equals(key);
+        }
+
+        public String getNewValue() {
+            return this.outputName;
+        }
+
+        private void updateKey(String key) {
+            this.inputName = key;
+        }
+
+        public String getInputName() {
+            return inputName;
+        }
+
+        public String getOutputName() {
+            return outputName;
+        }
+
+        public boolean hasValue(String value) {
+            return this.outputName.equals(value);
+        }
+
+        public boolean isPlanning() {
+            return isPlanning;
+        }
+
+        public void setIsPlanning(boolean isPlanning) {
+            this.isPlanning = isPlanning;
+        }
+
+        public boolean isDefault() {
+            return this.isDefault;
+        }
+
+        public void setDefault(boolean def) {
+            this.isDefault = def;
+        }
+    }
+
 }

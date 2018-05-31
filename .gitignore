@@ -9,7 +9,7 @@ dist/
 nbdist/
 .nb-gradle/
 nbproject/jfx-impl.xml
-
+input_data/*
 
 ### Java ###
 *.class
@@ -92,3 +92,5 @@ $RECYCLE.BIN/
 *.csv
 *.json
 *.xls
+*.json
+*.json_temp

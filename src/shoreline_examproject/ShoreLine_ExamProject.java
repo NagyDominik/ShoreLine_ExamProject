@@ -1,11 +1,12 @@
 package shoreline_examproject;
 
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -23,6 +24,7 @@ public class ShoreLine_ExamProject extends Application {
 
         stage.setScene(scene);
         stage.setTitle("ShoreLine Exam Project");
+        stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
         stage.setResizable(false);
         stage.show();
         
@@ -36,7 +38,7 @@ public class ShoreLine_ExamProject extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         launch(args);
     }
 

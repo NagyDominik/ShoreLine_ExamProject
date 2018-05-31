@@ -16,7 +16,8 @@ public class AttributeMap {
     private boolean isTreeRoot;
 
     private String value; // Used if the object represents a single key-value pair.
-    private HashSet<AttributeMap> values; // Used if the object represent a tree-like structure of data
+    //  private HashSet<AttributeMap> values; // Used if the object represent a tree-like structure of data
+    private List<AttributeMap> values; // Used if the object represent a tree-like structure of data
 
     public AttributeMap(String key, boolean isTreeRoot) {
         this.key = key;
@@ -26,14 +27,13 @@ public class AttributeMap {
             values = null;
         } else {
             value = null;
-            values = new HashSet<>(10);
+            values = new ArrayList<>(10);
         }
     }
-    
-    public AttributeMap()
-    {
+
+    public AttributeMap() {
     }
-    
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -45,27 +45,21 @@ public class AttributeMap {
                 sb.append(value1.toString());
             });
         }
-
         return sb.toString();
     }
 
-    public void setValue(String value)
-    {
-        this.value = value;
-    }
- 
-    public void setKey(String key)
-    {
+    public void setKey(String key) {
         this.key = key;
     }
 
-    public void setIsTreeRoot(boolean isTreeRoot)
-    {
-        if (!isTreeRoot) {
-            values = null;
+    public void setIsTreeRoot(boolean isTR) {
+        if (!isTR) {
+            this.values = null;
+            this.isTreeRoot = isTR;
         } else {
-            value = null;
-            values = new HashSet<>(10);
+            this.value = null;
+            this.values = new ArrayList<>(10);
+            this.isTreeRoot = isTR;
         }
     }
 
@@ -74,7 +68,7 @@ public class AttributeMap {
             this.value = value;
         }
     }
-    
+
     public String getKey() {
         return key;
     }
@@ -82,8 +76,7 @@ public class AttributeMap {
     public boolean isIsTreeRoot() {
         return isTreeRoot;
     }
-    
-    
+
     /**
      * Retrieves the value of this instance if this instance is not a tree root.
      *
@@ -93,10 +86,14 @@ public class AttributeMap {
      */
     public String getValue() throws NoSuchFieldException {
         if (isTreeRoot) {
-            EventLogger.log(EventLogger.Level.ERROR, "Attempted to access the value of a tree root!");
-            throw new NoSuchFieldException("This instance represents a tree-like structure. There is value associated with this key!");
+            if (values.size() == 1) {
+                return values.get(0).getValue();
+            }
+        } else {
+            return value;
         }
-        return value;
+
+        return null;
     }
 
     /**
@@ -106,7 +103,7 @@ public class AttributeMap {
      * @return The AttributeMap objects that are mapped to this instance.
      * @throws NoSuchFieldException If the instance is not a tree root.
      */
-    public HashSet<AttributeMap> getValues() throws NoSuchFieldException {
+    public List<AttributeMap> getValues() throws NoSuchFieldException {
         if (!isTreeRoot) {
             EventLogger.log(EventLogger.Level.ERROR, "Attempted to access the values collection of a node that is not a tree root!");
             throw new NoSuchFieldException("This instance represents a single key-value pair.");
@@ -116,7 +113,6 @@ public class AttributeMap {
 
     public List<String> getAttributes() {
         List<String> attributes = new ArrayList<>();
-
         if (!isTreeRoot) {
             attributes.add(key);
         } else {
@@ -124,15 +120,13 @@ public class AttributeMap {
                 attributes.addAll(am.getAttributes());
             }
         }
-
         return attributes;
     }
 
-    public void addValue(AttributeMap convertMap)
-    {
-        if(!this.values.add(convertMap)){
+    public void addValue(AttributeMap convertMap) {
+        if (!this.values.add(convertMap)) {
             throw new IllegalArgumentException("Could not add attribute map to this instance!");
         }
     }
-
+    
 }
