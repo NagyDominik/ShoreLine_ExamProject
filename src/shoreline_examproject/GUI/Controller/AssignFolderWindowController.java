@@ -140,7 +140,15 @@ public class AssignFolderWindowController implements Initializable {
 
         tblColumConfig.setOnEditCommit((TableColumn.CellEditEvent<FolderInformation, Config> event) -> {
             if (event.getNewValue() != null) {
-                event.getRowValue().setConfig(event.getNewValue());
+                try {
+                    event.getRowValue().setConfig(event.getNewValue());
+                    if (event.getRowValue().getExportPath() != null) {
+                        model.updateFolderInformation(event.getRowValue());
+                    }
+                }
+                catch (ModelException ex) {
+                    EventPopup.showAlertPopup(ex);
+                }
             }
         });
 
@@ -170,10 +178,17 @@ public class AssignFolderWindowController implements Initializable {
 
                         FolderInformation fi = param.getTableView().getItems().get(getIndex());
                         fi.setExportpath(destination);
+                        if (fi.getConfig() != null) {
+                            try {
+                                model.updateFolderInformation(fi);
+                            }
+                            catch (ModelException ex) {
+                                EventPopup.showAlertPopup(ex);
+                            }
+                        }
                         System.out.println(destination.toPath().toString());
                         Label label = new Label(destination.toPath().toString());
                         setGraphic(label);
-
                     });
                     setGraphic(b);
                 }

@@ -16,10 +16,12 @@ public class FolderInformation {
     private Config assignedConfig;
     private IntegerProperty numberOfConvertibleFiles = new SimpleIntegerProperty();
     private Path exportPath;
+    private boolean hadDefaultFiles;
 
     public FolderInformation(File selectedFolder) {
         this.selectedFolder = selectedFolder;
         countNumberOfConvertibleFiles();
+        this.hadDefaultFiles = numberOfConvertibleFiles.get() > 0;
     }
 
     public IntegerProperty numberOfConvertibleFilesProperty() {
@@ -86,5 +88,13 @@ public class FolderInformation {
     public Path getExportPath() {
         return this.exportPath;
     }
-    
+
+    public boolean isHadDefaultFiles() {
+        return hadDefaultFiles;
+    }
+
+    public void setHadDefaultFiles(boolean hadDefaultFiles) {
+        this.hadDefaultFiles = hadDefaultFiles;
+    }
+
 }

@@ -27,6 +27,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ProgressBarTableCell;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
@@ -115,6 +116,8 @@ public class MainWindowController implements Initializable {
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("New Config");
+        stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
+
         stage.setResizable(false);
         stage.show();
     }
@@ -169,6 +172,7 @@ public class MainWindowController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Options");
+            stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
             stage.setResizable(false);
             stage.show();
         }
@@ -189,6 +193,7 @@ public class MainWindowController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Details");
+            stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
             stage.setResizable(false);
             stage.show();
         }
@@ -206,6 +211,7 @@ public class MainWindowController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Log");
+            stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
             stage.setResizable(false);
             stage.show();
         }
@@ -223,6 +229,7 @@ public class MainWindowController implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Folders");
+            stage.getIcons().add(new Image("shoreline_examproject/img/shortlogo.png"));
             stage.setResizable(false);
             stage.show();
         }
@@ -388,5 +395,5 @@ public class MainWindowController implements Initializable {
             }
         });
     }
-    
+
 }

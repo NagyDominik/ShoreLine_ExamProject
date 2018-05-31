@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
@@ -41,8 +42,9 @@ public class FolderHandler {
         this.folders = new ArrayList<>();
     }
 
-    public void registerDirectory(FolderInformation fi) throws IOException {
+    public void registerDirectory(FolderInformation fi) throws IOException, InterruptedException {
         WatchKey key = fi.getPath().register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE);
+
         keys.put(key, fi.getPath());
         folders.add(fi);
     }
@@ -127,7 +129,8 @@ public class FolderHandler {
                 }
 
                 if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
-                    if (child.toString().endsWith(".xlsx")) {
+                    String path = child.toString();
+                    if (path.endsWith(".xlsx") || path.endsWith(".csv") || path.endsWith(".xls")) {
                         for (FolderInformation folder : folders) {
                             if (folder.contains(child)) {
                                 folder.decreaseNumberOfConvertibleFiles();
@@ -186,6 +189,36 @@ public class FolderHandler {
             } finally {
                 if (raf != null) {
                     raf.close();
+                }
+            }
+        }
+    }
+
+    private void convertAlreadyExistingFiles(FolderInformation fi) throws InterruptedException {
+        File folder = new File(fi.getPath().toUri());
+
+        for (File listFile : folder.listFiles()) {
+            String path = listFile.getAbsolutePath();
+            if (path.endsWith(".xlsx") || path.endsWith(".csv") || path.endsWith(".xls")) {
+                bLLManager.addNewFileToFolderConverter(Paths.get(path), fi);
+            }
+        }
+    }
+
+    void updateFolderInformation(FolderInformation fi) throws BLLException {
+        for (FolderInformation folder : folders) {
+            if (folder.equals(fi)) {
+                try {
+                    if (fi.isHadDefaultFiles()) {
+                        convertAlreadyExistingFiles(fi);
+                        fi.setHadDefaultFiles(false);
+                    }
+                    break;
+                }
+                catch (InterruptedException ex) {
+                    Logger.getLogger(FolderHandler.class.getName()).log(Level.SEVERE, null, ex);
+                    EventLogger.log(EventLogger.Level.ERROR, "Could not update existing folder information: " + ex.getMessage());
+                    throw new BLLException(ex);
                 }
             }
         }

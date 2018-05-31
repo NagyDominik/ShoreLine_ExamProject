@@ -152,6 +152,23 @@ public class Model {
         bllManager.removeFolder(fi);
     }
 
+    public void createNewConversionTask(Config value) throws ModelException {
+        if (currentAttributes == null) {
+            throw new ModelException("currentAttribute null! It is possible that no file was selected");
+        }
+        tasks.add(bllManager.createConversionTask(value, currentAttributes));
+        System.out.println("tasks list size: " + tasks.size());
+    }
+
+    public void updateFolderInformation(FolderInformation fi) throws ModelException {
+        try {
+            bllManager.updateFolderInformation(fi);
+        }
+        catch (BLLException ex) {
+            throw new ModelException(ex);
+        }
+    }
+
     /**
      * CONTROL FUNCTIONS--------------------------------------------------------
      */
@@ -180,14 +197,6 @@ public class Model {
         catch (BLLException ex) {
             throw new ModelException(ex);
         }
-    }
-
-    public void createNewConversionTask(Config value) throws ModelException {
-        if (currentAttributes == null) {
-            throw new ModelException("currentAttribute null! It is possible that no file was selected");
-        }
-        tasks.add(bllManager.createConversionTask(value, currentAttributes));
-        System.out.println("tasks list size: " + tasks.size());
     }
 
 }
