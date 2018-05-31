@@ -42,6 +42,12 @@ public class FolderHandler {
         this.folders = new ArrayList<>();
     }
 
+    /**
+     * Add a directory to the list of monitored folders.
+     * @param fi The folder that will be monitored.
+     * @throws IOException
+     * @throws InterruptedException 
+     */
     public void registerDirectory(FolderInformation fi) throws IOException, InterruptedException {
         WatchKey key = fi.getPath().register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE);
 
@@ -49,6 +55,10 @@ public class FolderHandler {
         folders.add(fi);
     }
 
+    /**
+     * Start monitoring the designated folders for file addition/deletion
+     * @throws InterruptedException 
+     */
     public void startMonitoring() throws InterruptedException {
         synchronized (lock) {
             if (!isRunning.get()) {
@@ -169,6 +179,12 @@ public class FolderHandler {
         keys.values().remove(p);
     }
 
+    /**
+     * Check if a file has been written to the desk completely.
+     * @param f The file that is being written.
+     * @throws IOException
+     * @throws InterruptedException 
+     */
     private void waitForLock(File f) throws IOException, InterruptedException {
         boolean locked = true;
         while (locked) {    //Prevents a race condition when creating a new file. https://stackoverflow.com/questions/3369383/java-watching-a-directory-to-move-large-files
@@ -181,10 +197,10 @@ public class FolderHandler {
             catch (IOException ex) {
                 locked = f.exists();
                 if (locked) {
-                    //System.out.println("File locked: " + f.getAbsolutePath() + ".");
+                    System.out.println("File locked: " + f.getAbsolutePath() + ".");
                     Thread.sleep(500);
                 } else {
-                    //System.out.println("File was deleted while copying: " + f.getAbsolutePath() + ".");
+                    System.out.println("File was deleted while copying: " + f.getAbsolutePath() + ".");
                 }
             } finally {
                 if (raf != null) {
@@ -194,6 +210,11 @@ public class FolderHandler {
         }
     }
 
+    /**
+     * Convert already existing files.
+     * @param fi The folder that contains the already existing files.
+     * @throws InterruptedException 
+     */
     private void convertAlreadyExistingFiles(FolderInformation fi) throws InterruptedException {
         File folder = new File(fi.getPath().toUri());
 
@@ -205,7 +226,12 @@ public class FolderHandler {
         }
     }
 
-    void updateFolderInformation(FolderInformation fi) throws BLLException {
+    /**
+     * Used when both a config and an export path has been selected for a folder. Already existing files will be converted.
+     * @param fi The folder that might contain already existing files.
+     * @throws BLLException 
+     */
+    void checkExisting(FolderInformation fi) throws BLLException {
         for (FolderInformation folder : folders) {
             if (folder.getConfig() == null || folder.getExportPath() == null) {
                 continue;

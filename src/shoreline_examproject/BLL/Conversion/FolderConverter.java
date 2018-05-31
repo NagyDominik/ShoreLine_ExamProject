@@ -46,8 +46,14 @@ public class FolderConverter {
         this.isRunning = false;
     }
 
+    /**
+     * Create a conversion task using the file specified by the path, and information contained in the FolderInformation object.
+     * @param p The path of the file that will be converted.
+     * @param fi Object that contains additional information, such as export path and the configuration to use.
+     * @throws InterruptedException 
+     */
     public void addConversionTask(Path p, FolderInformation fi) throws InterruptedException {
-        if (fi == null || fi.getConfig() == null) {
+        if (fi == null || fi.getConfig() == null) { //Do not allow tasks without proper data
             return;
         }
         AttributesCollection ac = manager.loadFileData(p.toString());
@@ -59,29 +65,36 @@ public class FolderConverter {
         convert(newTask);
     }
 
+    /**
+     * Asynchronously convert a file to the specified format.
+     * @param task The ConversionTask object that will perform the conversion.
+     */
     private void convert(ConversionTask task) {
-        CompletableFuture<AttributesCollection> f = CompletableFuture.supplyAsync(() -> {
-            try {
-                return task.call();
-            }
-            catch (Exception ex) {
-                EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
-                Logger.getLogger(FolderConverter.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return null;
-        }, executorService);
+        try {
+            CompletableFuture<AttributesCollection> f = CompletableFuture.supplyAsync(() -> {
+                try {
+                    return task.call();
+                }
+                catch (Exception ex) {
+                    EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
+                    Logger.getLogger(FolderConverter.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return null;
+            }, executorService);
 
-        AttributesCollection ac = f.join();
-        if (ac == null) {
-            if (task.getIsCanceled()) {
-                EventLogger.log(EventLogger.Level.ALERT, "Task " + task.getConfigName() + " has been canceled by " + "INSERT USERNAME HERE");
-                System.out.println("CANCELED");
+            AttributesCollection ac = f.join();
+            if (ac == null) {
+                if (task.getIsCanceled()) {
+                    EventLogger.log(EventLogger.Level.ALERT, "Task " + task.getConfigName() + " has been canceled by " + "INSERT USERNAME HERE");
+                    System.out.println("CANCELED");
+                } else {
+                    System.out.println("NULL");
+                }
             } else {
-                System.out.println("NULL");
+                manager.saveToJSON(ac);
             }
-        } else {
-            manager.saveToJSON(ac);
+        } catch (Exception ex) {
+            EventLogger.log(EventLogger.Level.ERROR, "An error has occured during conversion: " + ex.getMessage());
         }
     }
-    
 }
