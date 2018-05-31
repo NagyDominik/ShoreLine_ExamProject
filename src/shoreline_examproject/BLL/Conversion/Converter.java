@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import shoreline_examproject.BE.ConversionTask;
@@ -70,7 +69,7 @@ public class Converter {
                     return null;
                 }, execService); //execService.<Callable<AttributesCollection>>submit(task);
 //                CompletableFuture<AttributesCollection> future = 
-                    f.thenAccept((Object t) -> {
+                f.thenAccept((Object t) -> {
                     if (t == null) {
                         if (task.getIsCanceled()) {
                             EventLogger.log(EventLogger.Level.ALERT, "Task " + task.getConfigName() + " has been canceled by " + "INSERT USERNAME HERE");

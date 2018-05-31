@@ -24,7 +24,7 @@ public class ConnectionManager {
     /**
      * Creates a new ConnectionManager, and set the values
      */
-    ConnectionManager() {
+    private ConnectionManager() {
         source.setDatabaseName("CS2017B_7_ShoreLineConverter");
         source.setUser("CS2017B_7_java");
         source.setPassword("javajava");

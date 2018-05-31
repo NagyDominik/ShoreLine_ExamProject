@@ -4,6 +4,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 /**
+ * Creates popup notifications
  *
  * @author Dominik
  */
@@ -39,9 +40,14 @@ public class EventPopup {
         showAlertPopup(ex.getMessage());
     }
 
-    public static void showInformationPopup(String message)
-    {
+    /**
+     * Show an information popup, using the message of the supplied exception as
+     * the message of the popup.
+     *
+     * @param message The supplied message.
+     */
+    public static void showInformationPopup(String message) {
         Alert a = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
-        a.show();   
+        a.show();
     }
 }

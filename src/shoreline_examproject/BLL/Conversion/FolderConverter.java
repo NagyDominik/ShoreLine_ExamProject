@@ -2,11 +2,9 @@ package shoreline_examproject.BLL.Conversion;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -65,7 +63,8 @@ public class FolderConverter {
         CompletableFuture<AttributesCollection> f = CompletableFuture.supplyAsync(() -> {
             try {
                 return task.call();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 EventLogger.log(EventLogger.Level.ERROR, ex.getMessage());
                 Logger.getLogger(FolderConverter.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -84,4 +83,5 @@ public class FolderConverter {
             manager.saveToJSON(ac);
         }
     }
+    
 }

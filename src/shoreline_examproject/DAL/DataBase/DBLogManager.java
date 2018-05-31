@@ -20,6 +20,7 @@ import shoreline_examproject.Utility.EventLog;
 import shoreline_examproject.Utility.EventLogger;
 
 /**
+ * Manages the event log saving and loading database functions
  *
  * @author Dominik
  */
@@ -31,6 +32,11 @@ public class DBLogManager {
         setUpListener();
     }
 
+    /**
+     * Attempts to save log to the database.
+     *
+     * @param log new log added
+     */
     public void saveLog(EventLog log) {
         try (Connection con = conpool.checkOut()) {
             PreparedStatement ps = con.prepareStatement("INSERT INTO Log(Date, userName, Type, Description) VALUES(?, ?, ?, ?)");
@@ -49,6 +55,11 @@ public class DBLogManager {
         }
     }
 
+    /**
+     * Attempts to load back logs from the database
+     *
+     * @return List of logs
+     */
     public List<EventLog> loadLog() {
         List<EventLog> log = EventLogger.getLog();
         try (Connection con = conpool.checkOut()) {
@@ -80,7 +91,7 @@ public class DBLogManager {
                             List<EventLog> changes = new ArrayList<>();
                             changes.addAll(c.getAddedSubList());
                             for (EventLog change : changes) {
-                                if (change.getType()!= EventLog.Type.NOTIFICATION) {
+                                if (change.getType() != EventLog.Type.NOTIFICATION) {
                                     saveLog(change);
                                 }
                             }

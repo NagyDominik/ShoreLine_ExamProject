@@ -28,6 +28,11 @@ public class UserDataManager {
         setListener();
     }
 
+    /**
+     * Writes the provided username to the logged in user's directory
+     *
+     * @param name username
+     */
     public void write(String name) {
         try {
             if (!file.getParentFile().mkdirs()) {
@@ -51,6 +56,11 @@ public class UserDataManager {
         }
     }
 
+    /**
+     * Attempts to read back the previously saved username
+     *
+     * @return username
+     */
     public String read() {
         String name = null;
         try {
@@ -73,4 +83,5 @@ public class UserDataManager {
             write(newValue);
         });
     }
+    
 }

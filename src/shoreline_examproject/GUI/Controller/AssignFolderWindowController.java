@@ -55,6 +55,7 @@ public class AssignFolderWindowController implements Initializable {
     private Circle crclStatusIndicator;
 
     private Model model;
+
     /**
      * Initializes the controller class.
      */
@@ -64,26 +65,28 @@ public class AssignFolderWindowController implements Initializable {
             model = Model.getInstance();
             setUpTableView();
             setUpIndicator();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             Logger.getLogger(AssignFolderWindowController.class.getName()).log(Level.SEVERE, null, ex);
             EventLogger.log(EventLogger.Level.ERROR, "An error occured: " + ex.getMessage());
-        } 
-    }    
+        }
+    }
 
     @FXML
-    private void btnSelectFolderClicked(ActionEvent event) throws IOException { 
+    private void btnSelectFolderClicked(ActionEvent event) throws IOException {
         try {
             DirectoryChooser dc = new DirectoryChooser();
             File f = dc.showDialog(this.btnMonitorStatus.getScene().getWindow());
-            
+
             if (f == null) {
                 return;
             }
-            
+
             FolderInformation fi = new FolderInformation(f);
             tblViewFiles.getItems().add(fi);
             model.registerDirectory(fi);
-        } catch (ModelException ex) {
+        }
+        catch (ModelException ex) {
             Logger.getLogger(AssignFolderWindowController.class.getName()).log(Level.SEVERE, null, ex);
             EventLogger.log(EventLogger.Level.ERROR, "An error has occured: " + ex.getMessage());
             EventPopup.showAlertPopup(ex);
@@ -103,7 +106,8 @@ public class AssignFolderWindowController implements Initializable {
                 return;
             }
             model.startWatch();
-        } catch (ModelException ex) {
+        }
+        catch (ModelException ex) {
             EventLogger.log(EventLogger.Level.ERROR, "An exception has occured: " + ex.getMessage());
             EventPopup.showAlertPopup(ex);
         }
@@ -112,14 +116,14 @@ public class AssignFolderWindowController implements Initializable {
     @FXML
     private void btnRemoveFolderClicked(ActionEvent event) {
         FolderInformation selected = tblViewFiles.getSelectionModel().getSelectedItem();
-        
+
         if (selected == null) {
             return;
         }
-        
+
         model.removeDirectory(selected);
         tblViewFiles.getItems().remove(selected);
-    }    
+    }
 
     private void setUpTableView() {
         tblViewFiles.setItems(model.getMonitoredFolders());
@@ -127,66 +131,65 @@ public class AssignFolderWindowController implements Initializable {
         tblColumnFolder.setCellValueFactory((TableColumn.CellDataFeatures<FolderInformation, String> param) -> {
             return new ReadOnlyStringWrapper(param.getValue().getFolderName());
         });
-        
+
         tblColumConfig.setCellFactory(ComboBoxTableCell.forTableColumn(model.getConfList()));
-        
+
         tblColumConfig.setCellValueFactory((param) -> {
             return new ReadOnlyObjectWrapper(param.getValue().getConfig());
         });
-        
+
         tblColumConfig.setOnEditCommit((TableColumn.CellEditEvent<FolderInformation, Config> event) -> {
             if (event.getNewValue() != null) {
                 event.getRowValue().setConfig(event.getNewValue());
             }
         });
-        
+
         tblColumNumOfFiles.setCellValueFactory((param) -> {
             return param.getValue().numberOfConvertibleFilesProperty().asObject();
         });
-        
+
         tblColumnDestination.setCellFactory((TableColumn<FolderInformation, String> param) -> {
-           return new TableCell<FolderInformation, String>() {
-               @Override
-               protected void updateItem(final String item, final boolean empty) {
-                   super.updateItem(item, empty);
-                   if (empty) {
-                       setGraphic(null);
-                       return;
-                   }
-                   
-                   Button b = new Button("Select destination");
-                   b.setOnAction((ActionEvent event) -> {
-                       System.out.println("Selecting destination");
-                       DirectoryChooser dc = new  DirectoryChooser();
-                       
-                       File destination = dc.showDialog(tblViewFiles.getScene().getWindow());
+            return new TableCell<FolderInformation, String>() {
+                @Override
+                protected void updateItem(final String item, final boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        return;
+                    }
+
+                    Button b = new Button("Select destination");
+                    b.setOnAction((ActionEvent event) -> {
+                        System.out.println("Selecting destination");
+                        DirectoryChooser dc = new DirectoryChooser();
+
+                        File destination = dc.showDialog(tblViewFiles.getScene().getWindow());
                         if (destination == null) {
-                           return;
+                            return;
                         }
-                       
-                       FolderInformation fi = param.getTableView().getItems().get(getIndex());
-                       fi.setExportpath(destination);
-                       System.out.println(destination.toPath().toString());
-                       Label label = new Label(destination.toPath().toString());
-                       setGraphic(label);
-                       
-                   });
-                   setGraphic(b);
-               }
-           };
+
+                        FolderInformation fi = param.getTableView().getItems().get(getIndex());
+                        fi.setExportpath(destination);
+                        System.out.println(destination.toPath().toString());
+                        Label label = new Label(destination.toPath().toString());
+                        setGraphic(label);
+
+                    });
+                    setGraphic(b);
+                }
+            };
         });
     }
 
     private void setUpIndicator() {
         model.getIsWatching().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-               if (newValue) {
-                    crclStatusIndicator.setFill(new Color(0, 1, 0, 1));
-                    btnMonitorStatus.setText("Stop monitoring");
-                }
-                else {
-                    crclStatusIndicator.setFill(new Color(1, 0, 0, 1));
-                    btnMonitorStatus.setText("Start monitoring");
-                }        
+            if (newValue) {
+                crclStatusIndicator.setFill(new Color(0, 1, 0, 1));
+                btnMonitorStatus.setText("Stop monitoring");
+            } else {
+                crclStatusIndicator.setFill(new Color(1, 0, 0, 1));
+                btnMonitorStatus.setText("Start monitoring");
+            }
         });
     }
 }

@@ -4,7 +4,6 @@ import shoreline_examproject.DAL.FileReaders.CustomFileReader;
 import shoreline_examproject.BE.Config;
 import java.io.File;
 import java.util.List;
-
 import shoreline_examproject.BE.AttributesCollection;
 import shoreline_examproject.DAL.FileReaders.FileReaderFactory;
 import shoreline_examproject.Utility.EventLog;
@@ -68,4 +67,5 @@ public class DALManager implements IDataAccess {
     public void removeConfig(Config selected) {
         DBConfig.deleteConfig(selected);
     }
+    
 }

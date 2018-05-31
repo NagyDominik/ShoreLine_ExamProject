@@ -24,14 +24,15 @@ import shoreline_examproject.Utility.EventLogger;
  * @author sebok
  */
 public class FolderHandler {
+
     private final WatchService watcher;
-    private final HashMap<WatchKey, Path> keys; 
-    private final BooleanProperty isRunning = new SimpleBooleanProperty();    
+    private final HashMap<WatchKey, Path> keys;
+    private final BooleanProperty isRunning = new SimpleBooleanProperty();
     private Thread watchThread;
     private final Object lock;
     private final BLLManager bLLManager;
-    private final List<FolderInformation> folders; 
-    
+    private final List<FolderInformation> folders;
+
     public FolderHandler(BLLManager manager) throws IOException {
         this.watcher = FileSystems.getDefault().newWatchService();
         this.keys = new HashMap<>();
@@ -39,13 +40,13 @@ public class FolderHandler {
         this.bLLManager = manager;
         this.folders = new ArrayList<>();
     }
-    
+
     public void registerDirectory(FolderInformation fi) throws IOException {
         WatchKey key = fi.getPath().register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE);
         keys.put(key, fi.getPath());
         folders.add(fi);
     }
-    
+
     public void startMonitoring() throws InterruptedException {
         synchronized (lock) {
             if (!isRunning.get()) {
@@ -53,27 +54,25 @@ public class FolderHandler {
                     Runnable r = () -> {
                         try {
                             runWatchLoop();
-                        } catch (Exception ex) {
+                        }
+                        catch (Exception ex) {
                             Logger.getLogger(FolderHandler.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     };
-    
+
                     watchThread = new Thread(r);
                     watchThread.setDaemon(true);
-                    
-                    
+
                     isRunning.setValue(true);
                     System.out.println("Starting watch thread! " + Thread.currentThread().getName());
                     EventLogger.log(EventLogger.Level.INFORMATION, "Started folder monitoring");
                     watchThread.start();
-                }
-                else {
+                } else {
                     isRunning.setValue(true);
                     System.out.println("Continuig watch thread!" + Thread.currentThread().getName());
                     lock.notify();
                 }
-            }
-            else {
+            } else {
                 isRunning.set(false);
                 System.out.println("Pausing watch thread!");
                 EventLogger.log(EventLogger.Level.INFORMATION, "Paused folder monitoring");
@@ -81,11 +80,11 @@ public class FolderHandler {
                 watchThread = null;
             }
         }
-    }        
-    
+    }
+
     /**
-     * Process events in the queued folders.
-     * Implemented using: https://howtodoinjava.com/java-8/java-8-watchservice-api-tutorial/
+     * Process events in the queued folders. Implemented using:
+     * https://howtodoinjava.com/java-8/java-8-watchservice-api-tutorial/
      */
     private void runWatchLoop() throws InterruptedException, IOException {
         while (true) {
@@ -96,29 +95,29 @@ public class FolderHandler {
             catch (InterruptedException ex) {
                 return;
             }
-            
+
             Path dir = keys.get(key);
-            
+
             if (dir == null) {
                 EventLogger.log(EventLogger.Level.ALERT, "WatchKey not recognized!");
                 continue;
             }
-            
+
             for (WatchEvent<?> pollEvent : key.pollEvents()) {
                 WatchEvent.Kind kind = pollEvent.kind();
-                
-                Path name = ((WatchEvent<Path>)pollEvent).context();    
+
+                Path name = ((WatchEvent<Path>) pollEvent).context();
                 Path child = dir.resolve(name);
-                
+
                 File f = child.toFile();
-                                
+
                 if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
                     String path = child.toString();
                     if (path.endsWith(".xlsx") || path.endsWith(".csv") || path.endsWith(".xls")) {
                         for (FolderInformation folder : folders) {
                             if (folder.contains(child)) {
                                 waitForLock(f);
-                                
+
                                 folder.setNumberOfConvertibleFiles(1);
                                 bLLManager.addNewFileToFolderConverter(child, folder);
                                 break;
@@ -126,7 +125,7 @@ public class FolderHandler {
                         }
                     }
                 }
-                
+
                 if (kind == StandardWatchEventKinds.ENTRY_DELETE) {
                     if (child.toString().endsWith(".xlsx")) {
                         for (FolderInformation folder : folders) {
@@ -137,20 +136,19 @@ public class FolderHandler {
                         }
                     }
                 }
-                
+
                 boolean valid = key.reset();
                 if (!valid) {
                     keys.remove(key);
-                    
+
                     if (keys.isEmpty()) {
                         break;
                     }
                 }
             }
         }
-    } 
-    
-    
+    }
+
     public boolean isRunning() {
         return isRunning.get();
     }
@@ -176,7 +174,8 @@ public class FolderHandler {
                 raf = new RandomAccessFile(f, "r");
                 raf.seek(f.length());
                 locked = false;
-            } catch (IOException ex) {
+            }
+            catch (IOException ex) {
                 locked = f.exists();
                 if (locked) {
                     //System.out.println("File locked: " + f.getAbsolutePath() + ".");

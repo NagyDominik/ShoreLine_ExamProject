@@ -11,6 +11,7 @@ import shoreline_examproject.Utility.EventLogger;
 import shoreline_examproject.Utility.ObjectPool;
 
 /**
+ * An ObjectPool containing database connections
  *
  * @author Dominik
  */

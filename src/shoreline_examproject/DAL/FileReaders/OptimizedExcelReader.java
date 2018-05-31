@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xssf.model.SharedStringsTable;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -35,7 +34,7 @@ public class OptimizedExcelReader extends CustomFileReader {
 
     private static AttributesCollection data;
     private SheetHandler sheethandler;
-    private  static List<String> attributes;
+    private static List<String> attributes;
 
     @Override
     public AttributesCollection getData(File file) {
@@ -49,7 +48,7 @@ public class OptimizedExcelReader extends CustomFileReader {
             EventLogger.log(EventLogger.Level.ERROR, "An exception has occured in the getData() method: " + ex.getMessage());
             Logger.getGlobal().logp(Level.SEVERE, OptimizedExcelReader.class.getName(), "getData", "An exception has occured in the getData() method!", ex);
         }
-        return null; 
+        return null;
     }
 
     public AttributesCollection process(String filename) throws Exception {
@@ -67,7 +66,7 @@ public class OptimizedExcelReader extends CustomFileReader {
             sheet.close();
             data.addAttributeMap(sheethandler.getLastRow());
             return data;
-           }
+        }
     }
 
     public XMLReader fetchSheetParser(SharedStringsTable stringtable) throws SAXException {
@@ -170,6 +169,12 @@ public class OptimizedExcelReader extends CustomFileReader {
             return celldata;
         }
 
+        /**
+         * Checks if the provided attribute is already existing and sets the new
+         * attribute name to the next unused one.
+         *
+         * @param attribute Attribute name
+         */
         private void checkIfExists(String attribute) {
             if (repeatcount == 2) {
                 repeatingAttribute = attribute;
@@ -187,7 +192,6 @@ public class OptimizedExcelReader extends CustomFileReader {
         public DataRow getLastRow() {
             return row;
         }
-
     }
 
 }
